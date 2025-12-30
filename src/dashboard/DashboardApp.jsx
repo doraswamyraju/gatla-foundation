@@ -33,7 +33,7 @@ import {
   Lock,
   PenTool,
   Image as ImageIcon,
-  DollarSign // Added for Finance Icon
+  DollarSign 
 } from 'lucide-react';
 
 // --- FORM CONFIGURATIONS ---
@@ -556,14 +556,21 @@ const BlogManager = ({ posts, onSave, onDelete }) => {
   );
 };
 
-// 4. Form Modal (Generic)
+// 4. Form Modal (Generic) - FIXED HOOKS ORDER
 const FormModal = ({ isOpen, onClose, categoryId, initialData, onSave }) => {
+  // 1. Hooks MUST be called first
+  const [formData, setFormData] = useState(initialData || {});
+
+  // 2. Sync state when the modal opens or data changes
+  useEffect(() => {
+     if(isOpen) setFormData(initialData || {});
+  }, [initialData, isOpen]);
+
+  // 3. Conditional return logic
   if (!isOpen) return null;
 
   const schema = FORM_SCHEMAS[categoryId] || FORM_SCHEMAS['volunteer-form']; 
   const title = categoryId.replace(/-/g, ' ').toUpperCase();
-
-  const [formData, setFormData] = useState(initialData || {});
 
   const handleChange = (key, value) => {
     setFormData(prev => ({ ...prev, [key]: value }));

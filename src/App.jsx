@@ -1,9 +1,6 @@
-// src/App.jsx - FINAL STRUCTURAL INTEGRATION FOR PUBLIC AND ADMIN MODALS
-
-import React, { useState, useCallback, useMemo } from 'react';
+// src/App.jsx - FINAL STRUCTURAL INTEGRATION
+import React, { useState, useCallback } from 'react';
 import './App.css'; 
-import { X, User, Lock } from 'lucide-react'; 
-
 
 // --- 1. CORE IMPORTS ---
 import Navbar from './components/Navbar.jsx'; 
@@ -18,17 +15,15 @@ import MusicClub from './pages/MusicClub.jsx';
 import BusinessClub from './pages/BusinessClub.jsx';   
 import AwardsClub from './pages/AwardsClub.jsx'; 
 
+// NEW: Import the Donation Form
+import DonateForm from './pages/forms/DonateForm.jsx';
+
 // CRITICAL: Import the correct Modal Component
 import FormModal from './dashboard/components/FormModal.jsx'; 
-import AdminDashboard from './pages/AdminDashboard.jsx'; 
+import AdminDashboard from './dashboard/DashboardApp.jsx'; // Pointing to your DashboardApp
 import AdminLoginPage from './pages/AdminLoginPage.jsx'; 
 
-
-// --- 2. MOCK DATA & UTILITIES (Minimized) ---
-const FoundationLogo = () => <div className="text-2xl font-serif font-bold text-white tracking-wide">GATLA <span className="text-amber-400">FOUNDATION</span></div>;
-const UpcomingEventsSection = () => <div className="p-20 min-h-[60vh] flex items-center justify-center bg-white text-gray-900 text-xl">Events Page Placeholder</div>;
-const CatchAllPage = ({ pageName }) => <div className="p-20 min-h-[60vh] flex items-center justify-center text-xl bg-white text-gray-900">Placeholder for: **{pageName}**</div>;
-
+// --- 2. MOCK DATA ---
 const MOCK_WINGS_DATA = {
     wings: [
         { id: 'education', title: 'Education Club' }, 
@@ -39,8 +34,10 @@ const MOCK_WINGS_DATA = {
     ]
 };
 
+const UpcomingEventsSection = () => <div className="p-20 min-h-[60vh] flex items-center justify-center bg-white text-gray-900 text-xl">Events Page Placeholder</div>;
+const CatchAllPage = ({ pageName }) => <div className="p-20 min-h-[60vh] flex items-center justify-center text-xl bg-white text-gray-900">Placeholder for: **{pageName}**</div>;
 
-// --- C. PUBLIC SITE CONTAINER (The Public Site Router) ---
+// --- C. PUBLIC SITE CONTAINER ---
 const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenForm }) => {
     
     const onNavClick = (id) => {
@@ -49,41 +46,38 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
         if (lowerId === 'home') return handleNavigate('Home');
         if (lowerId === 'dashboard' || lowerId === 'admin login') return handleNavigate('Login'); 
         
-        // ALL possible form IDs defined across the application
+        // Specific check for Donate Page
+        if (lowerId === 'donate') {
+             return handleNavigate('Donate'); 
+        }
+
+        // Check for specific form IDs (open modal)
         const formIds = [
             'volunteer-form', 'supporter-form', 
-            // Education Forms
-            'education-student', 'education-scriber', 'education-volunteer', 'education-donor', 'education-supporter', 
-            // Music Forms
-            'music-member', 'music-singer', 'music-judge', 'music-donor', 'music-supporter', 
-            // Cricket Forms (To be added later)
-            'cricket-player', 'cricket-umpire', 'cricket-club-member', 'cricket-donor', 'cricket-supporter', 'cricket-volunteer',
-            // Business/Awards Forms (To be added later)
-            'business-member', 'business-entrepreneur', 'business-donor', 
+            'education-student', 'education-scriber', 'education-volunteer', 
+            'music-member', 'music-singer', 'music-judge', 
+            'cricket-player', 'cricket-umpire', 'cricket-club-member', 
+            'business-member', 'business-entrepreneur', 
             'awards-nomination', 'awards-sponsor'
         ];
 
-        // 1. Check if the click targets a Form ID
         if (formIds.includes(lowerId)) {
-             handleOpenForm(lowerId); // Open the modal with the form ID
-             return; // <--- CRITICAL FIX: Stop execution to prevent page navigation
+             handleOpenForm(lowerId); 
+             return; 
         }
 
-        // 2. Standard Page Navigation (Navbar/Buttons)
+        // Standard Page Navigation
         const pageMap = { 
             'about': 'About', 'projects': 'Projects', 'events': 'Events',
             'awards': 'Awards', 'gallery': 'Gallery', 'contact': 'Contact',
-            // Special cases from Navbar buttons mapped to form IDs
-            'volunteer': 'volunteer-form', 
-            'donate': 'supporter-form', 
+            'volunteer': 'volunteer-form' // Volunteer opens a modal form
         };
         const targetId = pageMap[lowerId];
 
         if (targetId) {
-            // Check if Navbar special case should open a form
             if (formIds.includes(targetId)) {
                 handleOpenForm(targetId);
-                return; // <--- CRITICAL FIX: Stop execution
+                return; 
             }
             return handleNavigate(targetId);
         }
@@ -97,8 +91,12 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
     let content;
     const currentLowerPage = currentPage.toLowerCase();
 
-    // Dedicated Wing Page Logic (Handles all pillar IDs)
-    if (currentLowerPage === 'education') {
+    // 1. DEDICATED PAGES
+    if (currentLowerPage === 'donate') {
+        content = <DonateForm />;
+    }
+    // 2. WING PAGES
+    else if (currentLowerPage === 'education') {
         content = <EducationClub onNavigate={onNavClick} />;
     } else if (currentLowerPage === 'cricket') {
         content = <CricketClub onNavigate={onNavClick} />;
@@ -109,8 +107,7 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
     } else if (currentLowerPage === 'awards') { 
         content = <AwardsClub onNavigate={onNavClick} />;
     }
-    
-    // Standard Page Routes
+    // 3. STANDARD PAGES
     else {
         switch (currentLowerPage) {
             case 'home':
@@ -136,7 +133,6 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
                 content = <CatchAllPage pageName={"Contact"} />;
                 break;
             default: 
-                // If it falls through here, it means 'currentPage' holds an unrecognized ID (like 'education-donor' which wasn't stopped earlier)
                 content = <CatchAllPage pageName={currentPage} />;
         }
     }
@@ -150,42 +146,39 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
     );
 };
 
-
-// --- A. CORE APPLICATION & ROUTING (Main App.jsx) ---
+// --- A. MAIN APP ---
 const App = () => {
     
     const getInitialPage = () => {
         const path = window.location.pathname.toLowerCase();
-        if (path.includes('/login') || path.includes('/dashboard')) {
-            return 'Login';
-        } else if (path.length > 1) {
-            return path.substring(1).charAt(0).toUpperCase() + path.substring(2);
-        }
+        if (path.includes('/login') || path.includes('/dashboard')) return 'Login';
+        if (path.includes('/donate')) return 'Donate';
+        if (path.length > 1) return path.substring(1).charAt(0).toUpperCase() + path.substring(2);
         return 'Home';
     };
     
-    // 1. Core State
     const [currentPage, setCurrentPage] = useState(getInitialPage()); 
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-    // Modal State Management
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [activeFormId, setActiveFormId] = useState('');
 
-    // 2. Core Actions
     const handleNavigate = useCallback((page, wingId = null) => {
         const lowerId = page.toLowerCase();
+        let path = `/${lowerId}`;
         
-        if (lowerId === 'login' || lowerId === 'dashboard' || lowerId === 'admin login') {
+        if (lowerId === 'login' || lowerId === 'dashboard') {
             setCurrentPage('Login');
-            window.history.pushState(null, '', '/login'); 
+            path = '/login';
         } else if (lowerId === 'wing' && wingId) {
             setCurrentPage(wingId);
-            window.history.pushState(null, '', `/${wingId}`); 
+            path = `/${wingId}`;
+        } else if (lowerId === 'home') {
+             setCurrentPage('Home');
+             path = '/';
         } else {
             setCurrentPage(page);
-            window.history.pushState(null, '', `/${page.toLowerCase()}`); 
         }
+        window.history.pushState(null, '', path); 
         window.scrollTo(0, 0);
     }, []);
 
@@ -201,10 +194,6 @@ const App = () => {
         window.history.pushState(null, '', '/'); 
     }, []);
 
-    const handleSave = useCallback(() => {}, []);
-    const handleDelete = useCallback(() => {}, []);
-
-    // --- HANDLERS FOR MODAL ---
     const handleOpenForm = useCallback((formId) => {
         setActiveFormId(formId);
         setIsFormModalOpen(true);
@@ -215,25 +204,14 @@ const App = () => {
         setActiveFormId('');
     }, []);
 
-
-    // 3. Main Router Logic
     if (isAuthenticated) {
-        return (
-            <AdminDashboard
-                handleLogout={handleLogout}
-                handleSave={handleSave}
-                handleDelete={handleDelete}
-            />
-        );
+        return <AdminDashboard onLogout={handleLogout} />;
     }
 
     if (currentPage.toLowerCase() === 'login') {
-        return (
-            <AdminLoginPage onLogin={handleLogin} onNavigate={handleNavigate} />
-        );
+        return <AdminLoginPage onLogin={handleLogin} onNavigate={handleNavigate} />;
     }
 
-    // Default: Public Site
     return (
         <>
             <PublicSiteContainer
@@ -242,12 +220,10 @@ const App = () => {
                 handleNavigate={handleNavigate}
                 handleOpenForm={handleOpenForm} 
             />
-            {/* The Global Form Modal */}
             <FormModal 
                 isOpen={isFormModalOpen}
-                categoryId={activeFormId} // This links the button ID to the correct component
+                categoryId={activeFormId}
                 onClose={handleCloseForm}
-                initialData={null} 
             />
         </>
     );
