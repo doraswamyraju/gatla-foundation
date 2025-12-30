@@ -68,7 +68,7 @@ const Hero = ({ onNavigate }) => (
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600">Sight</span>
           </h1>
           <p className="text-base md:text-lg text-slate-400 max-w-lg leading-relaxed border-l-2 border-amber-500/30 pl-4">
-            The Gatla Foundation represents the pinnacle of service, orchestrating a brighter future for the visually impaired through five pillars of excellence.
+            The Gatla Foundation Tirupati represents the pinnacle of service, orchestrating a brighter future for the visually impaired through five pillars of excellence.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 pt-2">
             <button onClick={() => onNavigate('volunteer')} className="px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-[#0B1120] font-bold text-xs uppercase tracking-widest hover:from-amber-400 hover:to-amber-500 transition shadow-[0_0_20px_rgba(245,158,11,0.3)]">
