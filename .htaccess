@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  
+  # 1. Do not rewrite requests to the API folder
+  RewriteRule ^api/ - [L,NC]
+
+  # 2. Standard React SPA routing
+  # If the requested file or directory does not exist...
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  # ...serve index.html
+  RewriteRule . ./index.html [L]
+</IfModule>

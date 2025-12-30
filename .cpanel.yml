@@ -1,0 +1,12 @@
+---
+deployment:
+  tasks:
+    # 1. Export the 'build' folder (Frontend) to the document root
+    - export DEPLOYPATH=/home3/rajugda1/gatlafoundation.org
+    - /bin/cp -R build/* $DEPLOYPATH
+    
+    # 2. Export the 'api' folder (Backend) to the document root
+    - /bin/cp -R api $DEPLOYPATH
+    
+    # 3. Ensure permissions are correct (optional but good practice)
+    - /bin/chmod -R 755 $DEPLOYPATH/api
