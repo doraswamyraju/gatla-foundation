@@ -32,7 +32,8 @@ import {
   Settings,
   Lock,
   PenTool,
-  Image as ImageIcon
+  Image as ImageIcon,
+  DollarSign // Added for Finance Icon
 } from 'lucide-react';
 
 // --- FORM CONFIGURATIONS ---
@@ -174,6 +175,15 @@ const FORM_SCHEMAS = {
   'education-donor': [{ key: 'name', label: 'Donor Name', type: 'text' }, { key: 'amount', label: 'Amount', type: 'number' }, { key: 'phone', label: 'Phone', type: 'tel' }],
   'music-donor': [{ key: 'name', label: 'Donor Name', type: 'text' }, { key: 'amount', label: 'Amount', type: 'number' }, { key: 'phone', label: 'Phone', type: 'tel' }],
   'business-donor': [{ key: 'name', label: 'Donor Name', type: 'text' }, { key: 'amount', label: 'Amount', type: 'number' }, { key: 'phone', label: 'Phone', type: 'tel' }],
+
+  // NEW: Online Donations
+  'donations-list': [
+    { key: 'name', label: 'Donor Name', type: 'text' },
+    { key: 'amount', label: 'Amount', type: 'number' },
+    { key: 'payment_id', label: 'Payment ID', type: 'text' },
+    { key: 'donation_date', label: 'Date', type: 'text' },
+    { key: 'status', label: 'Status', type: 'text' }
+  ]
 };
 
 const generateMockData = () => {
@@ -231,7 +241,8 @@ const generateMockData = () => {
     'blog-posts': [
       { id: 1, title: "New Cricket Tournament Announced", author: "Admin", date: "2023-10-20", status: "Published" },
       { id: 2, title: "Donation Drive Success", author: "Editor", date: "2023-10-15", status: "Draft" }
-    ]
+    ],
+    'donations-list': [] // Initial state for donations
   };
 };
 
@@ -280,7 +291,8 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout 
     education: false,
     music: false,
     business: false,
-    awards: false
+    awards: false,
+    finance: true // Default open for finance
   });
 
   const toggleGroup = (group) => {
@@ -288,6 +300,14 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout 
   };
 
   const navStructure = [
+    {
+      id: 'finance',
+      title: 'Donations',
+      icon: <DollarSign className="w-5 h-5 text-emerald-400" />,
+      forms: [
+        { id: 'donations-list', label: 'All Donations' }
+      ]
+    },
     {
       id: 'cricket',
       title: 'Cricket Club',
@@ -376,7 +396,7 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout 
             Dashboard Overview
           </button>
 
-          {/* New Blog Manager Link */}
+          {/* Blog Manager Link */}
           <button
             onClick={() => setActiveTab('blog-manager')}
             className={`w-full flex items-center gap-3 px-4 py-3 mb-4 text-sm font-medium transition-colors ${
@@ -648,9 +668,12 @@ const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
         </div>
         
         <div className="flex gap-2">
-          <button onClick={onAdd} className="flex items-center px-4 py-2 text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors">
-            <Plus className="w-4 h-4 mr-2" /> Add New
-          </button>
+          {/* Only show Add button if it is NOT the donations list (since donations are added via Razorpay) */}
+          {type !== 'donations-list' && (
+            <button onClick={onAdd} className="flex items-center px-4 py-2 text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors">
+              <Plus className="w-4 h-4 mr-2" /> Add New
+            </button>
+          )}
           <div className="h-8 w-px bg-slate-200 mx-2"></div>
           <button onClick={() => handleExport('csv')} className="flex items-center px-3 py-2 text-xs font-bold text-green-700 bg-green-50 hover:bg-green-100 rounded border border-green-200" title="Export Excel/CSV">
             <FileSpreadsheet className="w-4 h-4 mr-1" /> Excel
@@ -685,7 +708,7 @@ const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
                   ))}
                   <td className="px-6 py-4 text-right">
                      <span className={`px-2 py-1 rounded-full text-xs font-bold ${
-                        row.status === 'Approved' || row.status === 'Active' ? 'bg-green-100 text-green-700' :
+                        row.status === 'Approved' || row.status === 'Active' || row.status === 'Success' ? 'bg-green-100 text-green-700' :
                         row.status === 'Pending' ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-600'
                       }`}>
                         {row.status || 'Pending'}
@@ -693,7 +716,10 @@ const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => onEdit(row)} className="p-1 text-slate-400 hover:text-amber-500" title="Edit"><Edit className="w-4 h-4" /></button>
+                      {/* Disable editing for donations, but allow delete if needed */}
+                      {type !== 'donations-list' && (
+                        <button onClick={() => onEdit(row)} className="p-1 text-slate-400 hover:text-amber-500" title="Edit"><Edit className="w-4 h-4" /></button>
+                      )}
                       <button onClick={() => onDelete(row.id)} className="p-1 text-slate-400 hover:text-red-500" title="Delete"><Trash2 className="w-4 h-4" /></button>
                     </div>
                   </td>
@@ -705,7 +731,9 @@ const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
                   <div className="flex flex-col items-center">
                     <FileText className="w-12 h-12 text-slate-200 mb-2" />
                     <p>No records found.</p>
-                    <button onClick={onAdd} className="text-amber-600 text-sm font-bold hover:underline mt-1">Add your first entry</button>
+                    {type !== 'donations-list' && (
+                      <button onClick={onAdd} className="text-amber-600 text-sm font-bold hover:underline mt-1">Add your first entry</button>
+                    )}
                   </div>
                 </td>
               </tr>
@@ -850,6 +878,21 @@ const DashboardApp = () => {
     }
   };
 
+  // FETCH DONATIONS FROM API
+  useEffect(() => {
+    if (activeTab === 'donations-list') {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost/gatla-foundation/api';
+      fetch(`${apiUrl}/get_donations.php`)
+        .then(res => res.json())
+        .then(data => {
+          if(Array.isArray(data)){
+             setAppData(prev => ({ ...prev, 'donations-list': data }));
+          }
+        })
+        .catch(err => console.error("Failed to load donations", err));
+    }
+  }, [activeTab]);
+
   if (!isAuthenticated) return <LoginPage onLogin={handleLogin} />;
 
   return (
@@ -889,7 +932,7 @@ const DashboardApp = () => {
                   { label: 'Total Records', value: Object.values(appData).flat().length, color: 'bg-blue-500' },
                   { label: 'Cricket Players', value: appData['cricket-player']?.length || 0, color: 'bg-amber-500' },
                   { label: 'Students', value: appData['education-student']?.length || 0, color: 'bg-green-500' },
-                  { label: 'Donors', value: (appData['cricket-donor']?.length || 0) + (appData['business-donor']?.length || 0), color: 'bg-red-500' },
+                  { label: 'Donations', value: appData['donations-list']?.length || 0, color: 'bg-red-500' },
                 ].map((stat, i) => (
                   <div key={i} className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                     <div className="flex justify-between mb-2">
