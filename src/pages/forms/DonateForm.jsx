@@ -4,7 +4,8 @@ import { Heart, CreditCard, ShieldCheck } from 'lucide-react';
 const DonateForm = () => {
   const [amount, setAmount] = useState(1000);
   const [customAmount, setCustomAmount] = useState('');
-  const [donor, setDonor] = useState({ name: '', email: '', phone: '' });
+  // Added 'pan' to state
+  const [donor, setDonor] = useState({ name: '', email: '', phone: '', pan: '' });
   const [loading, setLoading] = useState(false);
 
   // Load Razorpay Script
@@ -32,15 +33,15 @@ const DonateForm = () => {
     }
 
     const options = {
-      key: "rzp_test_RuKdTFadwm3UGT", // <--- REPLACE THIS
-      amount: finalAmount * 100, // Amount in paise
+      key: "rzp_test_RuKdTFadwm3UGT", // Replace with Live Key when ready
+      amount: finalAmount * 100, 
       currency: "INR",
       name: "Gatla Foundation",
       description: "Donation",
-      image: "https://gatlafoundation.org/logo.png", // Ensure this path exists or remove
+      image: process.env.PUBLIC_URL + "/assets/images/1.jpg", 
       handler: async function (response) {
         try {
-          // Send to Backend
+          // Send PAN and other details to Backend
           const apiRes = await fetch(`${process.env.REACT_APP_API_URL}/process_donation.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -49,15 +50,15 @@ const DonateForm = () => {
               amount: finalAmount,
               name: donor.name,
               email: donor.email,
-              phone: donor.phone
+              phone: donor.phone,
+              pan: donor.pan // Sending PAN
             })
           });
           
           const result = await apiRes.json();
           if (result.status === 'success') {
             alert("Payment Successful! Receipt sent to your email.");
-            // Reset form
-            setDonor({ name: '', email: '', phone: '' });
+            setDonor({ name: '', email: '', phone: '', pan: '' }); // Reset form
           } else {
             alert("Payment success, but server error: " + result.message);
           }
@@ -122,10 +123,22 @@ const DonateForm = () => {
           {/* User Details */}
           <div className="space-y-4">
             <input required type="text" placeholder="Full Name" className="w-full border rounded-lg p-3" value={donor.name} onChange={e => setDonor({...donor, name: e.target.value})} />
+            
             <div className="grid grid-cols-2 gap-4">
               <input required type="email" placeholder="Email Address" className="w-full border rounded-lg p-3" value={donor.email} onChange={e => setDonor({...donor, email: e.target.value})} />
               <input required type="tel" placeholder="Phone Number" className="w-full border rounded-lg p-3" value={donor.phone} onChange={e => setDonor({...donor, phone: e.target.value})} />
             </div>
+
+            {/* Added PAN Input */}
+            <input 
+              required 
+              type="text" 
+              placeholder="PAN Card Number" 
+              className="w-full border rounded-lg p-3 uppercase"
+              maxLength={10}
+              value={donor.pan} 
+              onChange={e => setDonor({...donor, pan: e.target.value.toUpperCase()})} 
+            />
           </div>
 
           <button type="submit" disabled={loading} className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition-all">

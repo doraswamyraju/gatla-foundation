@@ -7,7 +7,7 @@ require_once 'config.php';
 $conn = connectDB();
 if (!$conn) { echo "[]"; exit; }
 
-$sql = "SELECT id, donor_name as name, phone, amount, payment_id, donation_date, payment_status as status FROM donations ORDER BY donation_date DESC";
+$sql = "SELECT id, donor_name as name, phone, email, pan_number, amount, payment_id, donation_date, payment_status as status FROM donations ORDER BY donation_date DESC";
 $result = $conn->query($sql);
 
 $donations = [];
