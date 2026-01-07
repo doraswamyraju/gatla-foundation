@@ -1,9 +1,14 @@
-// src/pages/EducationClub.jsx - FINAL VERSION WITH ADMIN ID CONSISTENCY
+import React, { useState } from 'react';
+import { BookOpen, CheckCircle2, User, FileText, Gift, ArrowRight, HeartHandshake, DollarSign, X } from 'lucide-react';
 
-import React from 'react';
-import { BookOpen, CheckCircle2, User, FileText, Gift, ArrowRight, HeartHandshake, DollarSign } from 'lucide-react';
+// --- IMPORT THE FORM ---
+// Adjust the path based on where you saved the component
+import EducationStudentForm from '../components/pillars/EducationStudentForm'; 
 
 const EducationClub = ({ onNavigate }) => {
+  // --- STATE FOR MODAL ---
+  const [showStudentForm, setShowStudentForm] = useState(false);
+
   return (
     <div className="pt-20 pb-16 bg-[#050914] min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -58,11 +63,10 @@ const EducationClub = ({ onNavigate }) => {
           <div className="lg:col-span-1">
             <div className="bg-[#0F172A] p-6 rounded-lg border border-green-500/50 shadow-2xl sticky top-28">
               <h4 className="text-lg font-serif font-bold text-white mb-4">Registration Forms</h4>
-              <p className="text-slate-400 text-sm mb-6">Select a form below to apply. You will be redirected to the admin contact page.</p>
+              <p className="text-slate-400 text-sm mb-6">Select a form below to apply.</p>
 
               <div className="space-y-4">
                 {[
-                  // CRITICAL: Using Admin Sidebar IDs for structural consistency
                   { name: "Student Form", icon: User, target: "education-student" },
                   { name: "Scribe Form", icon: FileText, target: "education-scriber" },
                   { name: "Volunteer Form", icon: HeartHandshake, target: "education-volunteer" },
@@ -70,7 +74,14 @@ const EducationClub = ({ onNavigate }) => {
                 ].map((form, index) => (
                   <button 
                     key={index}
-                    onClick={() => onNavigate(form.target)}
+                    onClick={() => {
+                        // INTERCEPT "Student Form" CLICK
+                        if (form.target === 'education-student') {
+                            setShowStudentForm(true);
+                        } else {
+                            onNavigate(form.target);
+                        }
+                    }}
                     className="w-full flex justify-between items-center bg-[#050914] text-slate-300 p-3 rounded-md border border-slate-800 hover:bg-green-600 hover:text-white transition group"
                   >
                     <span className="flex items-center gap-3">
@@ -86,6 +97,27 @@ const EducationClub = ({ onNavigate }) => {
 
         </div>
       </div>
+
+      {/* --- STUDENT FORM MODAL --- */}
+      {showStudentForm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
+            {/* Modal Container */}
+            <div className="bg-[#0B1120] w-full max-w-3xl rounded-2xl overflow-hidden shadow-2xl border border-slate-800 max-h-[90vh] flex flex-col relative">
+                
+                {/* Close Button */}
+                <button 
+                    onClick={() => setShowStudentForm(false)} 
+                    className="absolute top-4 right-4 text-slate-400 hover:text-white z-20 bg-black/20 p-2 rounded-full hover:bg-red-500/20 transition-all"
+                >
+                    <X className="w-5 h-5" />
+                </button>
+
+                {/* The Form Component */}
+                <EducationStudentForm onClose={() => setShowStudentForm(false)} />
+            </div>
+        </div>
+      )}
+
     </div>
   );
 };

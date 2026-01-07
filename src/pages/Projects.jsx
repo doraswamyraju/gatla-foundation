@@ -1,12 +1,9 @@
-// src/pages/Projects.jsx
-
 import React from 'react';
 import { Star, ArrowRight, BookOpen, Trophy, Music, Briefcase, Award } from 'lucide-react';
 
 // Reusing SmartImage placeholder for consistency 
 const SmartImage = ({ src, alt, fallback, className }) => {
   const [error, setError] = React.useState(false);
-  // NOTE: Path for images changed to .png based on Home.jsx fix (2.png, 3.png, etc.)
   if (error) return <div className={`${className} flex items-center justify-center bg-slate-800 text-slate-500`}>{fallback}</div>;
   return <img src={src} alt={alt} className={className} onError={() => setError(true)} />;
 };
@@ -15,10 +12,10 @@ const SmartImage = ({ src, alt, fallback, className }) => {
 const WINGS = [
   {
     id: 'education',
-    title: 'Education Club',
+    title: 'Gatla Education Club',
     subtitle: 'For the Blind',
     description: 'Providing scribes, stipends, and accessible exams for visually impaired students. We organize motivation seminars and provide study materials.',
-    imgSrc: "/assets/images/2.png", // Corrected to .png
+    imgSrc: "/assets/images/2.png", 
     fallbackIcon: <BookOpen className="w-1/2 h-1/2 text-white" />,
     badgeColor: 'bg-green-600',
     ringColor: 'border-green-400',
@@ -26,10 +23,10 @@ const WINGS = [
   },
   {
     id: 'cricket',
-    title: 'Cricket Club',
+    title: 'Gatla Cricket Club',
     subtitle: 'Sports & Recreation',
     description: 'Organizing tournaments from Zonal to International levels to encourage blind sportsmen. Promoting physical fitness and teamwork.',
-    imgSrc: "/assets/images/3.png", // Corrected to .png
+    imgSrc: "/assets/images/3.png", 
     fallbackIcon: <Trophy className="w-1/2 h-1/2 text-white" />,
     badgeColor: 'bg-blue-600',
     ringColor: 'border-blue-400',
@@ -37,10 +34,10 @@ const WINGS = [
   },
   {
     id: 'music',
-    title: 'Music Club',
+    title: 'Gatla Music Club',
     subtitle: 'For the Blind',
     description: 'Conducting singing competitions at various levels to identify and nurture musical talent among the visually impaired.',
-    imgSrc: "/assets/images/4.png", // Corrected to .png
+    imgSrc: "/assets/images/4.png", 
     fallbackIcon: <Music className="w-1/2 h-1/2 text-white" />,
     badgeColor: 'bg-purple-600',
     ringColor: 'border-purple-400',
@@ -48,10 +45,10 @@ const WINGS = [
   },
   {
     id: 'business',
-    title: 'Business Club',
+    title: 'Gatla Business Club',
     subtitle: 'For the Blind',
     description: 'Supporting visually impaired entrepreneurs through seminars, awareness meetings, and networking opportunities.',
-    imgSrc: "/assets/images/5.png", // Corrected to .png
+    imgSrc: "/assets/images/5.png", 
     fallbackIcon: <Briefcase className="w-1/2 h-1/2 text-white" />,
     badgeColor: 'bg-red-600',
     ringColor: 'border-red-400',
@@ -59,10 +56,10 @@ const WINGS = [
   },
   {
     id: 'awards',
-    title: 'Awards',
+    title: 'Gatla Awards',
     subtitle: 'For Unsung Heroes',
     description: 'Honoring exceptional achievements by the differently-abled and unsung heroes with prestigious medals.',
-    imgSrc: "/assets/images/6.png", // Corrected to .png
+    imgSrc: "/assets/images/6.png", 
     fallbackIcon: <Award className="w-1/2 h-1/2 text-white" />,
     badgeColor: 'bg-amber-500',
     ringColor: 'border-amber-200',
@@ -75,7 +72,6 @@ const WingCard = ({ wing, onClick }) => (
     <div className={`h-1 w-full ${wing.badgeColor}`}></div>
     <div className="p-6 md:p-8 flex flex-col flex-grow items-center text-center">
       <div className={`w-16 h-16 rounded-full ${wing.badgeColor} border-4 ${wing.ringColor} shadow-lg flex items-center justify-center mb-6 overflow-hidden p-3 group-hover:scale-110 transition-transform`}>
-         {/* Note: SmartImage receives the full path */}
          <SmartImage src={wing.imgSrc} alt={wing.title} fallback={wing.fallbackIcon} className="w-full h-full object-contain" />
       </div>
       <h3 className="text-xl font-serif font-bold text-white mb-2 group-hover:text-amber-400 transition-colors">{wing.title}</h3>
@@ -98,8 +94,6 @@ const Projects = ({ onSelectWing }) => {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
           {WINGS.map((wing) => (
-            // The onClick handler passes the wing.id ('education', 'cricket', etc.) 
-            // back up to App.jsx for routing.
             <WingCard key={wing.id} wing={wing} onClick={() => onSelectWing(wing.id)} />
           ))}
           <div className="bg-gradient-to-br from-amber-600 to-amber-700 p-1 rounded-none flex flex-col h-full hover:-translate-y-2 transition-transform cursor-pointer">
@@ -109,7 +103,13 @@ const Projects = ({ onSelectWing }) => {
                 </div>
                 <h3 className="text-xl font-serif font-bold text-white mb-2">Become a Patron</h3>
                 <p className="text-slate-300 text-xs mb-6">Join the elite circle of donors supporting this noble cause.</p>
-                <button className="px-6 py-3 bg-white text-[#0B1120] text-xs font-bold uppercase tracking-widest hover:bg-amber-50 transition">Donate Now</button>
+                {/* FIXED: Button now triggers navigation to 'donate' page */}
+                <button 
+                    onClick={() => onSelectWing('donate')} 
+                    className="px-6 py-3 bg-white text-[#0B1120] text-xs font-bold uppercase tracking-widest hover:bg-amber-50 transition"
+                >
+                    Donate Now
+                </button>
              </div>
           </div>
         </div>

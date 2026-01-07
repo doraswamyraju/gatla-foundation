@@ -14,6 +14,7 @@ import CricketClub from './pages/CricketClub.jsx';
 import MusicClub from './pages/MusicClub.jsx';         
 import BusinessClub from './pages/BusinessClub.jsx';   
 import AwardsClub from './pages/AwardsClub.jsx'; 
+import VolunteerForm from './pages/forms/VolunteerForm.jsx';
 
 // NEW: Import the Donation Form
 import DonateForm from './pages/forms/DonateForm.jsx';
@@ -93,7 +94,8 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
 
     // 1. DEDICATED PAGES
     if (currentLowerPage === 'donate') {
-        content = <DonateForm />;
+        // CHANGE THIS LINE: Pass onNavigate prop
+        content = <DonateForm onNavigate={handleNavigate} />;
     }
     // 2. WING PAGES
     else if (currentLowerPage === 'education') {
@@ -224,6 +226,17 @@ const App = () => {
                 isOpen={isFormModalOpen}
                 categoryId={activeFormId}
                 onClose={handleCloseForm}
+            />
+            {isFormModalOpen && activeFormId === 'volunteer-form' && (
+                <VolunteerForm onClose={handleCloseForm} />
+            )}
+
+            {/* GENERIC FORM MODAL (For other forms like cricket-player, etc.) */}
+            <FormModal 
+                isOpen={isFormModalOpen && activeFormId !== 'volunteer-form'}
+                categoryId={activeFormId}
+                onClose={handleCloseForm}
+                initialData={null} 
             />
         </>
     );

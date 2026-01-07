@@ -4,8 +4,7 @@ header("Content-Type: application/json");
 require_once 'config.php';
 
 $conn = connectDB();
-// Ensure table name matches your database (education_volunteers)
-$sql = "SELECT id, full_name as fullName, phone_no as phone, email_id as email, club_preference as clubPreference, status FROM education_volunteers ORDER BY submission_date DESC";
+$sql = "SELECT id, full_name as fullName, father_name as fatherName, phone_no as phone, email_id as email, club_preference as clubPreference, status FROM cricket_volunteers ORDER BY submission_date DESC";
 $result = $conn->query($sql);
 
 $data = [];

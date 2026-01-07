@@ -1,12 +1,26 @@
-import React, { useState } from 'react';
-import { Heart, CreditCard, ShieldCheck } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Heart, CreditCard, ShieldCheck, CheckCircle, Home } from 'lucide-react';
 
-const DonateForm = () => {
+const DonateForm = ({ onNavigate }) => {
   const [amount, setAmount] = useState(1000);
   const [customAmount, setCustomAmount] = useState('');
-  // Added 'pan' to state
   const [donor, setDonor] = useState({ name: '', email: '', phone: '', pan: '' });
   const [loading, setLoading] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false); // New State for Success Screen
+
+  // Auto-redirect effect
+  useEffect(() => {
+    if (paymentSuccess) {
+      const timer = setTimeout(() => {
+        if (onNavigate) {
+            onNavigate('home');
+        } else {
+            window.location.href = '/'; // Fallback if prop is missing
+        }
+      }, 5000); // Redirect after 5 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [paymentSuccess, onNavigate]);
 
   // Load Razorpay Script
   const loadRazorpay = () => {
@@ -33,7 +47,7 @@ const DonateForm = () => {
     }
 
     const options = {
-      key: "rzp_test_RuKdTFadwm3UGT", // Replace with Live Key when ready
+      key: "rzp_test_RuKdTFadwm3UGT", // Replace with Live Key
       amount: finalAmount * 100, 
       currency: "INR",
       name: "Gatla Foundation",
@@ -41,7 +55,7 @@ const DonateForm = () => {
       image: process.env.PUBLIC_URL + "/assets/images/1.jpg", 
       handler: async function (response) {
         try {
-          // Send PAN and other details to Backend
+          // Send to Backend
           const apiRes = await fetch(`${process.env.REACT_APP_API_URL}/process_donation.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -51,14 +65,14 @@ const DonateForm = () => {
               name: donor.name,
               email: donor.email,
               phone: donor.phone,
-              pan: donor.pan // Sending PAN
+              pan: donor.pan 
             })
           });
           
           const result = await apiRes.json();
           if (result.status === 'success') {
-            alert("Payment Successful! Receipt sent to your email.");
-            setDonor({ name: '', email: '', phone: '', pan: '' }); // Reset form
+            // SHOW SUCCESS SCREEN INSTEAD OF ALERT
+            setPaymentSuccess(true);
           } else {
             alert("Payment success, but server error: " + result.message);
           }
@@ -66,6 +80,7 @@ const DonateForm = () => {
           console.error(error);
           alert("Error connecting to server.");
         }
+        setLoading(false);
       },
       prefill: {
         name: donor.name,
@@ -77,9 +92,40 @@ const DonateForm = () => {
 
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
-    setLoading(false);
+    // Don't set loading false here, wait for handler
   };
 
+  // --- SUCCESS SCREEN VIEW ---
+  if (paymentSuccess) {
+    return (
+      <div className="min-h-screen bg-[#0B1120] py-20 px-4 flex justify-center items-center animate-in fade-in duration-500">
+        <div className="bg-white max-w-md w-full rounded-2xl shadow-2xl p-8 text-center">
+           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="w-10 h-10 text-green-600" />
+           </div>
+           
+           <h2 className="text-2xl font-bold text-slate-800 mb-2">Donation Successful!</h2>
+           <p className="text-slate-600 mb-6 leading-relaxed">
+             Thank you, <strong>{donor.name}</strong>.<br/>
+             Your receipt has been sent to <span className="text-amber-600 font-medium">{donor.email}</span>.
+           </p>
+           
+           <div className="bg-slate-50 p-4 rounded-lg border border-slate-100 mb-6 text-sm text-slate-500">
+              <p>Redirecting you to Home in 5 seconds...</p>
+           </div>
+
+           <button 
+             onClick={() => onNavigate('home')} 
+             className="w-full bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
+           >
+             <Home className="w-4 h-4" /> Return to Home Now
+           </button>
+        </div>
+      </div>
+    );
+  }
+
+  // --- FORM VIEW ---
   return (
     <div className="min-h-screen bg-[#0B1120] py-24 px-4 flex justify-center items-center">
       <div className="bg-white max-w-lg w-full rounded-2xl shadow-2xl overflow-hidden">

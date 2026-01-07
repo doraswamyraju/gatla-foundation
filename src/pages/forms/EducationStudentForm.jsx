@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { User, Phone, Mail, MapPin, Building, Calendar, FileText, Upload, Shield, AlertCircle, Loader2, CheckCircle2 } from 'lucide-react';
+import { Save, Loader2, UploadCloud } from 'lucide-react';
 
-const EducationStudentForm = ({ onClose }) => {
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
-
+const EducationStudentForm = ({ onClose, initialData, onSaveSuccess }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [file, setFile] = useState(null);
+  
+  // Initialize state (Empty for Add, Populated for Edit)
   const [formData, setFormData] = useState({
+    id: '',
     full_name: '',
     father_name: '',
     phone_no: '',
@@ -21,176 +22,134 @@ const EducationStudentForm = ({ onClose }) => {
     place_of_exam: '',
     date_of_exam: '',
     disability_cert_no: '',
-    disability_certificate: null 
+    ...initialData // Overwrite with existing data if editing
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleFileChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setFormData({ ...formData, disability_certificate: e.target.files[0] });
-    }
-  };
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleFileChange = (e) => { if (e.target.files[0]) setFile(e.target.files[0]); };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
+    setIsSubmitting(true);
+
+    const payload = new FormData();
+    Object.keys(formData).forEach(key => payload.append(key, formData[key]));
+    if (file) payload.append('disability_certificate', file);
 
     try {
-      const data = new FormData();
-      Object.keys(formData).forEach(key => {
-        data.append(key, formData[key]);
-      });
-
-      // FIX: URL uses %20 to handle spaces in folder name safely
-      const response = await fetch('http://localhost/gatla-foundation%20-%20Copy/api/submit_education_student.php', {
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost/gatla-foundation/api';
+      const response = await fetch(`${apiUrl}/submit_education_student.php`, {
         method: 'POST',
-        body: data
+        body: payload
       });
-
+      
       const result = await response.json();
-
       if (result.status === 'success') {
-        setSuccess(true);
-        setTimeout(() => {
-          onClose(); // Close modal
-          window.location.reload(); // Reload to see new data
-        }, 2000);
+        alert(initialData ? 'Updated Successfully!' : 'Added Successfully!');
+        if (onSaveSuccess) onSaveSuccess();
+        onClose();
       } else {
-        throw new Error(result.message || 'Submission failed');
+        alert('Error: ' + result.message);
       }
-    } catch (err) {
-      console.error(err);
-      setError(err.message || 'Failed to connect. Ensure XAMPP is running.');
+    } catch (error) {
+      alert('Network Error: ' + error.message);
     } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
-  if (success) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full p-12 text-center text-white">
-        <div className="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mb-6">
-          <CheckCircle2 className="w-10 h-10 text-green-500" />
-        </div>
-        <h3 className="text-2xl font-bold mb-2">Application Submitted!</h3>
-        <p className="text-slate-400">The student record has been saved successfully.</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="h-full flex flex-col bg-[#0B1120] text-white">
-      <div className="px-8 py-6 border-b border-slate-800 bg-[#0B1120]">
-        <h2 className="text-2xl font-bold text-green-500 tracking-tight">Student Form</h2>
-        <p className="text-slate-500 text-sm mt-1">Please fill in all details accurately</p>
+    <form onSubmit={handleSubmit} className="p-6 space-y-4">
+      
+      {/* 1. Personal Details */}
+      <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2 mb-2">Personal Information</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Student Name</label>
+          <input type="text" name="full_name" required value={formData.full_name} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Father Name</label>
+          <input type="text" name="father_name" value={formData.father_name} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Mobile No</label>
+          <input type="tel" name="phone_no" required value={formData.phone_no} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Email ID</label>
+          <input type="email" name="email_id" value={formData.email_id} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Aadhaar No</label>
+          <input type="text" name="aadhaar_no" value={formData.aadhaar_no} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Age</label>
+          <input type="number" name="age" value={formData.age} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
+        </div>
+        <div className="md:col-span-2">
+          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Full Address</label>
+          <textarea name="address" rows="2" value={formData.address} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-8 custom-scrollbar space-y-8">
-        
-        {error && (
-          <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl flex items-center gap-3">
-            <AlertCircle className="w-5 h-5" />
-            <span className="text-sm font-medium">{error}</span>
-          </div>
-        )}
-
-        {/* 1. PERSONAL INFORMATION */}
-        <div className="space-y-4">
-          <h3 className="text-xs font-bold text-green-500 uppercase tracking-widest border-l-2 border-green-500 pl-3">1. Personal Information</h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Student Name</label>
-              <input type="text" name="full_name" placeholder="Enter Name" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Father Name</label>
-              <input type="text" name="father_name" placeholder="Enter Father Name" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Mobile No</label>
-              <input type="tel" name="phone_no" placeholder="Enter Mobile" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Email ID</label>
-              <input type="email" name="email_id" placeholder="Enter Email" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Aadhaar No</label>
-              <input type="text" name="aadhaar_no" placeholder="Enter Aadhaar" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Age</label>
-              <input type="number" name="age" placeholder="Age" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1 md:col-span-2">
-              <label className="text-xs font-medium text-slate-400 ml-1">Full Address</label>
-              <input type="text" name="address" placeholder="Enter Address" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-          </div>
+      {/* 2. Academic Details */}
+      <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2 pt-2 mb-2">Academic Details</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">College/School Name</label>
+          <input type="text" name="school_college_name" value={formData.school_college_name} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
         </div>
-
-        {/* 2. ACADEMIC DETAILS */}
-        <div className="space-y-4">
-          <h3 className="text-xs font-bold text-green-500 uppercase tracking-widest border-l-2 border-green-500 pl-3">2. Academic Details</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">College Name</label>
-              <input type="text" name="school_college_name" placeholder="Enter College" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Year of Study</label>
-              <input type="text" name="current_class_year" placeholder="Enter Year" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1 md:col-span-2">
-              <label className="text-xs font-medium text-slate-400 ml-1">College Address</label>
-              <input type="text" name="college_address" placeholder="Enter College Address" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-          </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Class/Year</label>
+          <input type="text" name="current_class_year" value={formData.current_class_year} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
         </div>
-
-        {/* 3. EXAMINATION & DISABILITY DETAILS */}
-        <div className="space-y-4">
-          <h3 className="text-xs font-bold text-green-500 uppercase tracking-widest border-l-2 border-green-500 pl-3">3. Exam & Disability Details</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Scriber Subject</label>
-              <input type="text" name="scriber_subject" placeholder="Enter Subject" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Place of Exam</label>
-              <input type="text" name="place_of_exam" placeholder="Enter Place" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Date of Exam</label>
-              <input type="date" name="date_of_exam" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none text-slate-300" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Cert No</label>
-              <input type="text" name="disability_cert_no" placeholder="Certificate No" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1 md:col-span-2">
-              <label className="text-xs font-medium text-slate-400 ml-1">Upload Certificate</label>
-              <label className="border-2 border-dashed border-slate-700 rounded-xl p-6 flex flex-col items-center justify-center hover:border-green-500/50 hover:bg-slate-900 transition-all cursor-pointer group">
-                <input type="file" name="disability_certificate" className="hidden" onChange={handleFileChange} />
-                <Upload className="w-8 h-8 text-slate-500 mb-2 group-hover:text-green-500 transition-colors" />
-                <p className="text-xs text-slate-500 group-hover:text-slate-300">
-                  {formData.disability_certificate ? `Selected: ${formData.disability_certificate.name}` : "Click to upload"}
-                </p>
-              </label>
-            </div>
-          </div>
+        <div className="md:col-span-2">
+          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">College Address</label>
+          <textarea name="college_address" rows="2" value={formData.college_address} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
         </div>
+      </div>
 
-        <button type="submit" disabled={loading} className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-3 disabled:opacity-50">
-          {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Submit Application'}
+      {/* 3. Exam & Disability Details */}
+      <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2 pt-2 mb-2">Exam & Disability</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Scriber Subject</label>
+          <input type="text" name="scriber_subject" value={formData.scriber_subject} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Place of Exam</label>
+          <input type="text" name="place_of_exam" value={formData.place_of_exam} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Date of Exam</label>
+          <input type="date" name="date_of_exam" value={formData.date_of_exam} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Disability Cert No</label>
+          <input type="text" name="disability_cert_no" value={formData.disability_cert_no} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
+        </div>
+        <div className="md:col-span-2">
+           <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Upload Certificate</label>
+           <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 flex flex-col items-center justify-center text-slate-400 hover:bg-slate-50 cursor-pointer relative">
+              <UploadCloud className="w-8 h-8 mb-2 text-amber-500" />
+              <span className="text-sm font-bold text-slate-600">
+                  {file ? file.name : (formData.disability_certificate_path ? "File Uploaded (Click to Change)" : "Click to Upload Certificate")}
+              </span>
+              <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={handleFileChange} />
+           </div>
+        </div>
+      </div>
+
+      <div className="flex justify-end gap-3 pt-4 border-t border-slate-100 mt-4">
+        <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-200 rounded-lg">Cancel</button>
+        <button type="submit" disabled={isSubmitting} className="px-6 py-2 text-sm font-bold text-white bg-amber-500 hover:bg-amber-600 rounded-lg shadow-md flex items-center gap-2">
+          {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+          {initialData ? 'Update Student' : 'Add Student'}
         </button>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 };
 
