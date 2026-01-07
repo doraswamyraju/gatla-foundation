@@ -6,6 +6,7 @@ const EducationScriberForm = ({ onClose }) => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
+  // EXACT MATCH with Database Columns
   const [formData, setFormData] = useState({
     full_name: '',
     father_name: '',
@@ -30,7 +31,15 @@ const EducationScriberForm = ({ onClose }) => {
       const data = new FormData();
       Object.keys(formData).forEach(key => data.append(key, formData[key]));
 
-      const apiUrl = 'http://localhost/gatla-foundation/api/submit_education_scriber.php';
+      // DYNAMIC URL FIX: Automatically switches between Localhost and Live
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const baseUrl = isLocal 
+        ? 'http://localhost/gatla-foundation/api' 
+        : 'https://gatlafoundation.org/api'; // Update if your live domain is different
+      const apiUrl = `${baseUrl}/submit_education_scriber.php`;
+
+      console.log("Submitting Scribe to:", apiUrl);
+
       const response = await fetch(apiUrl, { method: 'POST', body: data });
       const result = await response.json();
 
@@ -41,6 +50,7 @@ const EducationScriberForm = ({ onClose }) => {
         throw new Error(result.message || 'Submission failed');
       }
     } catch (err) {
+      console.error(err);
       setError(err.message || 'Failed to connect to server.');
     } finally {
       setLoading(false);
