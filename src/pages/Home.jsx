@@ -7,26 +7,27 @@ const ImageWheel = () => {
   const imageBasePath = process.env.PUBLIC_URL + "/assets/images/";
   
   const images = [
-    // UPDATED: Central logo size increased to w-40 h-40
+    // Central logo: kept at w-40 h-40
     { id: 1, src: imageBasePath + "1.png", size: "w-40 h-40", position: "center" }, 
-    // UPDATED: Spoke logo size increased to w-16 h-16
-    { id: 2, src: imageBasePath + "2.png", size: "w-16 h-16", angle: 0 },
-    { id: 3, src: imageBasePath + "3.png", size: "w-16 h-16", angle: 72 },
-    { id: 4, src: imageBasePath + "4.png", size: "w-16 h-16", angle: 144 },
-    { id: 5, src: imageBasePath + "5.png", size: "w-16 h-16", angle: 216 },
-    { id: 6, src: imageBasePath + "6.png", size: "w-16 h-16", angle: 288 },
+    // UPDATED: Spoke logo sizes increased from w-16 to w-24
+    { id: 2, src: imageBasePath + "2.png", size: "w-24 h-24", angle: 0 },
+    { id: 3, src: imageBasePath + "3.png", size: "w-24 h-24", angle: 72 },
+    { id: 4, src: imageBasePath + "4.png", size: "w-24 h-24", angle: 144 },
+    { id: 5, src: imageBasePath + "5.png", size: "w-24 h-24", angle: 216 },
+    { id: 6, src: imageBasePath + "6.png", size: "w-24 h-24", angle: 288 },
   ];
 
-  // UPDATED: Radius increased from 100 to 150 to accommodate larger spoke logos
-  const radius = 150; 
+  // UPDATED: Radius increased to 175 to accommodate larger spokes
+  const radius = 175; 
 
   return (
-    // UPDATED: Increased overall container size
-    <div className="relative w-80 h-80 flex items-center justify-center">
+    // UPDATED: Increased container size to fit new radius
+    <div className="relative w-[26rem] h-[26rem] flex items-center justify-center">
       {/* Central Logo (1.png) */}
       <div 
         className={`absolute ${images[0].size} border-2 border-amber-500 rounded-full flex items-center justify-center z-10 p-2 bg-[#0B1120] 
-                   shadow-2xl shadow-amber-500/50 hover:shadow-amber-500/80 transition-shadow duration-500`} // ADDED GLOW EFFECT
+                   shadow-2xl shadow-amber-500/50 
+                   hover:shadow-amber-500/80 hover:scale-105 transition-all duration-500 cursor-pointer`} // ADDED: Scale effect
       >
         <img src={images[0].src} alt="Gatla Foundation Logo" className="w-full h-full object-contain" />
       </div>
@@ -40,7 +41,9 @@ const ImageWheel = () => {
         return (
           <div
             key={img.id}
-            className={`absolute ${img.size} rounded-full border-2 border-slate-700 p-1 bg-[#050914] shadow-lg flex items-center justify-center transition-transform hover:scale-110`}
+            // UPDATED: Added hover:border-amber-500 and hover:shadow-amber-500/50
+            className={`absolute ${img.size} rounded-full border-2 border-slate-700 p-2 bg-[#050914] shadow-lg flex items-center justify-center 
+                       transition-all duration-300 hover:scale-110 hover:border-amber-500 hover:shadow-[0_0_15px_rgba(245,158,11,0.5)] cursor-pointer`}
             style={{ 
               transform: `translate(${x}px, ${y}px)`, 
             }}
@@ -81,7 +84,7 @@ const Hero = ({ onNavigate }) => (
         </div>
         
         {/* New Image Wheel Implementation */}
-        <div className="relative mt-8 md:mt-0 flex justify-center py-10">
+        <div className="relative mt-12 md:mt-0 flex justify-center py-10 md:py-20">
            <ImageWheel />
         </div>
       </div>

@@ -1,9 +1,7 @@
-// src/pages/Awards.jsx
 import React, { useEffect, useRef, useState } from 'react'; 
 import { Award, Trophy, Star, CheckCircle2, Medal, Globe, X } from 'lucide-react';
 
 // --- AWARDS DESCRIPTIONS DATA & FILE MAPPING ---
-// Note: This data structure is kept identical to your original
 const AWARD_DATA_MAP = [
     ["Honarary Doctorate of Social Works, Degree certificate received from Royal Academy Global Peace, American Higher Education Academy in 2019", ["1", "1a", "1b"]],
     ["National best social worker award received from the Aryavarth Express, National English Newspaper", ["2", "2a"]],
@@ -35,17 +33,16 @@ const AWARD_DATA_MAP = [
 const imageBasePath = process.env.PUBLIC_URL + "/assets/awards/";
 
 // Flat list of all images for the slider
+// UPDATED: Removed 'isVertical' logic. All images are treated equally now.
 const SLIDER_IMAGES = AWARD_DATA_MAP.flatMap(([description, fileIds]) => {
-    return fileIds.map((fileId, i) => ({
+    return fileIds.map((fileId) => ({
         id: fileId,
-        // CRITICAL FIX: Updated src to use the correct imageBasePath
         src: imageBasePath + `${fileId}.jpeg`, 
         description: description,
-        isVertical: (fileIds.length * i + parseInt(fileId)) % 5 === 0, 
     }));
 });
 
-// Mock data for the static achievement boxes (kept the same)
+// Mock data for the static achievement boxes
 const ACHIEVEMENTS = [
     {
         type: 'International',
@@ -89,19 +86,20 @@ const ImageModal = ({ isOpen, src, alt, description, onClose }) => {
             onClick={onClose} 
         >
             <div 
-                className="relative max-w-4xl max-h-[90vh] bg-[#050914] p-4 md:p-8 rounded-lg shadow-2xl"
+                className="relative max-w-5xl max-h-[95vh] bg-[#050914] p-2 md:p-6 rounded-lg shadow-2xl flex flex-col items-center justify-center"
                 onClick={(e) => e.stopPropagation()} 
             >
                 <button 
                     onClick={onClose} 
-                    className="absolute top-2 right-2 md:top-4 md:right-4 text-white bg-red-600 rounded-full p-2 hover:bg-red-700 transition"
+                    className="absolute top-2 right-2 md:top-4 md:right-4 text-white bg-red-600 rounded-full p-2 hover:bg-red-700 transition z-50"
                 >
                     <X className="w-6 h-6" />
                 </button>
+                {/* UPDATED: Modal image also uses object-contain to ensure full visibility */}
                 <img 
-                    src={src} // This path is now correct
+                    src={src} 
                     alt={alt} 
-                    className="w-full h-full max-h-[70vh] object-contain mx-auto rounded-md"
+                    className="w-full h-auto max-h-[75vh] object-contain mx-auto rounded-md bg-black/50"
                 />
                 <p className="text-sm md:text-base text-slate-300 mt-4 text-center max-w-3xl mx-auto">
                     {description}
@@ -174,7 +172,7 @@ const AwardsSlider = ({ openModal }) => {
         slider.addEventListener('scroll', handleScroll);
 
         const scrollInterval = setInterval(() => {
-            const itemWidth = 300; 
+            const itemWidth = 320; // Matches the width in styles below
             const gap = 24; 
             const scrollAmount = itemWidth + gap;
 
@@ -219,26 +217,25 @@ const AwardsSlider = ({ openModal }) => {
                                 onClick={() => openModal(photo)} 
                                 style={{ 
                                     scrollSnapAlign: 'center', 
-                                    width: '300px',
-                                    transform: isCentered ? 'scale(1.15) translateY(-10px) translateZ(0)' : 'scale(1)',
-                                    zIndex: isCentered ? 10 : 1, 
+                                    width: '320px', // Standard width for all items
+                                    transform: isCentered ? 'scale(1.1) z-10' : 'scale(1)',
+                                    opacity: isCentered ? 1 : 0.7, // Dim non-centered items slightly for focus
                                     margin: isCentered ? '0 10px' : '0 0', 
                                 }} 
                             >
-                                {/* Image Container */}
-                                <div className={`relative rounded-md overflow-hidden border border-slate-700 shadow-xl group transition-all duration-300 ${
-                                        photo.isVertical ? 'w-full h-64' : 'w-full h-48'
-                                    } hover:border-amber-500 mb-2`}>
+                                {/* Image Container - UPDATED: Fixed size and object-contain */}
+                                <div className={`relative rounded-lg overflow-hidden border border-slate-700 bg-[#0F172A] shadow-xl group transition-all duration-300 w-full h-80 hover:border-amber-500 mb-3`}>
                                     <img 
                                         src={photo.src} 
                                         alt={`Award ${photo.id}`} 
-                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                                        // CRITICAL FIX: object-contain ensures the WHOLE image is seen
+                                        className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105" 
                                     />
                                 </div>
                                 
                                 {/* Text Description BELOW THE IMAGE */}
-                                <p className={`text-center whitespace-normal text-sm font-semibold transition-colors duration-300 ${
-                                    isCentered ? 'text-amber-400' : 'text-slate-400'
+                                <p className={`text-center whitespace-normal text-xs md:text-sm font-semibold transition-colors duration-300 px-2 line-clamp-3 ${
+                                    isCentered ? 'text-amber-400' : 'text-slate-500'
                                 }`}>
                                     {photo.description}
                                 </p>
