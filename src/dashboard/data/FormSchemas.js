@@ -1,6 +1,17 @@
 // src/dashboard/data/FormSchemas.js
 
 export const FORM_SCHEMAS = {
+  // --- 1. DONATIONS SCHEMA (CRITICAL FIX) ---
+  'donations-list': [
+    { name: 'name', label: 'Donor Name', type: 'text' },
+    { name: 'amount', label: 'Amount (₹)', type: 'number' }, // Shows Amount
+    { name: 'payment_id', label: 'Payment Ref', type: 'text' },
+    { name: 'email', label: 'Email ID', type: 'email' },
+    { name: 'phone', label: 'Phone', type: 'tel' },
+    { name: 'pan_number', label: 'PAN', type: 'text' },
+    { name: 'donation_date', label: 'Date', type: 'date' },
+  ],
+  
   // --- 1. GENERAL FORMS (Navbar & Hero) ---
   'volunteer-form': [
     { name: 'fullName', label: 'Full Name', type: 'text', required: true },
