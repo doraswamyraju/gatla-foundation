@@ -13,7 +13,7 @@ import 'jspdf-autotable';
 import Sidebar from './components/Sidebar'; 
 import { FORM_SCHEMAS } from './data/FormSchemas';
 
-// --- IMPORT ADMIN FORMS ---
+// --- IMPORT ADMIN FORMS (CRITICAL FIX) ---
 import GeneralVolunteerForm from '../pages/forms/GeneralVolunteerForm';
 import EducationStudentForm from '../pages/forms/EducationStudentForm';
 import EducationScriberForm from '../pages/forms/EducationScriberForm';
@@ -80,7 +80,7 @@ const BlogManager = ({ posts, onSave, onDelete }) => {
   );
 };
 
-// --- 2. FORM MODAL (FIXED TO INCLUDE NEW FORMS) ---
+// --- 2. FIXED FORM MODAL (INLINE) ---
 const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, onGenericSave, isSaving }) => {
   const [formData, setFormData] = useState({});
   const [fileData, setFileData] = useState(null);
@@ -94,68 +94,108 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
 
   if (!isOpen) return null;
 
-  // 1. Volunteer
+  // --- A. GENERAL VOLUNTEER ---
   if (categoryId === 'volunteer-form') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
             <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {initialData ? 'Edit' : 'Add New'} Volunteer</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
-                <div className="overflow-y-auto"><GeneralVolunteerForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></div>
+                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0">
+                    <h3 className="font-bold flex items-center gap-2">
+                        {initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} 
+                        {initialData ? 'Edit' : 'Add New'} Volunteer
+                    </h3>
+                    <button onClick={onClose}><X className="w-5 h-5" /></button>
+                </div>
+                <div className="overflow-y-auto">
+                    <GeneralVolunteerForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} />
+                </div>
             </div>
         </div>
     );
   }
 
-  // 2. Edu Student
+  // --- B. EDUCATION STUDENT ---
   if (categoryId === 'education-student') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
             <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {initialData ? 'Edit' : 'Add New'} Student</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
-                <div className="overflow-y-auto"><EducationStudentForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></div>
+                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0">
+                    <h3 className="font-bold flex items-center gap-2">
+                        {initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} 
+                        {initialData ? 'Edit' : 'Add New'} Student
+                    </h3>
+                    <button onClick={onClose}><X className="w-5 h-5" /></button>
+                </div>
+                <div className="overflow-y-auto">
+                    <EducationStudentForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} />
+                </div>
             </div>
         </div>
     );
   }
 
-  // 3. Edu Scribe
+  // --- C. EDUCATION SCRIBER ---
   if (categoryId === 'education-scriber') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
             <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {initialData ? 'Edit' : 'Add New'} Scribe</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
-                <div className="overflow-y-auto"><EducationScriberForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></div>
+                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0">
+                    <h3 className="font-bold flex items-center gap-2">
+                        {initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} 
+                        {initialData ? 'Edit' : 'Add New'} Scribe
+                    </h3>
+                    <button onClick={onClose}><X className="w-5 h-5" /></button>
+                </div>
+                <div className="overflow-y-auto">
+                    <EducationScriberForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} />
+                </div>
             </div>
         </div>
     );
   }
 
-  // 4. Edu Volunteer (ADDED)
+  // --- D. EDUCATION VOLUNTEER (ADDED THIS) ---
   if (categoryId === 'education-volunteer') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
             <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {initialData ? 'Edit' : 'Add New'} Edu Volunteer</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
-                <div className="overflow-y-auto"><EducationVolunteerForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></div>
+                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0">
+                    <h3 className="font-bold flex items-center gap-2">
+                        {initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} 
+                        {initialData ? 'Edit' : 'Add New'} Edu Volunteer
+                    </h3>
+                    <button onClick={onClose}><X className="w-5 h-5" /></button>
+                </div>
+                <div className="overflow-y-auto">
+                    <EducationVolunteerForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} />
+                </div>
             </div>
         </div>
     );
   }
 
-  // 5. Edu Donor (ADDED)
+  // --- E. EDUCATION DONOR (ADDED THIS) ---
   if (categoryId === 'education-donor') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
             <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {initialData ? 'Edit' : 'Add New'} Edu Donor</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
-                <div className="overflow-y-auto"><EducationDonorForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></div>
+                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0">
+                    <h3 className="font-bold flex items-center gap-2">
+                        {initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} 
+                        {initialData ? 'Edit' : 'Add New'} Edu Donor
+                    </h3>
+                    <button onClick={onClose}><X className="w-5 h-5" /></button>
+                </div>
+                <div className="overflow-y-auto">
+                    <EducationDonorForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} />
+                </div>
             </div>
         </div>
     );
   }
 
-  // --- GENERIC FALLBACK ---
-  const schema = FORM_SCHEMAS[categoryId] || []; 
+  // --- F. GENERIC FALLBACK FORMS ---
+  const schema = FORM_SCHEMAS[categoryId] || FORM_SCHEMAS['volunteer-form']; 
   const title = categoryId.replace(/-/g, ' ').toUpperCase();
   const handleSubmit = (e) => { e.preventDefault(); onGenericSave(formData, fileData); };
   const getFieldKey = (field) => field.name || field.key;
@@ -163,7 +203,10 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
       <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-        <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {title}</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
+        <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0">
+          <h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {title}</h3>
+          <button onClick={onClose}><X className="w-5 h-5" /></button>
+        </div>
         <div className="p-6 overflow-y-auto">
           <form id="dynamic-form" onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {schema.map((field) => {
@@ -172,47 +215,99 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
                   <div key={fieldName} className={(field.type === 'textarea' || field.type === 'file') ? 'md:col-span-2' : ''}>
                     <label className="block text-xs font-bold text-slate-500 uppercase mb-1">{field.label}</label>
                     {field.type === 'textarea' ? (
-                      <textarea className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" rows="3" value={formData[fieldName] || ''} onChange={(e) => setFormData({...formData, [fieldName]: e.target.value})} />
+                      <textarea className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" rows="3"
+                        value={formData[fieldName] || ''} onChange={(e) => setFormData({...formData, [fieldName]: e.target.value})} />
                     ) : field.type === 'file' ? (
-                        <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 flex flex-col items-center justify-center relative"><UploadCloud className="w-8 h-8 mb-2 text-amber-500" /><span className="text-sm">{fileData ? fileData.name : "Upload File"}</span><input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => e.target.files[0] && setFileData(e.target.files[0])} /></div>
+                        <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 flex flex-col items-center justify-center relative">
+                            <UploadCloud className="w-8 h-8 mb-2 text-amber-500" />
+                            <span className="text-sm">{fileData ? fileData.name : "Upload File"}</span>
+                            <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => e.target.files[0] && setFileData(e.target.files[0])} />
+                        </div>
                     ) : (
-                      <input type={field.type} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" value={formData[fieldName] || ''} onChange={(e) => setFormData({...formData, [fieldName]: e.target.value})} />
+                      <input type={field.type} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none"
+                        value={formData[fieldName] || ''} onChange={(e) => setFormData({...formData, [fieldName]: e.target.value})} />
                     )}
                   </div>
                );
             })}
           </form>
         </div>
-        <div className="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3 shrink-0"><button type="submit" form="dynamic-form" disabled={isSaving} className="px-6 py-2 text-sm font-bold text-white bg-amber-500 hover:bg-amber-600 rounded-lg shadow-md flex items-center gap-2">{isSaving ? <Loader2 className="w-4 h-4 animate-spin"/> : <Save className="w-4 h-4" />} Save Record</button></div>
+        <div className="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3 shrink-0">
+          <button type="submit" form="dynamic-form" disabled={isSaving} className="px-6 py-2 text-sm font-bold text-white bg-amber-500 hover:bg-amber-600 rounded-lg shadow-md flex items-center gap-2">
+            {isSaving ? <Loader2 className="w-4 h-4 animate-spin"/> : <Save className="w-4 h-4" />} Save Record
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
-// --- 3. DATA TABLE (Fixed to show Files) ---
+// --- 3. DATA TABLE (Updated with EXPORT Logic) ---
 const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
   const schema = FORM_SCHEMAS[type] || FORM_SCHEMAS['volunteer-form'];
   const getFieldKey = (field) => field.name || field.key;
-  // Slice 0-5 columns
-  const displayHeaders = schema.slice(0, 6).map(f => ({ key: getFieldKey(f), label: f.label }));
+  const displayHeaders = schema.slice(0, 5).map(f => ({ key: getFieldKey(f), label: f.label }));
 
-  const handleExportExcel = () => { /* ... Keep existing ... */ };
-  const handleExportPDF = () => { /* ... Keep existing ... */ };
+  // --- EXPORT TO EXCEL ---
+  const handleExportExcel = () => {
+    if (!data || data.length === 0) return alert("No data to export");
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+    XLSX.writeFile(wb, `${type}_export_${new Date().toISOString().slice(0,10)}.xlsx`);
+  };
+
+  // --- EXPORT TO PDF ---
+  const handleExportPDF = () => {
+    if (!data || data.length === 0) return alert("No data to export");
+    const doc = new jsPDF();
+    const tableColumn = displayHeaders.map(col => col.label);
+    const tableRows = [];
+    data.forEach(item => {
+      const rowData = displayHeaders.map(col => item[col.key] || '');
+      tableRows.push(rowData);
+    });
+    doc.text(`${type.replace(/-/g, ' ').toUpperCase()} REPORT`, 14, 15);
+    doc.autoTable({ head: [tableColumn], body: tableRows, startY: 20 });
+    doc.save(`${type}_export_${new Date().toISOString().slice(0,10)}.pdf`);
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col h-full">
       <div className="p-6 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4">
-        <div><h2 className="text-lg font-bold text-slate-800 capitalize">{type.replace(/-/g, ' ')}</h2><p className="text-sm text-slate-500">{data.length} records found</p></div>
+        <div>
+          <h2 className="text-lg font-bold text-slate-800 capitalize">{type.replace(/-/g, ' ')}</h2>
+          <p className="text-sm text-slate-500">{data.length} records found</p>
+        </div>
+        
         <div className="flex gap-2">
-          {type !== 'donations-list' && (<button onClick={onAdd} className="flex items-center px-4 py-2 text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors"><Plus className="w-4 h-4 mr-2" /> Add New</button>)}
-          <button className="flex items-center px-3 py-2 text-xs font-bold text-green-700 bg-green-50 rounded border border-green-200"><FileSpreadsheet className="w-4 h-4 mr-1" /> Excel</button>
+          {type !== 'donations-list' && (
+            <button onClick={onAdd} className="flex items-center px-4 py-2 text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors">
+              <Plus className="w-4 h-4 mr-2" /> Add New
+            </button>
+          )}
+          <div className="h-8 w-px bg-slate-200 mx-2"></div>
+          
+          <button onClick={handleExportExcel} className="flex items-center px-3 py-2 text-xs font-bold text-green-700 bg-green-50 hover:bg-green-100 rounded border border-green-200">
+            <FileSpreadsheet className="w-4 h-4 mr-1" /> Excel
+          </button>
+          
+          <button onClick={handleExportPDF} className="flex items-center px-3 py-2 text-xs font-bold text-red-700 bg-red-50 hover:bg-red-100 rounded border border-red-200">
+            <FileIcon className="w-4 h-4 mr-1" /> PDF
+          </button>
         </div>
       </div>
 
       <div className="flex-grow overflow-auto">
         <table className="w-full text-left border-collapse">
           <thead className="sticky top-0 bg-slate-50 z-10 shadow-sm">
-            <tr>{displayHeaders.map((header) => (<th key={header.key} className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">{header.label}</th>))}<th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-right">Actions</th></tr>
+            <tr>
+              {displayHeaders.map((header) => (
+                <th key={header.key} className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">{header.label}</th>
+              ))}
+              <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-right">Status</th>
+              <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-right">Actions</th>
+            </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
             {data.length > 0 ? (
@@ -220,24 +315,33 @@ const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
                 <tr key={row.id} className="hover:bg-amber-50/50 transition-colors group">
                   {displayHeaders.map((header) => (
                     <td key={header.key} className="px-6 py-4 text-sm text-slate-700 whitespace-nowrap">
-                       {/* FILE DETECTION LOGIC */}
-                       {(header.key.includes('_path') || header.key === 'document') && row[header.key] ? (
+                       {(header.key.includes('path') || header.key === 'document') && row[header.key] ? 
                           <a href={`http://localhost/gatla-foundation/api/uploads/${row[header.key]}`} target="_blank" rel="noreferrer" className="text-blue-500 underline flex items-center gap-1">
                              <FileText className="w-3 h-3"/> View File
                           </a> 
-                       ) : row[header.key] || '---'}
+                          : row[header.key] || '---'}
                     </td>
                   ))}
                   <td className="px-6 py-4 text-right">
+                     <span className={`px-2 py-1 rounded-full text-xs font-bold ${
+                        row.status === 'Approved' || row.status === 'Active' || row.status === 'Success' ? 'bg-green-100 text-green-700' :
+                        row.status === 'Pending' ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-600'
+                      }`}>
+                        {row.status || 'Pending'}
+                      </span>
+                  </td>
+                  <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
-                      {type !== 'donations-list' && (<button onClick={() => onEdit(row)} className="p-1 text-slate-400 hover:text-amber-500"><Edit className="w-4 h-4" /></button>)}
-                      <button onClick={() => onDelete(row.id)} className="p-1 text-slate-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
+                      {type !== 'donations-list' && (
+                        <button onClick={() => onEdit(row)} className="p-1 text-slate-400 hover:text-amber-500" title="Edit"><Edit className="w-4 h-4" /></button>
+                      )}
+                      <button onClick={() => onDelete(row.id)} className="p-1 text-slate-400 hover:text-red-500" title="Delete"><Trash2 className="w-4 h-4" /></button>
                     </div>
                   </td>
                 </tr>
               ))
             ) : (
-              <tr><td colSpan={displayHeaders.length + 1} className="text-center py-12 text-slate-400">No records found.</td></tr>
+              <tr><td colSpan={displayHeaders.length + 2} className="text-center py-12 text-slate-400"><div className="flex flex-col items-center"><FileText className="w-12 h-12 text-slate-200 mb-2" /><p>No records found.</p></div></td></tr>
             )}
           </tbody>
         </table>
@@ -298,52 +402,38 @@ const DashboardApp = () => {
   const handleLogin = () => setIsAuthenticated(true);
   const handleLogout = () => { setIsAuthenticated(false); setActiveTab('dashboard'); };
 
-const fetchData = async () => {
+  const fetchData = async () => {
       try {
         if (activeTab === 'volunteer-form') {
-            // General Volunteers
             const res = await fetch(`${apiUrl}/get_general_volunteers.php`);
             const data = await res.json();
             setAppData(prev => ({ ...prev, 'volunteer-form': data }));
-
         } else if (activeTab === 'donations-list') {
-            // General Donations
             const res = await fetch(`${apiUrl}/get_donations.php`);
             const data = await res.json();
             setAppData(prev => ({ ...prev, 'donations-list': data }));
-
         } else if (activeTab === 'education-student') {
-            // Education Students
             const res = await fetch(`${apiUrl}/get_education_students.php`);
             const data = await res.json();
             setAppData(prev => ({ ...prev, 'education-student': data }));
-
         } else if (activeTab === 'education-scriber') {
-            // Education Scribes
             const res = await fetch(`${apiUrl}/get_education_scribers.php`);
             const data = await res.json();
             setAppData(prev => ({ ...prev, 'education-scriber': data }));
-
-        } else if (activeTab === 'education-volunteer') { 
-            // NEW: Education Volunteers
+        } else if (activeTab === 'education-volunteer') { // Fixed: Added logic
             const res = await fetch(`${apiUrl}/get_education_volunteers.php`);
             const data = await res.json();
             setAppData(prev => ({ ...prev, 'education-volunteer': data }));
-
-        } else if (activeTab === 'education-donor') { 
-            // NEW: Education Donors
+        } else if (activeTab === 'education-donor') { // Fixed: Added logic
             const res = await fetch(`${apiUrl}/get_education_donors.php`);
             const data = await res.json();
             setAppData(prev => ({ ...prev, 'education-donor': data }));
-
         } else {
-            // Dashboard Overview (Default)
             const res = await fetch(`${apiUrl}/get_dashboard_data.php`);
-            const text = await res.text(); 
             try {
-                const data = JSON.parse(text);
+                const data = await res.json();
                 if (data.status !== 'error') setAppData(data);
-            } catch (e) { console.error("JSON Error", text); }
+            } catch (e) { console.error("API Error: Response was not JSON"); }
         }
       } catch (err) { console.error("Fetch error:", err); }
   };
