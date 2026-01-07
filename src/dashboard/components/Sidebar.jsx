@@ -40,7 +40,7 @@ const SidebarGroup = ({ title, icon, id, forms, activeTab, setActiveTab, isOpen,
 };
 
 const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout }) => {
-  // CHANGED: All groups are now FALSE (closed) by default
+  // All groups are FALSE (closed) by default
   const [openGroups, setOpenGroups] = useState({
     general: false, 
     cricket: false, 
@@ -53,14 +53,78 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout 
 
   const toggleGroup = (group) => setOpenGroups(prev => ({ ...prev, [group]: !prev[group] }));
 
+  // UPDATED STRUCTURE: Preserved Finance/General, Reordered & Renamed Clubs
   const navStructure = [
-    { id: 'finance', title: 'Donations', icon: <DollarSign className="w-5 h-5 text-emerald-400" />, forms: [{ id: 'donations-list', label: 'All Donations' }] },
-    { id: 'general', title: 'General', icon: <Users className="w-5 h-5 text-slate-200" />, forms: [{ id: 'volunteer-form', label: 'Volunteer Applications' }] },
-    { id: 'cricket', title: 'Cricket Club', icon: <Trophy className="w-5 h-5 text-blue-400" />, forms: [{ id: 'cricket-club-member', label: 'Club Member Form' }, { id: 'cricket-player', label: 'Player Form' }, { id: 'cricket-umpire', label: 'Umpire Form' }] },
-    { id: 'education', title: 'Education Club', icon: <BookOpen className="w-5 h-5 text-green-400" />, forms: [{ id: 'education-student', label: 'Student Form' }, { id: 'education-scriber', label: 'Scriber Form' }] },
-    { id: 'music', title: 'Music Club', icon: <Music className="w-5 h-5 text-purple-400" />, forms: [{ id: 'music-member', label: 'Member Form' }, { id: 'music-singer', label: 'Singer Form' }, { id: 'music-judge', label: 'Judge Form' }] },
-    { id: 'business', title: 'Business Club', icon: <Briefcase className="w-5 h-5 text-red-400" />, forms: [{ id: 'business-member', label: 'Club Member Form' }, { id: 'business-entrepreneur', label: 'Entrepreneur Form' }] },
-    { id: 'awards', title: 'Awards', icon: <Award className="w-5 h-5 text-amber-400" />, forms: [{ id: 'awards-nomination', label: 'Nomination Form' }, { id: 'awards-sponsor', label: 'Sponsor Form' }] }
+    // 1. Admin / General Modules (Kept at top for standard access)
+    { 
+      id: 'finance', 
+      title: 'Donations', 
+      icon: <DollarSign className="w-5 h-5 text-emerald-400" />, 
+      forms: [{ id: 'donations-list', label: 'All Donations' }] 
+    },
+    { 
+      id: 'general', 
+      title: 'General', 
+      icon: <Users className="w-5 h-5 text-slate-200" />, 
+      forms: [{ id: 'volunteer-form', label: 'Volunteer Applications' }] 
+    },
+
+    // 2. Gatla Education Club
+    { 
+      id: 'education', 
+      title: 'Gatla Education Club', 
+      icon: <BookOpen className="w-5 h-5 text-green-400" />, 
+      forms: [
+        { id: 'education-student', label: 'Student Form' }, 
+        { id: 'education-scriber', label: 'Scriber Form' }
+      ] 
+    },
+
+    // 3. Gatla Cricket Club
+    { 
+      id: 'cricket', 
+      title: 'Gatla Cricket Club', 
+      icon: <Trophy className="w-5 h-5 text-blue-400" />, 
+      forms: [
+        { id: 'cricket-club-member', label: 'Club Member Form' }, 
+        { id: 'cricket-player', label: 'Player Form' }, 
+        { id: 'cricket-umpire', label: 'Umpire Form' }
+      ] 
+    },
+
+    // 4. Gatla Music Club
+    { 
+      id: 'music', 
+      title: 'Gatla Music Club', 
+      icon: <Music className="w-5 h-5 text-purple-400" />, 
+      forms: [
+        { id: 'music-member', label: 'Member Form' }, 
+        { id: 'music-singer', label: 'Singer Form' }, 
+        { id: 'music-judge', label: 'Judge Form' }
+      ] 
+    },
+
+    // 5. Gatla Business Club
+    { 
+      id: 'business', 
+      title: 'Gatla Business Club', 
+      icon: <Briefcase className="w-5 h-5 text-red-400" />, 
+      forms: [
+        { id: 'business-member', label: 'Club Member Form' }, 
+        { id: 'business-entrepreneur', label: 'Entrepreneur Form' }
+      ] 
+    },
+
+    // 6. Gatla Awards
+    { 
+      id: 'awards', 
+      title: 'Gatla Awards', 
+      icon: <Award className="w-5 h-5 text-amber-400" />, 
+      forms: [
+        { id: 'awards-nomination', label: 'Nomination Form' }, 
+        { id: 'awards-sponsor', label: 'Sponsor Form' }
+      ] 
+    }
   ];
 
   return (
