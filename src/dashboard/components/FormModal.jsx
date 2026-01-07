@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { X, Edit, Plus, Loader2, Save, UploadCloud } from 'lucide-react';
 
-// --- IMPORT SPECIFIC FORMS ---
-// Ensure paths are correct relative to components/FormModal.jsx
+// --- IMPORT YOUR SPECIFIC FORMS ---
 import GeneralVolunteerForm from '../../pages/forms/GeneralVolunteerForm';
 import EducationStudentForm from '../../pages/forms/EducationStudentForm';
-import EducationScriberForm from '../../pages/forms/EducationScriberForm'; // <--- The one we just made
+import EducationScriberForm from '../../pages/forms/EducationScriberForm'; // <--- Ensure this path is correct
 
 import { FORM_SCHEMAS } from '../data/FormSchemas';
 
@@ -20,9 +19,10 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
      } 
   }, [initialData, isOpen]);
 
+  // 1. First, check if modal should be visible
   if (!isOpen) return null;
 
-  // 1. VOLUNTEER
+  // 2. Then, check for SPECIFIC forms
   if (categoryId === 'volunteer-form') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
@@ -34,7 +34,6 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
     );
   }
 
-  // 2. EDUCATION STUDENT
   if (categoryId === 'education-student') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
@@ -46,7 +45,7 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
     );
   }
 
-  // 3. EDUCATION SCRIBE (This forces the correct form to load)
+  // --- FORCE CHECK FOR EDUCATION SCRIBE ---
   if (categoryId === 'education-scriber') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
@@ -58,7 +57,7 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
     );
   }
 
-  // --- GENERIC FALLBACK ---
+  // 3. Fallback to GENERIC form if no specific form is found
   const schema = FORM_SCHEMAS[categoryId] || []; 
   const title = categoryId.replace(/-/g, ' ').toUpperCase();
   const handleSubmit = (e) => { e.preventDefault(); onGenericSave(formData, fileData); };

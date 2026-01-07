@@ -28,8 +28,12 @@ const EducationScriberForm = ({ onClose, initialData, onSaveSuccess }) => {
     Object.keys(formData).forEach(key => payload.append(key, formData[key]));
 
     try {
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost/gatla-foundation/api';
-      const response = await fetch(`${apiUrl}/submit_education_scriber.php`, {
+      // FIX: Dynamic URL to avoid hardcoded localhost
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+      const baseUrl = isLocal ? 'http://localhost/gatla-foundation/api' : 'https://gatlafoundation.org/api'; 
+      const apiUrl = `${baseUrl}/submit_education_scriber.php`;
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         body: payload
       });

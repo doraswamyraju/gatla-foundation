@@ -56,14 +56,17 @@ export const FORM_SCHEMAS = {
     { name: 'disability_certificate_path', label: 'Certificate', type: 'file' },
     { name: 'status', label: 'Status', type: 'text' }
   ],
+  
 'education-scriber': [
     { name: 'full_name', label: 'Scribe Name', type: 'text' },
+    { name: 'father_name', label: 'Father Name', type: 'text' },
     { name: 'phone_no', label: 'Mobile No', type: 'tel' },
     { name: 'qualification', label: 'Qualification', type: 'text' },
+    { name: 'occupation', label: 'Occupation', type: 'text' },
     { name: 'subjects_of_interest', label: 'Subjects', type: 'text' },
     { name: 'present_location', label: 'Location', type: 'text' },
     { name: 'status', label: 'Status', type: 'text' }
-],
+  ],
 
   // --- 4. MUSIC CLUB ---
   'music-singer': [

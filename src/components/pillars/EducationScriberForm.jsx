@@ -6,7 +6,6 @@ const EducationScriberForm = ({ onClose }) => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
-  // EXACT MATCH with Database Columns
   const [formData, setFormData] = useState({
     full_name: '',
     father_name: '',
@@ -31,14 +30,10 @@ const EducationScriberForm = ({ onClose }) => {
       const data = new FormData();
       Object.keys(formData).forEach(key => data.append(key, formData[key]));
 
-      // Dynamic URL: Works on Localhost & Live
+      // Dynamic URL Fix
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      const baseUrl = isLocal 
-        ? 'http://localhost/gatla-foundation/api' 
-        : 'https://gatlafoundation.org/api'; 
+      const baseUrl = isLocal ? 'http://localhost/gatla-foundation/api' : 'https://gatlafoundation.org/api'; 
       const apiUrl = `${baseUrl}/submit_education_scriber.php`;
-
-      console.log("Submitting Scribe to:", apiUrl);
 
       const response = await fetch(apiUrl, { method: 'POST', body: data });
       const result = await response.json();
@@ -50,7 +45,6 @@ const EducationScriberForm = ({ onClose }) => {
         throw new Error(result.message || 'Submission failed');
       }
     } catch (err) {
-      console.error(err);
       setError(err.message || 'Failed to connect to server.');
     } finally {
       setLoading(false);
@@ -64,7 +58,7 @@ const EducationScriberForm = ({ onClose }) => {
           <CheckCircle2 className="w-10 h-10 text-green-500" />
         </div>
         <h3 className="text-2xl font-bold mb-2">Registration Successful!</h3>
-        <p className="text-slate-400">Thank you for volunteering as a scribe. We will contact you soon.</p>
+        <p className="text-slate-400">Thank you for volunteering as a scribe.</p>
         <button onClick={onClose} className="mt-6 px-6 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm transition-colors">Close Form</button>
       </div>
     );
@@ -85,7 +79,7 @@ const EducationScriberForm = ({ onClose }) => {
           </div>
         )}
 
-        {/* 1. PERSONAL INFO */}
+        {/* 1. PERSONAL INFO - DARK MODE STYLING APPLIED */}
         <div className="space-y-4">
           <h3 className="text-xs font-bold text-green-500 uppercase tracking-widest border-l-2 border-green-500 pl-3">1. Personal Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
