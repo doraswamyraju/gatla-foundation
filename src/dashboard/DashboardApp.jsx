@@ -389,11 +389,11 @@ const DashboardApp = () => {
   const [appData, setAppData] = useState({});
   const [isSaving, setIsSaving] = useState(false);
 
-  // --- DYNAMIC API URL FIX ---
+  // --- DYNAMIC API URL ---
   const getApiUrl = () => {
     const hostname = window.location.hostname;
     if (hostname === 'localhost' || hostname === '127.0.0.1') return 'http://localhost/gatla-foundation/api';
-    return 'https://gatlafoundation.org/api'; // Live API URL
+    return 'https://gatlafoundation.org/api'; 
   };
   const apiUrl = getApiUrl();
 
@@ -402,6 +402,7 @@ const DashboardApp = () => {
   const handleLogin = () => setIsAuthenticated(true);
   const handleLogout = () => { setIsAuthenticated(false); setActiveTab('dashboard'); };
 
+  // --- FETCH DATA FUNCTION ---
   const fetchData = async () => {
       try {
         if (activeTab === 'volunteer-form') {
@@ -420,11 +421,11 @@ const DashboardApp = () => {
             const res = await fetch(`${apiUrl}/get_education_scribers.php`);
             const data = await res.json();
             setAppData(prev => ({ ...prev, 'education-scriber': data }));
-        } else if (activeTab === 'education-volunteer') { // Fixed: Added logic
+        } else if (activeTab === 'education-volunteer') { 
             const res = await fetch(`${apiUrl}/get_education_volunteers.php`);
             const data = await res.json();
             setAppData(prev => ({ ...prev, 'education-volunteer': data }));
-        } else if (activeTab === 'education-donor') { // Fixed: Added logic
+        } else if (activeTab === 'education-donor') { 
             const res = await fetch(`${apiUrl}/get_education_donors.php`);
             const data = await res.json();
             setAppData(prev => ({ ...prev, 'education-donor': data }));
@@ -440,6 +441,7 @@ const DashboardApp = () => {
 
   useEffect(() => { if (isAuthenticated) fetchData(); }, [isAuthenticated, activeTab]);
 
+  // --- SAVE FUNCTION ---
   const handleGenericSave = async (data, fileData) => {
     setIsSaving(true);
     const payload = new FormData();
@@ -457,6 +459,36 @@ const DashboardApp = () => {
         } else { alert("Error: " + result.message); }
     } catch (error) { alert("Network Error"); } 
     finally { setIsSaving(false); }
+  };
+
+  // --- NEW: DELETE FUNCTION (This makes the delete button work) ---
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this record? This cannot be undone.")) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${apiUrl}/delete_common.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                id: id, 
+                type: activeTab // Sends 'volunteer-form', 'donations-list', etc.
+            }) 
+        });
+        
+        const result = await response.json();
+        
+        if (result.status === 'success') {
+            alert("Record deleted successfully.");
+            fetchData(); // Refresh the table immediately
+        } else {
+            alert("Error: " + result.message);
+        }
+    } catch (error) {
+        console.error("Delete error:", error);
+        alert("Network error while deleting.");
+    }
   };
 
   if (!isAuthenticated) return <LoginPage onLogin={handleLogin} />;
@@ -485,7 +517,13 @@ const DashboardApp = () => {
                 onDelete={() => {}} 
              />
           ) : (
-             <DataTable type={activeTab} data={currentData} onAdd={() => { setCurrentEditItem(null); setModalOpen(true); }} onEdit={(item) => { setCurrentEditItem(item); setModalOpen(true); }} onDelete={() => {}} />
+             <DataTable 
+                type={activeTab} 
+                data={currentData} 
+                onAdd={() => { setCurrentEditItem(null); setModalOpen(true); }} 
+                onEdit={(item) => { setCurrentEditItem(item); setModalOpen(true); }} 
+                onDelete={handleDelete} // CONNECTED THE DELETE FUNCTION HERE
+             />
           )}
         </main>
       </div>
