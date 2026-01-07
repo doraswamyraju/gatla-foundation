@@ -1,6 +1,6 @@
 <?php
 // api/process_donation.php
-// FINAL VERSION: Database + PDF Receipt + Email (Cleaned)
+// UPDATED: Handles PAN Number + Email Receipt
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
@@ -48,20 +48,21 @@ if (!$conn) {
     exit;
 }
 
-// Insert into Database
+// Insert with PAN
+// sssssds = 5 strings (name, email, phone, pan, payment_id) + 1 double (amount) ?? No order matters:
+// SQL: name, email, phone, pan_number, amount, payment_id
 $stmt = $conn->prepare("INSERT INTO donations (donor_name, email, phone, pan_number, amount, payment_id) VALUES (?, ?, ?, ?, ?, ?)");
 $stmt->bind_param("ssssds", $name, $email, $phone, $pan, $amount, $payment_id);
 
 if ($stmt->execute()) {
     $receiptNo = $stmt->insert_id;
     
-    // If libraries are missing, exit early
     if ($libs_missing) {
         echo json_encode(["status" => "success", "message" => "Donation saved (Email skipped: Libs missing)"]);
         exit;
     }
 
-    // --- 3. GENERATE PDF RECEIPT ---
+    // --- 3. GENERATE PDF ---
     $pdf = new FPDF();
     $pdf->AddPage();
     
@@ -83,11 +84,11 @@ if ($stmt->execute()) {
     
     $receiptString = 'GF-' . date('Y') . '-' . str_pad($receiptNo, 4, '0', STR_PAD_LEFT);
     
-    // Receipt Data Rows
+    // Receipt Data
     $pdf->Cell(50, 10, 'Receipt No:', 0, 0); $pdf->Cell(0, 10, $receiptString, 0, 1);
     $pdf->Cell(50, 10, 'Date:', 0, 0); $pdf->Cell(0, 10, date('d-m-Y'), 0, 1);
     $pdf->Cell(50, 10, 'Donor Name:', 0, 0); $pdf->Cell(0, 10, $name, 0, 1);
-    $pdf->Cell(50, 10, 'PAN Number:', 0, 0); $pdf->Cell(0, 10, $pan, 0, 1); 
+    $pdf->Cell(50, 10, 'PAN Number:', 0, 0); $pdf->Cell(0, 10, $pan, 0, 1); // Added PAN
     $pdf->Cell(50, 10, 'Amount:', 0, 0); 
     $pdf->SetFont('Arial', 'B', 12); $pdf->Cell(0, 10, 'Rs. ' . number_format($amount, 2) . '/-', 0, 1);
     $pdf->SetFont('Arial', '', 12);
@@ -109,24 +110,16 @@ if ($stmt->execute()) {
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com'; 
         $mail->SMTPAuth   = true;
-        
-        // --- CREDENTIALS (UPDATED) ---
-        $mail->Username   = 'rajugariventures@gmail.com';  
-        $mail->Password   = 'hkqvcycnylgqhzim'; // Your App Password
-        
+        $mail->Username   = 'drgatlasrinivasareddy@gmail.com'; 
+        $mail->Password   = 'YOUR_GMAIL_APP_PASSWORD'; // <--- REPLACE THIS
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
     
-        // Sender MUST match the Username
-        $mail->setFrom('rajugariventures@gmail.com', 'Gatla Foundation');
-        
-        // Send to Donor
+        $mail->setFrom('drgatlasrinivasareddy@gmail.com', 'Gatla Foundation');
         $mail->addAddress($email, $name);
     
-        // Attach PDF
         $mail->addStringAttachment($pdfContent, "Receipt_$receiptString.pdf");
     
-        // Email Body
         $mail->isHTML(true);
         $mail->Subject = 'Donation Receipt - Gatla Foundation';
         $mail->Body    = "Dear $name,<br><br>Thank you for your generous donation of <b>Rs. $amount</b>.<br>Your PAN ($pan) has been recorded.<br>Please find your official receipt attached.<br><br>Regards,<br>Gatla Foundation";
@@ -136,7 +129,6 @@ if ($stmt->execute()) {
         echo json_encode(["status" => "success", "message" => "Donation saved and Receipt sent!"]);
         
     } catch (Exception $e) {
-        // If email fails, database is still safe
         echo json_encode(["status" => "success", "message" => "Saved, but Email Error: " . $mail->ErrorInfo]);
     }
 
