@@ -28,7 +28,6 @@ const EducationScriberForm = ({ onClose, initialData, onSaveSuccess }) => {
     Object.keys(formData).forEach(key => payload.append(key, formData[key]));
 
     try {
-      // DYNAMIC URL FIX for Dashboard as well
       const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost/gatla-foundation/api';
       const response = await fetch(`${apiUrl}/submit_education_scriber.php`, {
         method: 'POST',

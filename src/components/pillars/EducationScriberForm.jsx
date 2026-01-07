@@ -31,11 +31,11 @@ const EducationScriberForm = ({ onClose }) => {
       const data = new FormData();
       Object.keys(formData).forEach(key => data.append(key, formData[key]));
 
-      // DYNAMIC URL FIX: Automatically switches between Localhost and Live
+      // Dynamic URL: Works on Localhost & Live
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       const baseUrl = isLocal 
         ? 'http://localhost/gatla-foundation/api' 
-        : 'https://gatlafoundation.org/api'; // Update if your live domain is different
+        : 'https://gatlafoundation.org/api'; 
       const apiUrl = `${baseUrl}/submit_education_scriber.php`;
 
       console.log("Submitting Scribe to:", apiUrl);

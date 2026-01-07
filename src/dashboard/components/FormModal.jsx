@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { X, Edit, Plus, Loader2, Save, UploadCloud } from 'lucide-react';
 
-// --- IMPORT YOUR SPECIFIC FORMS ---
+// --- IMPORT SPECIFIC FORMS ---
+// Ensure paths are correct relative to components/FormModal.jsx
 import GeneralVolunteerForm from '../../pages/forms/GeneralVolunteerForm';
 import EducationStudentForm from '../../pages/forms/EducationStudentForm';
-import EducationScriberForm from '../../pages/forms/EducationScriberForm';
+import EducationScriberForm from '../../pages/forms/EducationScriberForm'; // <--- The one we just made
 
-// --- IMPORT GENERIC FORM SCHEMAS (Fallback) ---
 import { FORM_SCHEMAS } from '../data/FormSchemas';
 
 const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, onGenericSave, isSaving }) => {
@@ -34,7 +34,7 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
     );
   }
 
-  // 2. EDUCATION STUDENT (Target Form)
+  // 2. EDUCATION STUDENT
   if (categoryId === 'education-student') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
@@ -46,7 +46,7 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
     );
   }
 
-  // 3. EDUCATION SCRIBE
+  // 3. EDUCATION SCRIBE (This forces the correct form to load)
   if (categoryId === 'education-scriber') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
