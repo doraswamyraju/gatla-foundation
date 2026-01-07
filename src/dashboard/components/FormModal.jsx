@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { X, Edit, Plus, Loader2, Save, UploadCloud } from 'lucide-react';
 
-// --- IMPORT YOUR SPECIFIC FORMS ---
+// --- IMPORT YOUR SPECIFIC ADMIN FORMS ---
+// Ensure these paths point to 'src/pages/forms/'
 import GeneralVolunteerForm from '../../pages/forms/GeneralVolunteerForm';
 import EducationStudentForm from '../../pages/forms/EducationStudentForm';
-import EducationScriberForm from '../../pages/forms/EducationScriberForm'; // <--- Ensure this path is correct
-import EducationVolunteerForm from '../../pages/forms/EducationVolunteerForm';
-import EducationDonorForm from '../../pages/forms/EducationDonorForm';
+import EducationScriberForm from '../../pages/forms/EducationScriberForm';
+import EducationVolunteerForm from '../../pages/forms/EducationVolunteerForm'; // New Import
+import EducationDonorForm from '../../pages/forms/EducationDonorForm';         // New Import
 
 import { FORM_SCHEMAS } from '../data/FormSchemas';
 
@@ -21,10 +22,9 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
      } 
   }, [initialData, isOpen]);
 
-  // 1. First, check if modal should be visible
   if (!isOpen) return null;
 
-  // 2. Then, check for SPECIFIC forms
+  // --- 1. GENERAL VOLUNTEER ---
   if (categoryId === 'volunteer-form') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
@@ -36,6 +36,7 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
     );
   }
 
+  // --- 2. EDUCATION STUDENT ---
   if (categoryId === 'education-student') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
@@ -47,7 +48,7 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
     );
   }
 
-  // --- FORCE CHECK FOR EDUCATION SCRIBE ---
+  // --- 3. EDUCATION SCRIBE ---
   if (categoryId === 'education-scriber') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
@@ -59,29 +60,31 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
     );
   }
 
+  // --- 4. EDUCATION VOLUNTEER (NEW) ---
   if (categoryId === 'education-volunteer') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
             <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} Volunteer</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
+                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {initialData ? 'Edit' : 'Add New'} Edu Volunteer</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
                 <div className="overflow-y-auto"><EducationVolunteerForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></div>
             </div>
         </div>
     );
   }
 
+  // --- 5. EDUCATION DONOR (NEW) ---
   if (categoryId === 'education-donor') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
             <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} Donor</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
+                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {initialData ? 'Edit' : 'Add New'} Edu Donor</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
                 <div className="overflow-y-auto"><EducationDonorForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></div>
             </div>
         </div>
     );
   }
 
-  // 3. Fallback to GENERIC form if no specific form is found
+  // --- GENERIC FALLBACK ---
   const schema = FORM_SCHEMAS[categoryId] || []; 
   const title = categoryId.replace(/-/g, ' ').toUpperCase();
   const handleSubmit = (e) => { e.preventDefault(); onGenericSave(formData, fileData); };
@@ -92,6 +95,7 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
       <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
         <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {title}</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
         
+        {/* If schema is empty, show "Coming Soon" */}
         {schema.length === 0 ? (
             <div className="p-10 text-center text-slate-400"><p>This form is under development.</p></div>
         ) : (

@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import { BookOpen, PenTool, CheckCircle2, X, ArrowRight } from 'lucide-react';
+import { BookOpen, PenTool, CheckCircle2, X, ArrowRight, Heart, Users } from 'lucide-react'; 
 
 // --- IMPORT THE CORRECT PUBLIC (DARK MODE) FORMS ---
-// Ensure these point to 'components/pillars'
 import EducationStudentForm from '../components/pillars/EducationStudentForm';
 import EducationScriberForm from '../components/pillars/EducationScriberForm'; 
-import EducationVolunteerForm from '../components/pillars/EducationVolunteerForm';
-import EducationDonorForm from '../components/pillars/EducationDonorForm';
+import EducationVolunteerForm from '../components/pillars/EducationVolunteerForm'; // Ensure this exists
+import EducationDonorForm from '../components/pillars/EducationDonorForm'; // Ensure this exists
 
 const EducationClub = () => {
-  const [activeForm, setActiveForm] = useState(null); // 'student' or 'scribe'
+  const [activeForm, setActiveForm] = useState(null); 
 
-  // Content specific to Education Club
   const activities = [
     { title: "Scribes for Exams", desc: "Providing volunteers to write exams for visually impaired students." },
     { title: "Digital Literacy", desc: "Training students in using screen readers and assistive technology." },
@@ -29,7 +27,7 @@ const EducationClub = () => {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-bold uppercase tracking-wider mb-6">
             <BookOpen className="w-3 h-3" /> Gatla Foundation Education
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 tracking-tight">Gatla Education Club</h1>
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 tracking-tight">Education Club</h1>
           <p className="text-xl text-green-500 font-medium uppercase tracking-widest mb-8">Empowering Knowledge</p>
         </div>
       </div>
@@ -40,8 +38,6 @@ const EducationClub = () => {
           
           {/* LEFT COLUMN: About & Activities */}
           <div className="lg:col-span-2 space-y-12">
-            
-            {/* About Section */}
             <div className="bg-[#111827] border border-slate-800 rounded-2xl p-8 shadow-xl">
               <div className="flex items-center gap-3 mb-6">
                 <BookOpen className="w-6 h-6 text-green-500" />
@@ -53,7 +49,6 @@ const EducationClub = () => {
               </p>
             </div>
 
-            {/* Activities Grid */}
             <div>
               <h3 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6">Key Activities</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -99,7 +94,7 @@ const EducationClub = () => {
                 {/* Scribe Form Button */}
                 <button 
                   onClick={() => setActiveForm('scribe')}
-                  className="w-full group flex items-center justify-between p-4 bg-[#0B1120] border border-slate-800 hover:border-green-500/50 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-green-900/10"
+                  className="w-full group flex items-center justify-between p-4 bg-[#0B1120] border border-slate-800 hover:border-blue-500/50 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-blue-900/10"
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors">
@@ -112,9 +107,41 @@ const EducationClub = () => {
                   </div>
                   <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
                 </button>
+
+                {/* Volunteer Form Button (NEW) */}
+                <button 
+                  onClick={() => setActiveForm('volunteer')}
+                  className="w-full group flex items-center justify-between p-4 bg-[#0B1120] border border-slate-800 hover:border-purple-500/50 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-purple-900/10"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-500 group-hover:bg-purple-500 group-hover:text-white transition-colors">
+                      <Users className="w-5 h-5" />
+                    </div>
+                    <div className="text-left">
+                      <span className="block text-white font-bold group-hover:text-purple-400 transition-colors">Volunteer Form</span>
+                      <span className="text-xs text-slate-500">Join the Cause</span>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-purple-500 group-hover:translate-x-1 transition-all" />
+                </button>
+
+                {/* Donor Form Button (NEW) */}
+                <button 
+                  onClick={() => setActiveForm('donor')}
+                  className="w-full group flex items-center justify-between p-4 bg-[#0B1120] border border-slate-800 hover:border-amber-500/50 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-amber-900/10"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                      <Heart className="w-5 h-5" />
+                    </div>
+                    <div className="text-left">
+                      <span className="block text-white font-bold group-hover:text-amber-400 transition-colors">Donor Form</span>
+                      <span className="text-xs text-slate-500">Support Financially</span>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-amber-500 group-hover:translate-x-1 transition-all" />
+                </button>
               </div>
-              <button onClick={() => setActiveForm('volunteer')} className="...">Volunteer Form</button>
-              <button onClick={() => setActiveForm('donor')} className="...">Donor Form</button>
 
               {/* Contact Info */}
               <div className="mt-8 pt-8 border-t border-slate-800 text-center">
@@ -127,7 +154,7 @@ const EducationClub = () => {
         </div>
       </div>
 
-      {/* 3. MODAL FORMS (The Logic Layer) */}
+      {/* 3. MODAL FORMS (Logic Layer) */}
       {activeForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
           <div className="relative w-full max-w-4xl bg-[#0B1120] border border-slate-800 rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
@@ -142,14 +169,10 @@ const EducationClub = () => {
 
             {/* Render the Correct Form based on State */}
             <div className="flex-1 overflow-y-auto custom-scrollbar">
-              {activeForm === 'student' && (
-                <EducationStudentForm onClose={() => setActiveForm(null)} />
-              )}
-              {activeForm === 'scribe' && (
-                <EducationScriberForm onClose={() => setActiveForm(null)} />
-              )}
+              {activeForm === 'student' && <EducationStudentForm onClose={() => setActiveForm(null)} />}
+              {activeForm === 'scribe' && <EducationScriberForm onClose={() => setActiveForm(null)} />}
               {activeForm === 'volunteer' && <EducationVolunteerForm onClose={() => setActiveForm(null)} />}
-{activeForm === 'donor' && <EducationDonorForm onClose={() => setActiveForm(null)} />}
+              {activeForm === 'donor' && <EducationDonorForm onClose={() => setActiveForm(null)} />}
             </div>
 
           </div>
