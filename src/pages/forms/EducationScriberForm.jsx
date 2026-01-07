@@ -28,15 +28,11 @@ const EducationScriberForm = ({ onClose, initialData, onSaveSuccess }) => {
     Object.keys(formData).forEach(key => payload.append(key, formData[key]));
 
     try {
-      // FIX: Dynamic URL to avoid hardcoded localhost
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      const baseUrl = isLocal ? 'http://localhost/gatla-foundation/api' : 'https://gatlafoundation.org/api'; 
+      const baseUrl = isLocal ? 'http://localhost/gatla-foundation/api' : 'https://gatlafoundation.org/api';
       const apiUrl = `${baseUrl}/submit_education_scriber.php`;
 
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        body: payload
-      });
+      const response = await fetch(apiUrl, { method: 'POST', body: payload });
       const result = await response.json();
       if (result.status === 'success') {
         alert(initialData ? 'Updated Successfully!' : 'Added Successfully!');

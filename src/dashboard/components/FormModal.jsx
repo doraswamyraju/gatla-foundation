@@ -4,7 +4,7 @@ import { X, Edit, Plus, Loader2, Save, UploadCloud } from 'lucide-react';
 // --- IMPORT YOUR SPECIFIC FORMS ---
 import GeneralVolunteerForm from '../../pages/forms/GeneralVolunteerForm';
 import EducationStudentForm from '../../pages/forms/EducationStudentForm';
-import EducationScriberForm from '../../pages/forms/EducationScriberForm'; // <--- Ensure this path is correct
+import EducationScriberForm from '../../pages/forms/EducationScriberForm'; // Ensure this matches file location
 
 import { FORM_SCHEMAS } from '../data/FormSchemas';
 
@@ -19,10 +19,10 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
      } 
   }, [initialData, isOpen]);
 
-  // 1. First, check if modal should be visible
+  // 1. MUST BE FIRST: Check if modal is open
   if (!isOpen) return null;
 
-  // 2. Then, check for SPECIFIC forms
+  // 2. CHECK SPECIFIC FORMS
   if (categoryId === 'volunteer-form') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
@@ -57,7 +57,7 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
     );
   }
 
-  // 3. Fallback to GENERIC form if no specific form is found
+  // 3. GENERIC FALLBACK
   const schema = FORM_SCHEMAS[categoryId] || []; 
   const title = categoryId.replace(/-/g, ' ').toUpperCase();
   const handleSubmit = (e) => { e.preventDefault(); onGenericSave(formData, fileData); };

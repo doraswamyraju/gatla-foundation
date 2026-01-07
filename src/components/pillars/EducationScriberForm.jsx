@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, Phone, Mail, MapPin, BookOpen, Briefcase, Award, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { User, Phone, Mail, MapPin, BookOpen, Briefcase, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
 const EducationScriberForm = ({ onClose }) => {
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,6 @@ const EducationScriberForm = ({ onClose }) => {
       const data = new FormData();
       Object.keys(formData).forEach(key => data.append(key, formData[key]));
 
-      // Dynamic URL Fix
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       const baseUrl = isLocal ? 'http://localhost/gatla-foundation/api' : 'https://gatlafoundation.org/api'; 
       const apiUrl = `${baseUrl}/submit_education_scriber.php`;
@@ -66,6 +65,7 @@ const EducationScriberForm = ({ onClose }) => {
 
   return (
     <div className="flex flex-col bg-[#0B1120] text-white w-full h-full max-h-full overflow-hidden">
+      {/* Header - EXACTLY MATCHING STUDENT FORM */}
       <div className="px-8 py-6 border-b border-slate-800 bg-[#0B1120] shrink-0 z-10">
         <h2 className="text-2xl font-bold text-green-500 tracking-tight">Scribe Registration</h2>
         <p className="text-slate-500 text-sm mt-1">Volunteer to write exams for visually impaired students</p>
@@ -79,7 +79,7 @@ const EducationScriberForm = ({ onClose }) => {
           </div>
         )}
 
-        {/* 1. PERSONAL INFO - DARK MODE STYLING APPLIED */}
+        {/* 1. PERSONAL INFO */}
         <div className="space-y-4">
           <h3 className="text-xs font-bold text-green-500 uppercase tracking-widest border-l-2 border-green-500 pl-3">1. Personal Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
