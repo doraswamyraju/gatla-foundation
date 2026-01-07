@@ -30,8 +30,9 @@ const EducationScriberForm = ({ onClose }) => {
       const data = new FormData();
       Object.keys(formData).forEach(key => data.append(key, formData[key]));
 
+      // Dynamic URL logic
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      const baseUrl = isLocal ? 'http://localhost/gatla-foundation/api' : 'https://gatlafoundation.org/api'; 
+      const baseUrl = isLocal ? 'http://localhost/gatla-foundation/api' : 'https://gatlafoundation.org/api';
       const apiUrl = `${baseUrl}/submit_education_scriber.php`;
 
       const response = await fetch(apiUrl, { method: 'POST', body: data });
@@ -65,7 +66,6 @@ const EducationScriberForm = ({ onClose }) => {
 
   return (
     <div className="flex flex-col bg-[#0B1120] text-white w-full h-full max-h-full overflow-hidden">
-      {/* Header - EXACTLY MATCHING STUDENT FORM */}
       <div className="px-8 py-6 border-b border-slate-800 bg-[#0B1120] shrink-0 z-10">
         <h2 className="text-2xl font-bold text-green-500 tracking-tight">Scribe Registration</h2>
         <p className="text-slate-500 text-sm mt-1">Volunteer to write exams for visually impaired students</p>
@@ -83,13 +83,13 @@ const EducationScriberForm = ({ onClose }) => {
         <div className="space-y-4">
           <h3 className="text-xs font-bold text-green-500 uppercase tracking-widest border-l-2 border-green-500 pl-3">1. Personal Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Full Name *</label><input type="text" name="full_name" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
-            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Father Name *</label><input type="text" name="father_name" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
-            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Mobile No *</label><input type="tel" name="phone_no" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
-            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Email ID</label><input type="email" name="email_id" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
-            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Aadhaar No</label><input type="text" name="aadhaar_no" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
-            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Present Location</label><input type="text" name="present_location" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
-            <div className="md:col-span-2 space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Full Address *</label><textarea name="address" rows="2" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Full Name *</label><input type="text" name="full_name" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none text-white" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Father Name *</label><input type="text" name="father_name" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none text-white" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Mobile No *</label><input type="tel" name="phone_no" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none text-white" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Email ID</label><input type="email" name="email_id" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none text-white" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Aadhaar No</label><input type="text" name="aadhaar_no" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none text-white" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Present Location</label><input type="text" name="present_location" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none text-white" /></div>
+            <div className="md:col-span-2 space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Full Address *</label><textarea name="address" rows="2" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none text-white" /></div>
           </div>
         </div>
 
@@ -97,9 +97,9 @@ const EducationScriberForm = ({ onClose }) => {
         <div className="space-y-4">
           <h3 className="text-xs font-bold text-green-500 uppercase tracking-widest border-l-2 border-green-500 pl-3">2. Qualification & Interest</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Qualification</label><input type="text" name="qualification" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
-            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Occupation</label><input type="text" name="occupation" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
-            <div className="md:col-span-2 space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Subjects Interested to Scribe</label><textarea name="subjects_of_interest" rows="2" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Qualification</label><input type="text" name="qualification" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none text-white" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Occupation</label><input type="text" name="occupation" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none text-white" /></div>
+            <div className="md:col-span-2 space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Subjects Interested to Scribe</label><textarea name="subjects_of_interest" rows="2" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none text-white" /></div>
           </div>
         </div>
 

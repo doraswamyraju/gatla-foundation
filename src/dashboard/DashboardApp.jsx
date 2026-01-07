@@ -13,8 +13,8 @@ import 'jspdf-autotable';
 import Sidebar from './components/Sidebar'; 
 import GeneralVolunteerForm from '../pages/forms/GeneralVolunteerForm';
 import { FORM_SCHEMAS } from './data/FormSchemas';
-import EducationStudentForm from '../pages/forms/EducationStudentForm'; // <--- IMPORT THIS
-import EducationScriberForm from '../pages/forms/EducationScriberForm';
+import EducationStudentForm from '../pages/forms/EducationStudentForm';
+import EducationScriberForm from '../pages/forms/EducationScriberForm'; // Ensure this exists in src/pages/forms/
 
 
 // --- 1. BLOG MANAGER ---
@@ -76,7 +76,7 @@ const BlogManager = ({ posts, onSave, onDelete }) => {
   );
 };
 
-// --- 2. FIXED FORM MODAL ---
+// --- 2. FIXED FORM MODAL (INLINE) ---
 const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, onGenericSave, isSaving }) => {
   const [formData, setFormData] = useState({});
   const [fileData, setFileData] = useState(null);
@@ -90,7 +90,7 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
 
   if (!isOpen) return null;
 
-  // --- A. Render Specific Modular Forms (Public Website Style) ---
+  // --- A. GENERAL VOLUNTEER ---
   if (categoryId === 'volunteer-form') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
@@ -103,18 +103,15 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
                     <button onClick={onClose}><X className="w-5 h-5" /></button>
                 </div>
                 <div className="overflow-y-auto">
-                    <GeneralVolunteerForm 
-                        onClose={onClose} 
-                        initialData={initialData} 
-                        onSaveSuccess={onSaveSuccess} 
-                    />
+                    <GeneralVolunteerForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} />
                 </div>
             </div>
         </div>
     );
   }
 
-  if (categoryId === 'education-student') { // <--- ADD THIS BLOCK
+  // --- B. EDUCATION STUDENT ---
+  if (categoryId === 'education-student') {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
             <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
@@ -126,18 +123,34 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
                     <button onClick={onClose}><X className="w-5 h-5" /></button>
                 </div>
                 <div className="overflow-y-auto">
-                    <EducationStudentForm 
-                        onClose={onClose} 
-                        initialData={initialData} 
-                        onSaveSuccess={onSaveSuccess} 
-                    />
+                    <EducationStudentForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} />
                 </div>
             </div>
         </div>
     );
   }
 
-  // --- B. Generic Fallback Forms ---
+  // --- C. EDUCATION SCRIBER (ADDED THIS) ---
+  if (categoryId === 'education-scriber') {
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
+            <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0">
+                    <h3 className="font-bold flex items-center gap-2">
+                        {initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} 
+                        {initialData ? 'Edit' : 'Add New'} Scribe
+                    </h3>
+                    <button onClick={onClose}><X className="w-5 h-5" /></button>
+                </div>
+                <div className="overflow-y-auto">
+                    <EducationScriberForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} />
+                </div>
+            </div>
+        </div>
+    );
+  }
+
+  // --- D. GENERIC FALLBACK FORMS ---
   const schema = FORM_SCHEMAS[categoryId] || FORM_SCHEMAS['volunteer-form']; 
   const title = categoryId.replace(/-/g, ' ').toUpperCase();
   const handleSubmit = (e) => { e.preventDefault(); onGenericSave(formData, fileData); };
@@ -194,7 +207,6 @@ const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
   // --- EXPORT TO EXCEL ---
   const handleExportExcel = () => {
     if (!data || data.length === 0) return alert("No data to export");
-    
     const ws = XLSX.utils.json_to_sheet(data);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
@@ -204,25 +216,15 @@ const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
   // --- EXPORT TO PDF ---
   const handleExportPDF = () => {
     if (!data || data.length === 0) return alert("No data to export");
-
     const doc = new jsPDF();
-    
-    // Define columns based on headers
     const tableColumn = displayHeaders.map(col => col.label);
     const tableRows = [];
-
     data.forEach(item => {
       const rowData = displayHeaders.map(col => item[col.key] || '');
       tableRows.push(rowData);
     });
-
     doc.text(`${type.replace(/-/g, ' ').toUpperCase()} REPORT`, 14, 15);
-    doc.autoTable({
-      head: [tableColumn],
-      body: tableRows,
-      startY: 20,
-    });
-    
+    doc.autoTable({ head: [tableColumn], body: tableRows, startY: 20 });
     doc.save(`${type}_export_${new Date().toISOString().slice(0,10)}.pdf`);
   };
 
@@ -257,9 +259,7 @@ const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
           <thead className="sticky top-0 bg-slate-50 z-10 shadow-sm">
             <tr>
               {displayHeaders.map((header) => (
-                <th key={header.key} className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">
-                  {header.label}
-                </th>
+                <th key={header.key} className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200">{header.label}</th>
               ))}
               <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-right">Status</th>
               <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-right">Actions</th>
@@ -297,14 +297,7 @@ const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
                 </tr>
               ))
             ) : (
-              <tr>
-                <td colSpan={displayHeaders.length + 2} className="text-center py-12 text-slate-400">
-                  <div className="flex flex-col items-center">
-                    <FileText className="w-12 h-12 text-slate-200 mb-2" />
-                    <p>No records found.</p>
-                  </div>
-                </td>
-              </tr>
+              <tr><td colSpan={displayHeaders.length + 2} className="text-center py-12 text-slate-400"><div className="flex flex-col items-center"><FileText className="w-12 h-12 text-slate-200 mb-2" /><p>No records found.</p></div></td></tr>
             )}
           </tbody>
         </table>
@@ -352,8 +345,15 @@ const DashboardApp = () => {
   const [appData, setAppData] = useState({});
   const [isSaving, setIsSaving] = useState(false);
 
+  // --- DYNAMIC API URL FIX ---
+  const getApiUrl = () => {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1') return 'http://localhost/gatla-foundation/api';
+    return 'https://gatlafoundation.org/api'; // Live API URL
+  };
+  const apiUrl = getApiUrl();
+
   const currentData = appData[activeTab] || [];
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost/gatla-foundation/api';
 
   const handleLogin = () => setIsAuthenticated(true);
   const handleLogout = () => { setIsAuthenticated(false); setActiveTab('dashboard'); };
@@ -368,22 +368,21 @@ const DashboardApp = () => {
             const res = await fetch(`${apiUrl}/get_donations.php`);
             const data = await res.json();
             setAppData(prev => ({ ...prev, 'donations-list': data }));
-        } else if (activeTab === 'education-student') { // <--- ADD THIS
+        } else if (activeTab === 'education-student') {
             const res = await fetch(`${apiUrl}/get_education_students.php`);
             const data = await res.json();
             setAppData(prev => ({ ...prev, 'education-student': data }));
-        }else if (activeTab === 'education-scriber') {
-    const res = await fetch(`${apiUrl}/get_education_scribers.php`);
-    const data = await res.json();
-    setAppData(prev => ({ ...prev, 'education-scriber': data }));
-
+        } else if (activeTab === 'education-scriber') {
+            const res = await fetch(`${apiUrl}/get_education_scribers.php`);
+            const data = await res.json();
+            setAppData(prev => ({ ...prev, 'education-scriber': data }));
         } else {
             const res = await fetch(`${apiUrl}/get_dashboard_data.php`);
-            const text = await res.text(); 
+            // Handling potential JSON errors slightly better
             try {
-                const data = JSON.parse(text);
+                const data = await res.json();
                 if (data.status !== 'error') setAppData(data);
-            } catch (e) { console.error("JSON Error", text); }
+            } catch (e) { console.error("API Error: Response was not JSON"); }
         }
       } catch (err) { console.error("Fetch error:", err); }
   };
