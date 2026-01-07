@@ -5,7 +5,7 @@ const EducationStudentForm = ({ onClose, initialData, onSaveSuccess }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [file, setFile] = useState(null);
   
-  // Initialize state (Empty for Add, Populated for Edit)
+  // Initial State (Matches Database Columns)
   const [formData, setFormData] = useState({
     id: '',
     full_name: '',
@@ -22,7 +22,7 @@ const EducationStudentForm = ({ onClose, initialData, onSaveSuccess }) => {
     place_of_exam: '',
     date_of_exam: '',
     disability_cert_no: '',
-    ...initialData // Overwrite with existing data if editing
+    ...initialData 
   });
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -60,76 +60,33 @@ const EducationStudentForm = ({ onClose, initialData, onSaveSuccess }) => {
 
   return (
     <form onSubmit={handleSubmit} className="p-6 space-y-4">
-      
       {/* 1. Personal Details */}
       <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2 mb-2">Personal Information</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Student Name</label>
-          <input type="text" name="full_name" required value={formData.full_name} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
-        </div>
-        <div>
-          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Father Name</label>
-          <input type="text" name="father_name" value={formData.father_name} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
-        </div>
-        <div>
-          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Mobile No</label>
-          <input type="tel" name="phone_no" required value={formData.phone_no} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
-        </div>
-        <div>
-          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Email ID</label>
-          <input type="email" name="email_id" value={formData.email_id} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
-        </div>
-        <div>
-          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Aadhaar No</label>
-          <input type="text" name="aadhaar_no" value={formData.aadhaar_no} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
-        </div>
-        <div>
-          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Age</label>
-          <input type="number" name="age" value={formData.age} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
-        </div>
-        <div className="md:col-span-2">
-          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Full Address</label>
-          <textarea name="address" rows="2" value={formData.address} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
-        </div>
+        <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Student Name</label><input type="text" name="full_name" required value={formData.full_name} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" /></div>
+        <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Father Name</label><input type="text" name="father_name" value={formData.father_name} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" /></div>
+        <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Mobile No</label><input type="tel" name="phone_no" required value={formData.phone_no} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" /></div>
+        <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Email ID</label><input type="email" name="email_id" value={formData.email_id} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" /></div>
+        <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Aadhaar No</label><input type="text" name="aadhaar_no" value={formData.aadhaar_no} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" /></div>
+        <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Age</label><input type="number" name="age" value={formData.age} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" /></div>
+        <div className="md:col-span-2"><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Full Address</label><textarea name="address" rows="2" value={formData.address} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" /></div>
       </div>
 
       {/* 2. Academic Details */}
       <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2 pt-2 mb-2">Academic Details</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">College/School Name</label>
-          <input type="text" name="school_college_name" value={formData.school_college_name} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
-        </div>
-        <div>
-          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Class/Year</label>
-          <input type="text" name="current_class_year" value={formData.current_class_year} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
-        </div>
-        <div className="md:col-span-2">
-          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">College Address</label>
-          <textarea name="college_address" rows="2" value={formData.college_address} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
-        </div>
+        <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">College/School Name</label><input type="text" name="school_college_name" value={formData.school_college_name} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" /></div>
+        <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Class/Year</label><input type="text" name="current_class_year" value={formData.current_class_year} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" /></div>
+        <div className="md:col-span-2"><label className="block text-xs font-bold text-slate-500 uppercase mb-1">College Address</label><textarea name="college_address" rows="2" value={formData.college_address} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" /></div>
       </div>
 
       {/* 3. Exam & Disability Details */}
       <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2 pt-2 mb-2">Exam & Disability</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Scriber Subject</label>
-          <input type="text" name="scriber_subject" value={formData.scriber_subject} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
-        </div>
-        <div>
-          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Place of Exam</label>
-          <input type="text" name="place_of_exam" value={formData.place_of_exam} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
-        </div>
-        <div>
-          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Date of Exam</label>
-          <input type="date" name="date_of_exam" value={formData.date_of_exam} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
-        </div>
-        <div>
-          <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Disability Cert No</label>
-          <input type="text" name="disability_cert_no" value={formData.disability_cert_no} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" />
-        </div>
+        <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Scriber Subject</label><input type="text" name="scriber_subject" value={formData.scriber_subject} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" /></div>
+        <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Place of Exam</label><input type="text" name="place_of_exam" value={formData.place_of_exam} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" /></div>
+        <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Date of Exam</label><input type="date" name="date_of_exam" value={formData.date_of_exam} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" /></div>
+        <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Disability Cert No</label><input type="text" name="disability_cert_no" value={formData.disability_cert_no} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" /></div>
         <div className="md:col-span-2">
            <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Upload Certificate</label>
            <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 flex flex-col items-center justify-center text-slate-400 hover:bg-slate-50 cursor-pointer relative">

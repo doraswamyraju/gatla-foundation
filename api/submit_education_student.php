@@ -20,7 +20,7 @@ if (!empty($_FILES['disability_certificate']['name'])) {
 
 // 2. Prepare Data
 $id = $_POST['id'] ?? null;
-// Mapped variables from React Form
+// Mapped variables from React Form to MySQL Columns
 $full_name = $_POST['full_name'] ?? '';
 $father_name = $_POST['father_name'] ?? '';
 $phone_no = $_POST['phone_no'] ?? '';

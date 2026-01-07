@@ -6,7 +6,7 @@ require_once 'config.php';
 
 $conn = connectDB();
 
-// Select all fields matching the Frontend Form State names
+// Select all fields matching the Frontend Form State names exactly
 $sql = "SELECT 
             id, 
             full_name, 

@@ -6,6 +6,7 @@ const EducationStudentForm = ({ onClose }) => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
+  // EXACT MATCH with Database Columns
   const [formData, setFormData] = useState({
     full_name: '',
     father_name: '',
@@ -45,7 +46,7 @@ const EducationStudentForm = ({ onClose }) => {
         data.append(key, formData[key]);
       });
 
-      // Ensure this URL is correct for your setup
+      // API Endpoint
       const apiUrl = 'http://localhost/gatla-foundation/api/submit_education_student.php';
       
       const response = await fetch(apiUrl, {
@@ -57,9 +58,7 @@ const EducationStudentForm = ({ onClose }) => {
 
       if (result.status === 'success') {
         setSuccess(true);
-        setTimeout(() => {
-          if(onClose) onClose(); 
-        }, 3000);
+        setTimeout(() => { if(onClose) onClose(); }, 3000);
       } else {
         throw new Error(result.message || 'Submission failed');
       }
@@ -79,31 +78,19 @@ const EducationStudentForm = ({ onClose }) => {
         </div>
         <h3 className="text-2xl font-bold mb-2">Application Submitted!</h3>
         <p className="text-slate-400">Your details have been recorded. We will contact you soon.</p>
-        <button onClick={onClose} className="mt-6 px-6 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm transition-colors">
-          Close Form
-        </button>
+        <button onClick={onClose} className="mt-6 px-6 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-sm transition-colors">Close Form</button>
       </div>
     );
   }
 
   return (
-    // FIX: Removed h-full and added max-h-full to ensure it respects parent modal height
     <div className="flex flex-col bg-[#0B1120] text-white w-full h-full max-h-full overflow-hidden">
-      
-      {/* Header - Stays Fixed */}
-      <div className="px-8 py-6 border-b border-slate-800 bg-[#0B1120] shrink-0 z-10 flex justify-between items-center">
-        <div>
-            <h2 className="text-2xl font-bold text-green-500 tracking-tight">Student Registration</h2>
-            <p className="text-slate-500 text-sm mt-1">Education Club - For Visually Impaired Students</p>
-        </div>
-        {/* Placeholder for close button alignment if needed */}
-        <div className="w-8"></div>
+      <div className="px-8 py-6 border-b border-slate-800 bg-[#0B1120] shrink-0 z-10">
+        <h2 className="text-2xl font-bold text-green-500 tracking-tight">Student Registration</h2>
+        <p className="text-slate-500 text-sm mt-1">Education Club - For Visually Impaired Students</p>
       </div>
 
-      {/* Form Area - Scrolls independently */}
-      {/* FIX: added min-h-0 to allow flex child to shrink and scroll */}
       <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-8 custom-scrollbar space-y-8 min-h-0">
-        
         {error && (
           <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl flex items-center gap-3">
             <AlertCircle className="w-5 h-5" />
@@ -114,36 +101,14 @@ const EducationStudentForm = ({ onClose }) => {
         {/* 1. PERSONAL INFORMATION */}
         <div className="space-y-4">
           <h3 className="text-xs font-bold text-green-500 uppercase tracking-widest border-l-2 border-green-500 pl-3">1. Personal Information</h3>
-          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Student Name <span className="text-red-500">*</span></label>
-              <input type="text" name="full_name" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Father Name <span className="text-red-500">*</span></label>
-              <input type="text" name="father_name" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Mobile No <span className="text-red-500">*</span></label>
-              <input type="tel" name="phone_no" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Email ID</label>
-              <input type="email" name="email_id" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Aadhaar No</label>
-              <input type="text" name="aadhaar_no" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Age</label>
-              <input type="number" name="age" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1 md:col-span-2">
-              <label className="text-xs font-medium text-slate-400 ml-1">Full Address <span className="text-red-500">*</span></label>
-              <textarea name="address" rows="2" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Student Name *</label><input type="text" name="full_name" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Father Name *</label><input type="text" name="father_name" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Mobile No *</label><input type="tel" name="phone_no" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Email ID</label><input type="email" name="email_id" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Aadhaar No</label><input type="text" name="aadhaar_no" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Age</label><input type="number" name="age" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
+            <div className="md:col-span-2 space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Full Address *</label><textarea name="address" rows="2" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
           </div>
         </div>
 
@@ -151,41 +116,20 @@ const EducationStudentForm = ({ onClose }) => {
         <div className="space-y-4">
           <h3 className="text-xs font-bold text-green-500 uppercase tracking-widest border-l-2 border-green-500 pl-3">2. Academic Details</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">College/School Name</label>
-              <input type="text" name="school_college_name" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Class / Year</label>
-              <input type="text" name="current_class_year" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1 md:col-span-2">
-              <label className="text-xs font-medium text-slate-400 ml-1">College Address</label>
-              <input type="text" name="college_address" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">College/School Name</label><input type="text" name="school_college_name" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Class / Year</label><input type="text" name="current_class_year" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
+            <div className="md:col-span-2 space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">College Address</label><input type="text" name="college_address" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
           </div>
         </div>
 
-        {/* 3. EXAM DETAILS */}
+        {/* 3. EXAM & DISABILITY */}
         <div className="space-y-4">
           <h3 className="text-xs font-bold text-green-500 uppercase tracking-widest border-l-2 border-green-500 pl-3">3. Exam & Disability Info</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Subject for Scribe</label>
-              <input type="text" name="scriber_subject" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Place of Exam</label>
-              <input type="text" name="place_of_exam" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Date of Exam</label>
-              <input type="date" name="date_of_exam" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none text-slate-300" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-slate-400 ml-1">Disability Cert No</label>
-              <input type="text" name="disability_cert_no" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" />
-            </div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Subject for Scribe</label><input type="text" name="scriber_subject" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Place of Exam</label><input type="text" name="place_of_exam" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Date of Exam</label><input type="date" name="date_of_exam" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none text-slate-300" /></div>
+            <div className="space-y-1"><label className="text-xs font-medium text-slate-400 ml-1">Disability Cert No</label><input type="text" name="disability_cert_no" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl py-3 px-4 text-sm focus:border-green-500 transition-all outline-none" /></div>
             
             <div className="space-y-1 md:col-span-2">
               <label className="text-xs font-medium text-slate-400 ml-1">Upload Disability Certificate</label>
@@ -200,13 +144,7 @@ const EducationStudentForm = ({ onClose }) => {
           </div>
         </div>
 
-        {/* Submit Button - with margin for safety */}
-        <div className="pb-4">
-            <button type="submit" disabled={loading} className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-3 disabled:opacity-50">
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Submit Application'}
-            </button>
-        </div>
-        
+        <div className="pb-4"><button type="submit" disabled={loading} className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-3 disabled:opacity-50">{loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Submit Application'}</button></div>
       </form>
     </div>
   );
