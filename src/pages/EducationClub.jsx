@@ -1,74 +1,120 @@
 import React, { useState } from 'react';
-import { BookOpen, PenTool, X } from 'lucide-react';
+import { BookOpen, CheckCircle2, User, FileText, Gift, ArrowRight, HeartHandshake, DollarSign, X } from 'lucide-react';
 
-// --- IMPORT THE CORRECT PUBLIC (DARK MODE) FORMS ---
-// Make sure these paths point to 'components/pillars', NOT 'pages/forms'
-import EducationStudentForm from '../components/pillars/EducationStudentForm';
-import EducationScriberForm from '../components/pillars/EducationScriberForm'; 
+// --- IMPORT THE FORM ---
+// Adjust the path based on where you saved the component
+import EducationStudentForm from '../components/pillars/EducationStudentForm'; 
 
-const EducationClub = () => {
-  const [activeForm, setActiveForm] = useState(null); // 'student' or 'scribe'
+const EducationClub = ({ onNavigate }) => {
+  // --- STATE FOR MODAL ---
+  const [showStudentForm, setShowStudentForm] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#0B1120] text-white font-sans selection:bg-green-500/30">
-      
-      {/* 1. HERO SECTION */}
-      <div className="relative pt-32 pb-20 px-6 overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-green-500/20 rounded-full blur-[120px] opacity-30 pointer-events-none" />
-        <div className="max-w-7xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-bold uppercase tracking-wider mb-6">
-            <BookOpen className="w-3 h-3" /> Gatla Foundation Education
-          </div>
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
-            Empowering <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-600">Visually Impaired</span> Students
-          </h1>
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            We bridge the gap between capability and opportunity by providing scribes, digital tools, and scholarships.
-          </p>
+    <div className="pt-20 pb-16 bg-[#050914] min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Header and Title */}
+        <div className="text-center mb-12 border-b border-slate-700/50 pb-6">
+          <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-2">Education Club</h1>
+          <p className="text-lg font-bold text-green-500 uppercase tracking-widest">For the Blind</p>
+        </div>
+
+        <div className="grid lg:grid-cols-3 gap-12">
           
-          <div className="flex flex-wrap justify-center gap-4">
-            <button 
-              onClick={() => setActiveForm('student')}
-              className="px-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-all shadow-lg shadow-green-900/20 flex items-center gap-2"
-            >
-              <BookOpen className="w-5 h-5" />
-              Join as Student
-            </button>
-            <button 
-              onClick={() => setActiveForm('scribe')}
-              className="px-8 py-4 bg-[#1A2333] hover:bg-[#232D3F] text-white border border-slate-700 rounded-xl font-bold transition-all flex items-center gap-2"
-            >
-              <PenTool className="w-5 h-5" />
-              Volunteer as Scribe
-            </button>
-          </div>
+          {/* Main Content Column */}
+          <div className="lg:col-span-2 space-y-12">
+            
+            {/* About The Wing */}
+            <div className="bg-[#0B1120] p-8 rounded-lg border border-slate-800 shadow-xl">
+              <h2 className="text-green-500 font-bold tracking-[0.2em] uppercase text-xs mb-3 flex items-center gap-2">
+                <BookOpen className="w-4 h-4" /> ABOUT THE WING
+              </h2>
+              <h3 className="text-2xl font-serif font-bold text-white mb-4">Dedicated to Empowering the Visually Impaired.</h3>
+              <p className="text-slate-400 leading-relaxed text-sm">
+                Providing scribes, stipends, and accessible exams for visually impaired students. We organize motivation seminars and provide study materials. The Education Club is dedicated to empowering the visually impaired community through structured programs, events, and support systems.
+              </p>
+            </div>
+
+            {/* Key Activities */}
+            <div className="bg-[#0B1120] p-8 rounded-lg border border-slate-800 shadow-xl">
+              <h2 className="text-amber-500 font-bold tracking-[0.2em] uppercase text-xs mb-6">KEY ACTIVITIES</h2>
+              
+              <div className="grid md:grid-cols-2 gap-6">
+                {[
+                  { title: "Motivation Seminars for Visually Impaired", icon: CheckCircle2 },
+                  { title: "Providing Scribes for Exams", icon: CheckCircle2 },
+                  { title: "Stipends for Students & Sports Players", icon: CheckCircle2 },
+                  { title: "Study Material Distribution", icon: CheckCircle2 },
+                ].map((activity, index) => (
+                  <div key={index} className="flex items-start gap-4 p-4 border border-slate-700 rounded-md hover:border-green-500/50 transition">
+                    <activity.icon className="w-6 h-6 text-green-500 mt-1 shrink-0" />
+                    <div>
+                      <p className="text-white font-semibold">{activity.title}</p>
+                      <p className="text-slate-500 text-xs mt-0.5">Ensuring full accessibility.</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div> {/* End Main Content Column */}
+
+          {/* Sidebar Forms Column */}
+          <div className="lg:col-span-1">
+            <div className="bg-[#0F172A] p-6 rounded-lg border border-green-500/50 shadow-2xl sticky top-28">
+              <h4 className="text-lg font-serif font-bold text-white mb-4">Registration Forms</h4>
+              <p className="text-slate-400 text-sm mb-6">Select a form below to apply.</p>
+
+              <div className="space-y-4">
+                {[
+                  { name: "Student Form", icon: User, target: "education-student" },
+                  { name: "Scribe Form", icon: FileText, target: "education-scriber" },
+                  { name: "Volunteer Form", icon: HeartHandshake, target: "education-volunteer" },
+                  { name: "Donor Form", icon: DollarSign, target: "education-donor" },
+                ].map((form, index) => (
+                  <button 
+                    key={index}
+                    onClick={() => {
+                        // INTERCEPT "Student Form" CLICK
+                        if (form.target === 'education-student') {
+                            setShowStudentForm(true);
+                        } else {
+                            onNavigate(form.target);
+                        }
+                    }}
+                    className="w-full flex justify-between items-center bg-[#050914] text-slate-300 p-3 rounded-md border border-slate-800 hover:bg-green-600 hover:text-white transition group"
+                  >
+                    <span className="flex items-center gap-3">
+                      <form.icon className="w-5 h-5 text-green-500 group-hover:text-white transition" />
+                      {form.name}
+                    </span>
+                    <ArrowRight className="w-4 h-4 text-slate-500 group-hover:text-white transition" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div> {/* End Sidebar Column */}
+
         </div>
       </div>
 
-      {/* 2. MODAL FORMS (The Critical Part) */}
-      {activeForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative w-full max-w-4xl bg-[#0B1120] border border-slate-800 rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
-            
-            {/* Close Button */}
-            <button 
-              onClick={() => setActiveForm(null)}
-              className="absolute top-4 right-4 z-20 p-2 bg-slate-900/50 hover:bg-slate-800 text-slate-400 hover:text-white rounded-full transition-colors"
-            >
-              <X className="w-6 h-6" />
-            </button>
+      {/* --- STUDENT FORM MODAL --- */}
+      {showStudentForm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
+            {/* Modal Container */}
+            <div className="bg-[#0B1120] w-full max-w-3xl rounded-2xl overflow-hidden shadow-2xl border border-slate-800 max-h-[90vh] flex flex-col relative">
+                
+                {/* Close Button */}
+                <button 
+                    onClick={() => setShowStudentForm(false)} 
+                    className="absolute top-4 right-4 text-slate-400 hover:text-white z-20 bg-black/20 p-2 rounded-full hover:bg-red-500/20 transition-all"
+                >
+                    <X className="w-5 h-5" />
+                </button>
 
-            {/* Render the Correct Form based on State */}
-            <div className="flex-1 overflow-y-auto custom-scrollbar">
-              {activeForm === 'student' && (
-                <EducationStudentForm onClose={() => setActiveForm(null)} />
-              )}
-              {activeForm === 'scribe' && (
-                <EducationScriberForm onClose={() => setActiveForm(null)} />
-              )}
+                {/* The Form Component */}
+                <EducationStudentForm onClose={() => setShowStudentForm(false)} />
             </div>
-
-          </div>
         </div>
       )}
 
