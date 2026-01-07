@@ -76,7 +76,9 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout 
       icon: <BookOpen className="w-5 h-5 text-green-400" />, 
       forms: [
         { id: 'education-student', label: 'Student Form' }, 
-        { id: 'education-scriber', label: 'Scriber Form' }
+        { id: 'education-scriber', label: 'Scriber Form' },
+        { id: 'education-volunteer', label: 'Volunteer Form' }, // Added
+        { id: 'education-donor', label: 'Donor Form' }
       ] 
     },
 

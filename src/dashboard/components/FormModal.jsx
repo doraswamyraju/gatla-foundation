@@ -5,6 +5,8 @@ import { X, Edit, Plus, Loader2, Save, UploadCloud } from 'lucide-react';
 import GeneralVolunteerForm from '../../pages/forms/GeneralVolunteerForm';
 import EducationStudentForm from '../../pages/forms/EducationStudentForm';
 import EducationScriberForm from '../../pages/forms/EducationScriberForm'; // <--- Ensure this path is correct
+import EducationVolunteerForm from '../../pages/forms/EducationVolunteerForm';
+import EducationDonorForm from '../../pages/forms/EducationDonorForm';
 
 import { FORM_SCHEMAS } from '../data/FormSchemas';
 
@@ -52,6 +54,28 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
             <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
                 <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {initialData ? 'Edit' : 'Add New'} Scribe</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
                 <div className="overflow-y-auto"><EducationScriberForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></div>
+            </div>
+        </div>
+    );
+  }
+
+  if (categoryId === 'education-volunteer') {
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
+            <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} Volunteer</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
+                <div className="overflow-y-auto"><EducationVolunteerForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></div>
+            </div>
+        </div>
+    );
+  }
+
+  if (categoryId === 'education-donor') {
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
+            <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} Donor</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
+                <div className="overflow-y-auto"><EducationDonorForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></div>
             </div>
         </div>
     );

@@ -68,6 +68,20 @@ export const FORM_SCHEMAS = {
     { name: 'status', label: 'Status', type: 'text' }
   ],
 
+ 'education-volunteer': [
+    { name: 'full_name', label: 'Name', type: 'text' },
+    { name: 'phone_no', label: 'Phone', type: 'text' },
+    { name: 'area_of_interest', label: 'Interest', type: 'text' },
+    { name: 'availability', label: 'Availability', type: 'text' },
+    { name: 'status', label: 'Status', type: 'text' }
+  ],
+  'education-donor': [
+    { name: 'full_name', label: 'Donor', type: 'text' },
+    { name: 'amount', label: 'Amount', type: 'text' },
+    { name: 'payment_id', label: 'Txn ID', type: 'text' },
+    { name: 'status', label: 'Status', type: 'text' }
+  ], 
+
   // --- 4. MUSIC CLUB ---
   'music-singer': [
     { name: 'fullName', label: 'Singer Name', type: 'text', required: true },

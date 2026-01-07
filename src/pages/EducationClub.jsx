@@ -5,6 +5,8 @@ import { BookOpen, PenTool, CheckCircle2, X, ArrowRight } from 'lucide-react';
 // Ensure these point to 'components/pillars'
 import EducationStudentForm from '../components/pillars/EducationStudentForm';
 import EducationScriberForm from '../components/pillars/EducationScriberForm'; 
+import EducationVolunteerForm from '../components/pillars/EducationVolunteerForm';
+import EducationDonorForm from '../components/pillars/EducationDonorForm';
 
 const EducationClub = () => {
   const [activeForm, setActiveForm] = useState(null); // 'student' or 'scribe'
@@ -27,7 +29,7 @@ const EducationClub = () => {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-xs font-bold uppercase tracking-wider mb-6">
             <BookOpen className="w-3 h-3" /> Gatla Foundation Education
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 tracking-tight">Education Club</h1>
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 tracking-tight">Gatla Education Club</h1>
           <p className="text-xl text-green-500 font-medium uppercase tracking-widest mb-8">Empowering Knowledge</p>
         </div>
       </div>
@@ -111,6 +113,8 @@ const EducationClub = () => {
                   <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-blue-500 group-hover:translate-x-1 transition-all" />
                 </button>
               </div>
+              <button onClick={() => setActiveForm('volunteer')} className="...">Volunteer Form</button>
+              <button onClick={() => setActiveForm('donor')} className="...">Donor Form</button>
 
               {/* Contact Info */}
               <div className="mt-8 pt-8 border-t border-slate-800 text-center">
@@ -144,6 +148,8 @@ const EducationClub = () => {
               {activeForm === 'scribe' && (
                 <EducationScriberForm onClose={() => setActiveForm(null)} />
               )}
+              {activeForm === 'volunteer' && <EducationVolunteerForm onClose={() => setActiveForm(null)} />}
+{activeForm === 'donor' && <EducationDonorForm onClose={() => setActiveForm(null)} />}
             </div>
 
           </div>

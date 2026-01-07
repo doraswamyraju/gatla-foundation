@@ -358,31 +358,52 @@ const DashboardApp = () => {
   const handleLogin = () => setIsAuthenticated(true);
   const handleLogout = () => { setIsAuthenticated(false); setActiveTab('dashboard'); };
 
-  const fetchData = async () => {
+const fetchData = async () => {
       try {
         if (activeTab === 'volunteer-form') {
+            // General Volunteers
             const res = await fetch(`${apiUrl}/get_general_volunteers.php`);
             const data = await res.json();
             setAppData(prev => ({ ...prev, 'volunteer-form': data }));
+
         } else if (activeTab === 'donations-list') {
+            // General Donations
             const res = await fetch(`${apiUrl}/get_donations.php`);
             const data = await res.json();
             setAppData(prev => ({ ...prev, 'donations-list': data }));
+
         } else if (activeTab === 'education-student') {
+            // Education Students
             const res = await fetch(`${apiUrl}/get_education_students.php`);
             const data = await res.json();
             setAppData(prev => ({ ...prev, 'education-student': data }));
+
         } else if (activeTab === 'education-scriber') {
+            // Education Scribes
             const res = await fetch(`${apiUrl}/get_education_scribers.php`);
             const data = await res.json();
             setAppData(prev => ({ ...prev, 'education-scriber': data }));
+
+        } else if (activeTab === 'education-volunteer') { 
+            // NEW: Education Volunteers
+            const res = await fetch(`${apiUrl}/get_education_volunteers.php`);
+            const data = await res.json();
+            setAppData(prev => ({ ...prev, 'education-volunteer': data }));
+
+        } else if (activeTab === 'education-donor') { 
+            // NEW: Education Donors
+            const res = await fetch(`${apiUrl}/get_education_donors.php`);
+            const data = await res.json();
+            setAppData(prev => ({ ...prev, 'education-donor': data }));
+
         } else {
+            // Dashboard Overview (Default)
             const res = await fetch(`${apiUrl}/get_dashboard_data.php`);
-            // Handling potential JSON errors slightly better
+            const text = await res.text(); 
             try {
-                const data = await res.json();
+                const data = JSON.parse(text);
                 if (data.status !== 'error') setAppData(data);
-            } catch (e) { console.error("API Error: Response was not JSON"); }
+            } catch (e) { console.error("JSON Error", text); }
         }
       } catch (err) { console.error("Fetch error:", err); }
   };
