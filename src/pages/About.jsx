@@ -2,9 +2,9 @@ import React from 'react';
 import { Globe, Trophy, CheckCircle2, Quote } from 'lucide-react';
 
 const About = () => {
-  // Base path for existing images
+  // Base path for existing images (public/assets/images/)
   const imageBasePath = process.env.PUBLIC_URL + "/assets/images/";
-  // Specific path for the new about image
+  // Specific path for the new about image (public/assets/about/)
   const aboutAssetPath = process.env.PUBLIC_URL + "/assets/about/";
   
   return (
@@ -29,12 +29,12 @@ const About = () => {
           {/* MAIN CONTENT ROW */}
           <div className="flex flex-col lg:flex-row gap-8 items-stretch justify-center">
             
-            {/* 1. Left Side: Philosophy Box (UNCHANGED) */}
+            {/* 1. Left Side: Philosophy Box (Fixed Height) */}
             <div className="w-full lg:w-1/3 flex-none">
                <div className="relative w-full h-[500px] bg-[#0F172A] border border-slate-700 flex flex-col items-center justify-center p-8 text-center shadow-2xl rounded-lg hover:border-amber-500/30 transition-colors group">
-                  {/* Still uses 1.png as the logo icon as per previous instructions */}
+                  {/* UPDATED: Uses '1.png' from assets/images/ as requested */}
                   <img 
-                    src={aboutAssetPath + "1.png"} 
+                    src={imageBasePath + "1.png"} 
                     alt="Foundation Logo" 
                     className="w-32 h-32 mb-8 object-contain drop-shadow-lg group-hover:scale-110 transition-transform duration-500" 
                   />
@@ -63,20 +63,20 @@ const About = () => {
               </div>
             </div>
 
-            {/* 3. Right Side: Image (UPDATED to use 1.png) */}
+            {/* 3. Right Side: Image (1.png from about folder) */}
             <div className="w-full lg:w-1/3 flex-none">
                <div className="relative w-full h-[500px] group overflow-hidden rounded-lg border border-slate-700 shadow-2xl">
                   {/* Hover Overlay */}
                   <div className="absolute inset-0 bg-amber-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 mix-blend-overlay"></div>
                   
-                  {/* Image with Zoom Effect - CHANGED TO 1.png */}
+                  {/* Image with Zoom Effect */}
                   <img 
                     src={aboutAssetPath + "1.png"} 
                     alt="About Us" 
                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out grayscale-[10%] group-hover:grayscale-0" 
                   />
                   
-                  {/* Caption on Hover - Updated Text */}
+                  {/* Caption on Hover */}
                   <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0B1120] to-transparent z-20 translate-y-2 group-hover:translate-y-0 transition-transform">
                     <p className="text-amber-500 text-xs font-bold tracking-widest uppercase mb-1">Our Journey</p>
                     <p className="text-white font-serif text-lg">Serving with Purpose</p>
@@ -88,7 +88,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Founder Profile - (Existing Code Preserved) */}
+      {/* Founder Profile */}
       <section className="py-24 bg-[#050914] relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-12 gap-12 items-start">
