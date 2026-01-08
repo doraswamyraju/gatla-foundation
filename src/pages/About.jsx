@@ -29,10 +29,10 @@ const About = () => {
           {/* MAIN CONTENT ROW */}
           <div className="flex flex-col lg:flex-row gap-8 items-stretch justify-center">
             
-            {/* 1. Left Side: Philosophy Box (Fixed Height to match Image) */}
+            {/* 1. Left Side: Philosophy Box (UNCHANGED) */}
             <div className="w-full lg:w-1/3 flex-none">
                <div className="relative w-full h-[500px] bg-[#0F172A] border border-slate-700 flex flex-col items-center justify-center p-8 text-center shadow-2xl rounded-lg hover:border-amber-500/30 transition-colors group">
-                  {/* Updated to use '1.png' from assets/about */}
+                  {/* Still uses 1.png as the logo icon as per previous instructions */}
                   <img 
                     src={aboutAssetPath + "1.png"} 
                     alt="Foundation Logo" 
@@ -63,23 +63,23 @@ const About = () => {
               </div>
             </div>
 
-            {/* 3. Right Side: Founders Image (Fixed Height to match Philosophy) */}
+            {/* 3. Right Side: Image (UPDATED to use 1.png) */}
             <div className="w-full lg:w-1/3 flex-none">
                <div className="relative w-full h-[500px] group overflow-hidden rounded-lg border border-slate-700 shadow-2xl">
                   {/* Hover Overlay */}
                   <div className="absolute inset-0 bg-amber-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10 mix-blend-overlay"></div>
                   
-                  {/* Image with Zoom Effect */}
+                  {/* Image with Zoom Effect - CHANGED TO 1.png */}
                   <img 
-                    src={aboutAssetPath + "founders.jpeg"} 
-                    alt="Founders" 
+                    src={aboutAssetPath + "1.png"} 
+                    alt="About Us" 
                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out grayscale-[10%] group-hover:grayscale-0" 
                   />
                   
-                  {/* Caption on Hover */}
+                  {/* Caption on Hover - Updated Text */}
                   <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#0B1120] to-transparent z-20 translate-y-2 group-hover:translate-y-0 transition-transform">
-                    <p className="text-amber-500 text-xs font-bold tracking-widest uppercase mb-1">Founders</p>
-                    <p className="text-white font-serif text-lg">Visionary Leadership</p>
+                    <p className="text-amber-500 text-xs font-bold tracking-widest uppercase mb-1">Our Journey</p>
+                    <p className="text-white font-serif text-lg">Serving with Purpose</p>
                   </div>
                </div>
             </div>
