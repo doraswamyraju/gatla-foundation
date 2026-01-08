@@ -78,13 +78,15 @@ const Footer = ({ onNavigate }) => {
                  </div>
                  <div className="flex gap-3 items-start group">
                     <Mail className="w-5 h-5 text-amber-500 shrink-0 mt-0.5 group-hover:text-white transition-colors" /> 
-                    <span className="group-hover:text-slate-300 transition-colors">drgatlasrinivasareddy@gmail.com</span>
+                    <span className="group-hover:text-slate-300 transition-colors">gatlafoundation@gmail.com</span>
                  </div>
                  <div className="flex gap-3 items-start group">
                     <MapPin className="w-5 h-5 text-amber-500 shrink-0 mt-0.5 group-hover:text-white transition-colors" /> 
                     <span className="leading-relaxed group-hover:text-slate-300 transition-colors">
-                      Korlagunta, Tirupati,<br/>
-                      Andhra Pradesh - 517501
+                      #22-10-192,<br/>
+Near NGM Swimming Pool,<br/>
+Koramenugunta, Tirupati (Urban),<br/> 
+Andhra Pradesh, India-517501
                     </span>
                  </div>
               </div>
