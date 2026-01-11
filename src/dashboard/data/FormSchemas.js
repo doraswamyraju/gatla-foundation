@@ -32,6 +32,24 @@ export const FORM_SCHEMAS = {
   ],
 
   // --- 2. CRICKET CLUB ---
+  'cricket-club-member': [
+    { name: 'full_name', label: 'Member Name', type: 'text' },
+    { name: 'phone_no', label: 'Phone', type: 'text' },
+    { name: 'category', label: 'Category', type: 'text' },
+    { name: 'aadhaar_path', label: 'Aadhaar', type: 'file' },
+    { name: 'disability_cert_path', label: 'Certificate', type: 'file' },
+    { name: 'photo_path', label: 'Photo', type: 'file' },
+    { name: 'status', label: 'Status', type: 'text' }
+  ],
+  'cricket-player': [
+    { name: 'full_name', label: 'Player Name', type: 'text' },
+    { name: 'phone_no', label: 'Phone', type: 'text' },
+    { name: 'category', label: 'Category', type: 'text' },
+    { name: 'aadhaar_path', label: 'Aadhaar', type: 'file' },
+    { name: 'disability_cert_path', label: 'Certificate', type: 'file' },
+    { name: 'photo_path', label: 'Photo', type: 'file' },
+    { name: 'status', label: 'Status', type: 'text' }
+  ],
   'cricket-player': [
     { name: 'fullName', label: 'Player Name', type: 'text', required: true },
     { name: 'fatherName', label: 'Father Name', type: 'text' },

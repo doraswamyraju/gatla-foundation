@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { X, Edit, Plus, Loader2, Save, UploadCloud } from 'lucide-react';
 
 // --- IMPORT SPECIFIC FORMS ---
+// Make sure these paths are correct relative to this file
 import GeneralVolunteerForm from '../../pages/forms/GeneralVolunteerForm';
 import EducationStudentForm from '../../pages/forms/EducationStudentForm';
 import EducationScriberForm from '../../pages/forms/EducationScriberForm';
-import EducationVolunteerForm from '../../pages/forms/EducationVolunteerForm'; // NEW IMPORT
-import EducationDonorForm from '../../pages/forms/EducationDonorForm';         // NEW IMPORT
+import EducationVolunteerForm from '../../pages/forms/EducationVolunteerForm';
+import EducationDonorForm from '../../pages/forms/EducationDonorForm';
+import CricketMemberForm from '../../pages/forms/CricketMemberForm';
+import CricketPlayerForm from '../../pages/forms/CricketPlayerForm';
 
 import { FORM_SCHEMAS } from '../data/FormSchemas';
 
@@ -23,67 +26,49 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
 
   if (!isOpen) return null;
 
+  // --- HELPER: WRAPPER FOR CONSISTENT STYLING ---
+  const ModalWrapper = ({ title, children }) => (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
+        <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+            <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0">
+                <h3 className="font-bold flex items-center gap-2">
+                    {initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {title}
+                </h3>
+                <button onClick={onClose}><X className="w-5 h-5" /></button>
+            </div>
+            <div className="overflow-y-auto">{children}</div>
+        </div>
+    </div>
+  );
+
   // --- 1. GENERAL VOLUNTEER ---
   if (categoryId === 'volunteer-form') {
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
-            <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {initialData ? 'Edit' : 'Add New'} Volunteer</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
-                <div className="overflow-y-auto"><GeneralVolunteerForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></div>
-            </div>
-        </div>
-    );
+    return <ModalWrapper title="Volunteer"><GeneralVolunteerForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></ModalWrapper>;
   }
 
-  // --- 2. EDUCATION STUDENT ---
+  // --- 2. EDUCATION CLUB ---
   if (categoryId === 'education-student') {
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
-            <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {initialData ? 'Edit' : 'Add New'} Student</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
-                <div className="overflow-y-auto"><EducationStudentForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></div>
-            </div>
-        </div>
-    );
+    return <ModalWrapper title="Student"><EducationStudentForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></ModalWrapper>;
   }
-
-  // --- 3. EDUCATION SCRIBE ---
   if (categoryId === 'education-scriber') {
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
-            <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {initialData ? 'Edit' : 'Add New'} Scribe</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
-                <div className="overflow-y-auto"><EducationScriberForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></div>
-            </div>
-        </div>
-    );
+    return <ModalWrapper title="Scribe"><EducationScriberForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></ModalWrapper>;
   }
-
-  // --- 4. EDUCATION VOLUNTEER (NEW - WAS MISSING) ---
   if (categoryId === 'education-volunteer') {
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
-            <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {initialData ? 'Edit' : 'Add New'} Edu Volunteer</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
-                <div className="overflow-y-auto"><EducationVolunteerForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></div>
-            </div>
-        </div>
-    );
+    return <ModalWrapper title="Edu Volunteer"><EducationVolunteerForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></ModalWrapper>;
   }
-
-  // --- 5. EDUCATION DONOR (NEW - WAS MISSING) ---
   if (categoryId === 'education-donor') {
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
-            <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-                <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {initialData ? 'Edit' : 'Add New'} Edu Donor</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
-                <div className="overflow-y-auto"><EducationDonorForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></div>
-            </div>
-        </div>
-    );
+    return <ModalWrapper title="Edu Donor"><EducationDonorForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></ModalWrapper>;
   }
 
-  // --- GENERIC FALLBACK ---
+  // --- 3. CRICKET CLUB ---
+  if (categoryId === 'cricket-club-member') {
+    return <ModalWrapper title="Cricket Member"><CricketMemberForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></ModalWrapper>;
+  }
+  if (categoryId === 'cricket-player') {
+    return <ModalWrapper title="Cricket Player"><CricketPlayerForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></ModalWrapper>;
+  }
+
+  // --- 4. GENERIC FALLBACK (For forms not yet built) ---
   const schema = FORM_SCHEMAS[categoryId] || []; 
   const title = categoryId.replace(/-/g, ' ').toUpperCase();
   const handleSubmit = (e) => { e.preventDefault(); onGenericSave(formData, fileData); };
@@ -92,7 +77,10 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
       <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-        <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {title}</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
+        <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0">
+            <h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {title}</h3>
+            <button onClick={onClose}><X className="w-5 h-5" /></button>
+        </div>
         
         {schema.length === 0 ? (
             <div className="p-10 text-center text-slate-400"><p>This form is under development.</p></div>
