@@ -1,5 +1,5 @@
 // src/pages/CricketClub.jsx
-import React from 'react'; 
+import React from 'react';
 import { Trophy, CheckCircle2, User, FileText, Gift, ArrowRight } from 'lucide-react';
 
 const CricketClub = ({ onNavigate }) => {
@@ -9,7 +9,7 @@ const CricketClub = ({ onNavigate }) => {
   return (
     <div className="pt-20 pb-16 bg-[#050914] min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Header and Title */}
         <div className="text-center mb-12 border-b border-slate-700/50 pb-6">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-2">Cricket Club</h1>
@@ -17,10 +17,10 @@ const CricketClub = ({ onNavigate }) => {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-12">
-          
+
           {/* Main Content Column */}
           <div className="lg:col-span-2 space-y-12">
-            
+
             {/* About The Wing */}
             <div className="bg-[#0B1120] p-8 rounded-lg border border-slate-800 shadow-xl">
               <h2 className={`${accentClass} font-bold tracking-[0.2em] uppercase text-xs mb-3 flex items-center gap-2`}>
@@ -35,7 +35,7 @@ const CricketClub = ({ onNavigate }) => {
             {/* Key Activities */}
             <div className="bg-[#0B1120] p-8 rounded-lg border border-slate-800 shadow-xl">
               <h2 className="text-amber-500 font-bold tracking-[0.2em] uppercase text-xs mb-6">KEY ACTIVITIES</h2>
-              
+
               <div className="grid md:grid-cols-2 gap-6">
                 {[
                   { title: "Club Matches for Blind Players", icon: CheckCircle2 },
@@ -65,11 +65,12 @@ const CricketClub = ({ onNavigate }) => {
               <div className="space-y-4">
                 {[
                   { name: "Player Form", icon: User, target: "cricket-player" },
+                  { name: "Club Member Form", icon: User, target: "cricket-club-member" },
                   { name: "Umpire Form", icon: FileText, target: "cricket-umpire" },
-                  { name: "Volunteer Form", icon: User, target: "volunteer-form" }, 
+                  { name: "Volunteer Form", icon: User, target: "volunteer-form" },
                   { name: "Donor Form", icon: Gift, target: "cricket-donor" },
                 ].map((form, index) => (
-                  <button 
+                  <button
                     key={index}
                     onClick={() => onNavigate(form.target)} // Calls App.jsx handler (Opens Modal)
                     className={`w-full flex justify-between items-center bg-[#050914] text-slate-300 p-3 rounded-md border border-slate-800 hover:bg-blue-600 hover:text-white transition group`}
