@@ -237,7 +237,14 @@ const App = () => {
             />
 
             {isFormModalOpen && activeFormId === 'volunteer-form' && (
-                <VolunteerForm onClose={handleCloseForm} />
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
+                    <div className="bg-[#0B1120] w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] relative">
+                        <button onClick={handleCloseForm} className="absolute top-4 right-4 text-white hover:text-red-500 z-10"><i className="lucide-x w-6 h-6"></i> Close</button> {/* Close Button */}
+                        <div className="overflow-y-auto"> {/* Enable scrolling if form is long */}
+                            <VolunteerForm onClose={handleCloseForm} />
+                        </div>
+                    </div>
+                </div>
             )}
 
             {/* PUBLIC CRICKET FORMS */}
