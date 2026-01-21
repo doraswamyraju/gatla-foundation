@@ -76,6 +76,11 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
             'music-stipend', 'business-entrepreneur', 'cricket-volunteer'
         ];
 
+        if (lowerId.endsWith('-supporter')) {
+            handleOpenForm('supporter-form');
+            return;
+        }
+
         if (formIds.includes(lowerId)) {
             handleOpenForm(lowerId);
             return;

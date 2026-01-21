@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { BookOpen, PenTool, CheckCircle2, X, ArrowRight, Heart, Users } from 'lucide-react'; 
+import { BookOpen, PenTool, CheckCircle2, X, ArrowRight, Heart, Users } from 'lucide-react';
 
 // --- IMPORT THE CORRECT PUBLIC (DARK MODE) FORMS ---
 import EducationStudentForm from '../components/pillars/EducationStudentForm';
-import EducationScriberForm from '../components/pillars/EducationScriberForm'; 
+import EducationScriberForm from '../components/pillars/EducationScriberForm';
 import EducationVolunteerForm from '../components/pillars/EducationVolunteerForm'; // Ensure this exists
 import EducationDonorForm from '../components/pillars/EducationDonorForm'; // Ensure this exists
+import SupporterForm from './forms/SupporterForm'; // Import Supporter Form
+
 
 const EducationClub = () => {
-  const [activeForm, setActiveForm] = useState(null); 
+  const [activeForm, setActiveForm] = useState(null);
 
   const activities = [
     { title: "Scribes for Exams", desc: "Providing volunteers to write exams for visually impaired students." },
@@ -19,7 +21,7 @@ const EducationClub = () => {
 
   return (
     <div className="min-h-screen bg-[#0B1120] text-white font-sans selection:bg-green-500/30">
-      
+
       {/* 1. HERO HEADER */}
       <div className="relative pt-32 pb-20 px-6 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-green-500/20 rounded-full blur-[120px] opacity-30 pointer-events-none" />
@@ -35,7 +37,7 @@ const EducationClub = () => {
       {/* 2. MAIN CONTENT GRID */}
       <div className="max-w-7xl mx-auto px-6 pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          
+
           {/* LEFT COLUMN: About & Activities */}
           <div className="lg:col-span-2 space-y-12">
             <div className="bg-[#111827] border border-slate-800 rounded-2xl p-8 shadow-xl">
@@ -75,7 +77,7 @@ const EducationClub = () => {
 
               <div className="space-y-4">
                 {/* Student Form Button */}
-                <button 
+                <button
                   onClick={() => setActiveForm('student')}
                   className="w-full group flex items-center justify-between p-4 bg-[#0B1120] border border-slate-800 hover:border-green-500/50 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-green-900/10"
                 >
@@ -92,7 +94,7 @@ const EducationClub = () => {
                 </button>
 
                 {/* Scribe Form Button */}
-                <button 
+                <button
                   onClick={() => setActiveForm('scribe')}
                   className="w-full group flex items-center justify-between p-4 bg-[#0B1120] border border-slate-800 hover:border-blue-500/50 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-blue-900/10"
                 >
@@ -109,7 +111,7 @@ const EducationClub = () => {
                 </button>
 
                 {/* Volunteer Form Button (NEW) */}
-                <button 
+                <button
                   onClick={() => setActiveForm('volunteer')}
                   className="w-full group flex items-center justify-between p-4 bg-[#0B1120] border border-slate-800 hover:border-purple-500/50 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-purple-900/10"
                 >
@@ -125,8 +127,25 @@ const EducationClub = () => {
                   <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-purple-500 group-hover:translate-x-1 transition-all" />
                 </button>
 
+                {/* Supporter Form Button (NEW) */}
+                <button
+                  onClick={() => setActiveForm('supporter')}
+                  className="w-full group flex items-center justify-between p-4 bg-[#0B1120] border border-slate-800 hover:border-pink-500/50 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-pink-900/10"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-500 group-hover:bg-pink-500 group-hover:text-white transition-colors">
+                      <Heart className="w-5 h-5" />
+                    </div>
+                    <div className="text-left">
+                      <span className="block text-white font-bold group-hover:text-pink-400 transition-colors">Supporter Form</span>
+                      <span className="text-xs text-slate-500">Become a Patron</span>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-pink-500 group-hover:translate-x-1 transition-all" />
+                </button>
+
                 {/* Donor Form Button (NEW) */}
-                <button 
+                <button
                   onClick={() => setActiveForm('donor')}
                   className="w-full group flex items-center justify-between p-4 bg-[#0B1120] border border-slate-800 hover:border-amber-500/50 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-amber-900/10"
                 >
@@ -158,9 +177,9 @@ const EducationClub = () => {
       {activeForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
           <div className="relative w-full max-w-4xl bg-[#0B1120] border border-slate-800 rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
-            
+
             {/* Close Button */}
-            <button 
+            <button
               onClick={() => setActiveForm(null)}
               className="absolute top-4 right-4 z-20 p-2 bg-slate-900/50 hover:bg-slate-800 text-slate-400 hover:text-white rounded-full transition-colors"
             >
@@ -173,6 +192,7 @@ const EducationClub = () => {
               {activeForm === 'scribe' && <EducationScriberForm onClose={() => setActiveForm(null)} />}
               {activeForm === 'volunteer' && <EducationVolunteerForm onClose={() => setActiveForm(null)} />}
               {activeForm === 'donor' && <EducationDonorForm onClose={() => setActiveForm(null)} />}
+              {activeForm === 'supporter' && <SupporterForm onClose={() => setActiveForm(null)} />}
             </div>
 
           </div>

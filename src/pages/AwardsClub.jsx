@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { Award, CheckCircle2, User, FileText, Gift, ArrowRight, X } from 'lucide-react';
 import AwardsDonorForm from '../components/pillars/AwardsDonorForm';
+import SupporterForm from './forms/SupporterForm';
+
 
 const AwardsClub = ({ onNavigate }) => {
   const [activeForm, setActiveForm] = useState(null);
@@ -70,11 +72,16 @@ const AwardsClub = ({ onNavigate }) => {
                 {[
                   { name: "Nomination Form", icon: User, target: "nomination_form" },
                   { name: "Sponsor Form", icon: FileText, target: "sponsor_form" },
+                  { name: "Supporter Form", icon: User, target: "awards-supporter" }, // Added
                   { name: "Event Donor Form", icon: Gift, target: "donate", isLocal: true },
                 ].map((form, index) => (
                   <button
                     key={index}
-                    onClick={() => form.isLocal ? setActiveForm('donor') : onNavigate(form.target)}
+                    onClick={() => {
+                      if (form.isLocal) setActiveForm('donor');
+                      else if (form.target === 'awards-supporter') setActiveForm('supporter');
+                      else onNavigate(form.target);
+                    }}
                     className={`w-full flex justify-between items-center bg-[#050914] text-slate-300 p-3 rounded-md border border-slate-800 ${hoverClass} hover:text-[#0B1120] transition group`}
                   >
                     <span className="flex items-center gap-3">
@@ -101,6 +108,20 @@ const AwardsClub = ({ onNavigate }) => {
               <X className="w-6 h-6" />
             </button>
             <AwardsDonorForm onClose={() => setActiveForm(null)} />
+          </div>
+        </div>
+      )}
+      {/* LOCAL MODAL FOR SUPPORTER FORM */}
+      {activeForm === 'supporter' && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="relative w-full max-w-3xl bg-[#0B1120] border border-slate-800 rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+            <button
+              onClick={() => setActiveForm(null)}
+              className="absolute top-4 right-4 z-20 p-2 bg-slate-900/50 hover:bg-slate-800 text-slate-400 hover:text-white rounded-full transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <SupporterForm onClose={() => setActiveForm(null)} />
           </div>
         </div>
       )}
