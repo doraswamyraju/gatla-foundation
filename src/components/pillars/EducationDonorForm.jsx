@@ -21,34 +21,43 @@ const EducationDonorForm = ({ onClose }) => {
     setLoading(true);
     const finalAmount = customAmount || amount;
     const res = await loadRazorpay();
-    
+
     if (!res) { alert('Razorpay SDK failed.'); setLoading(false); return; }
 
     const options = {
-      key: "rzp_test_RuKdTFadwm3UGT", 
+      key: "rzp_test_RuKdTFadwm3UGT",
       amount: finalAmount * 100, currency: "INR",
       name: "Gatla Education", description: "Education Support",
       handler: async function (response) {
         try {
           const isLocal = window.location.hostname === 'localhost';
-          const apiUrl = isLocal ? 'http://localhost/gatla-foundation/api/submit_education_donor.php' : 'https://gatlafoundation.org/api/submit_education_donor.php';
-          
-          await fetch(apiUrl, {
+          // UPDATED: Point to process_donation.php for Email Receipts
+          const apiUrl = isLocal ? 'http://localhost/gatla-foundation/api/process_donation.php' : 'https://gatlafoundation.org/api/process_donation.php';
+
+          const result = await fetch(apiUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               payment_id: response.razorpay_payment_id,
               amount: finalAmount,
-              full_name: donor.full_name,
-              email_id: donor.email_id,
-              phone_no: donor.phone_no,
-              pan_no: donor.pan_no,
-              support_purpose: "Support Gatla Education Club"
+              // MAPPED FIELDS FOR PROCESS_DONATION.PHP
+              name: donor.full_name,
+              email: donor.email_id,
+              phone: donor.phone_no,
+              pan: donor.pan_no,
+              club: 'education'
             })
-          });
-          setSuccess(true);
-          setTimeout(onClose, 3000);
-        } catch (error) { alert("Server error"); }
+          }).then(res => res.json());
+
+          if (result.status === 'success') {
+            // Alert any warnings (like Email Error)
+            if (result.message && result.message.includes("Email")) alert(result.message);
+            setSuccess(true);
+            setTimeout(onClose, 3000);
+          } else {
+            alert("Server Error: " + result.message);
+          }
+        } catch (error) { alert("Network error: " + error.message); }
         setLoading(false);
       },
       prefill: { name: donor.full_name, email: donor.email_id, contact: donor.phone_no },
@@ -57,13 +66,13 @@ const EducationDonorForm = ({ onClose }) => {
     new window.Razorpay(options).open();
   };
 
-  if (success) return <div className="p-12 text-center text-white"><CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4"/><h3>Donation Successful!</h3></div>;
+  if (success) return <div className="p-12 text-center text-white"><CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" /><h3>Donation Successful!</h3></div>;
 
   return (
     <div className="flex flex-col bg-[#0B1120] text-white h-full">
       <div className="px-8 py-6 border-b border-slate-800"><h2 className="text-2xl font-bold text-green-500">Education Donor</h2></div>
       <form onSubmit={handlePayment} className="flex-1 overflow-y-auto p-8 space-y-6">
-        
+
         {/* Amounts */}
         <div className="grid grid-cols-3 gap-3">
           {[500, 1000, 2000, 5000].map(amt => (
@@ -79,14 +88,14 @@ const EducationDonorForm = ({ onClose }) => {
 
         {/* Inputs */}
         <div className="space-y-4">
-          <input type="text" placeholder="Full Name *" required className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3" onChange={e => setDonor({...donor, full_name: e.target.value})}/>
-          <input type="email" placeholder="Email *" required className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3" onChange={e => setDonor({...donor, email_id: e.target.value})}/>
-          <input type="tel" placeholder="Phone *" required className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3" onChange={e => setDonor({...donor, phone_no: e.target.value})}/>
-          <input type="text" placeholder="PAN Number *" required className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3 uppercase" maxLength={10} onChange={e => setDonor({...donor, pan_no: e.target.value})}/>
+          <input type="text" placeholder="Full Name *" required className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3" onChange={e => setDonor({ ...donor, full_name: e.target.value })} />
+          <input type="email" placeholder="Email *" required className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3" onChange={e => setDonor({ ...donor, email_id: e.target.value })} />
+          <input type="tel" placeholder="Phone *" required className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3" onChange={e => setDonor({ ...donor, phone_no: e.target.value })} />
+          <input type="text" placeholder="PAN Number *" required className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3 uppercase" maxLength={10} onChange={e => setDonor({ ...donor, pan_no: e.target.value })} />
         </div>
 
         <button type="submit" disabled={loading} className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2">
-          {loading ? <Loader2 className="animate-spin"/> : `Donate ₹${customAmount || amount}`}
+          {loading ? <Loader2 className="animate-spin" /> : `Donate ₹${customAmount || amount}`}
         </button>
       </form>
     </div>
