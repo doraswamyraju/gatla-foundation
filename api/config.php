@@ -11,11 +11,11 @@ else if (file_exists(__DIR__ . '/db_env.php')) {
     include(__DIR__ . '/db_env.php');
 } 
 else {
-    // FALLBACK DEFAULTS
+    // FALLBACK / PRODUCTION CREDENTIALS (Restored)
     define('DB_SERVER', 'localhost');
-    define('DB_USERNAME', 'root');
-    define('DB_PASSWORD', '');
-    define('DB_NAME', 'gatla_foundation');
+    define('DB_USERNAME', 'rajugda1_gf'); 
+    define('DB_PASSWORD', 'BOHPM6139n@');
+    define('DB_NAME', 'rajugda1_gatla_foundation');
 }
 
 // 2. Connect to Database
