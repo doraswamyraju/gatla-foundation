@@ -33,19 +33,14 @@ foreach ($tables as $t) {
             phone_no as phone, 
             email_id as email, 
             address, 
-            aadhaar_no as aadhar,
-            pan_card_no as pan, /* Making sure PAN is here too */
+            aadhaar_no as aadhar,          
             qualification, 
             occupation, 
-            availability,       /* NEW */
-            preferred_time,     /* NEW */
-            aadhaar_path,       /* NEW */
-            photo_path,         /* NEW */
-            '$t' as source_table, 
-            club_preference,
+            '$t' as source_table, /* Useful for debugging or specific actions */
+            club_preference,      /* Ensure this column exists in all tables */
             status, 
             submission_date as date 
-        FROM $t";
+        FROM $t"; // Removed some unused columns for brevity/errors, add if needed: area_of_interest, etc.
     }
 }
 

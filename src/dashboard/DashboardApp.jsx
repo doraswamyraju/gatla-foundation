@@ -27,37 +27,13 @@ import CricketPlayerForm from '../pages/forms/CricketPlayerForm'; // Added
 const BlogManager = ({ posts, onSave, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentPost, setCurrentPost] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
-  const [loading, setLoading] = useState(false);
 
-  const handleEdit = (post) => {
-    setCurrentPost(post);
-    setImageFile(null);
-    setIsEditing(true);
-  };
+  const handleEdit = (post) => { setCurrentPost(post); setIsEditing(true); };
+  const handleNew = () => { setCurrentPost({ title: '', content: '', category: 'General', status: 'Draft' }); setIsEditing(true); };
 
-  const handleNew = () => {
-    setCurrentPost({ title: '', content: '', category: 'General', status: 'Draft' });
-    setImageFile(null);
-    setIsEditing(true);
-  };
-
-  const handleSavePost = async (e) => {
+  const handleSavePost = (e) => {
     e.preventDefault();
-    setLoading(true);
-    // Prepare FormData
-    const formData = new FormData();
-    if (currentPost.id) formData.append('id', currentPost.id);
-    formData.append('title', currentPost.title);
-    formData.append('content', currentPost.content);
-    formData.append('category', currentPost.category);
-    formData.append('status', currentPost.status);
-    if (imageFile) {
-      formData.append('image', imageFile);
-    }
-
-    await onSave(formData);
-    setLoading(false);
+    onSave(currentPost);
     setIsEditing(false);
   };
 
@@ -69,51 +45,16 @@ const BlogManager = ({ posts, onSave, onDelete }) => {
           <button onClick={() => setIsEditing(false)} className="text-slate-500 hover:text-slate-700">Cancel</button>
         </div>
         <form onSubmit={handleSavePost} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">Title</label>
-              <input type="text" className="w-full border border-slate-300 rounded-lg p-3 outline-none" value={currentPost.title} onChange={(e) => setCurrentPost({ ...currentPost, title: e.target.value })} required />
-            </div>
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">Category</label>
-              <select className="w-full border border-slate-300 rounded-lg p-3 outline-none" value={currentPost.category} onChange={(e) => setCurrentPost({ ...currentPost, category: e.target.value })}>
-                <option value="General">General</option>
-                <option value="Events">Events</option>
-                <option value="Awards">Awards</option>
-                <option value="Impact">Impact</option>
-              </select>
-            </div>
+          <div>
+            <label className="block text-sm font-bold text-slate-700 mb-2">Title</label>
+            <input type="text" className="w-full border border-slate-300 rounded-lg p-3 outline-none" value={currentPost.title} onChange={(e) => setCurrentPost({ ...currentPost, title: e.target.value })} required />
           </div>
-
           <div>
             <label className="block text-sm font-bold text-slate-700 mb-2">Content</label>
             <textarea className="w-full border border-slate-300 rounded-lg p-3 h-64 outline-none" value={currentPost.content} onChange={(e) => setCurrentPost({ ...currentPost, content: e.target.value })} required />
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">Status</label>
-              <select className="w-full border border-slate-300 rounded-lg p-3 outline-none" value={currentPost.status} onChange={(e) => setCurrentPost({ ...currentPost, status: e.target.value })}>
-                <option value="Draft">Draft</option>
-                <option value="Published">Published</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">Featured Image</label>
-              <div className="border border-slate-300 rounded-lg p-3 flex items-center gap-4">
-                <input type="file" onChange={(e) => setImageFile(e.target.files[0])} accept="image/*" />
-                {currentPost.image_path && !imageFile && (
-                  <span className="text-xs text-green-600">Current: {currentPost.image_path}</span>
-                )}
-              </div>
-            </div>
-          </div>
-
           <div className="flex justify-end gap-3">
-            <button type="submit" disabled={loading} className="px-6 py-2 bg-amber-500 text-white font-bold rounded-lg hover:bg-amber-600 flex items-center gap-2">
-              {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-              {loading ? 'Saving...' : 'Publish / Save'}
-            </button>
+            <button type="submit" className="px-6 py-2 bg-amber-500 text-white font-bold rounded-lg hover:bg-amber-600">Publish</button>
           </div>
         </form>
       </div>
@@ -127,21 +68,12 @@ const BlogManager = ({ posts, onSave, onDelete }) => {
         <button onClick={handleNew} className="flex items-center px-4 py-2 bg-slate-900 text-white text-sm font-bold rounded-lg hover:bg-slate-800"><Plus className="w-4 h-4 mr-2" /> New Post</button>
       </div>
       <div className="divide-y divide-slate-100">
-        {!posts || posts.length === 0 ? <p className="p-6 text-center text-slate-400">No blog posts found.</p> : posts.map(post => (
+        {posts.map(post => (
           <div key={post.id} className="p-4 flex items-center justify-between hover:bg-slate-50">
-            <div className="flex items-center gap-4">
-              {post.image_path && <img src={`/gatla-foundation/api/uploads/${post.image_path}`} alt="" className="w-12 h-12 rounded object-cover bg-slate-200" onError={(e) => e.target.style.display = 'none'} />}
-              <div>
-                <h3 className="font-bold text-slate-800">{post.title}</h3>
-                <p className="text-xs text-slate-500">{post.category} • {new Date(post.created_at).toLocaleDateString()}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className={`px-2 py-1 rounded-full text-xs font-bold ${post.status === 'Published' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500'}`}>{post.status}</span>
-              <div className="flex gap-2">
-                <button onClick={() => handleEdit(post)} className="p-2 text-slate-400 hover:text-amber-500"><Edit className="w-4 h-4" /></button>
-                <button onClick={() => onDelete(post.id)} className="p-2 text-slate-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
-              </div>
+            <div><h3 className="font-bold text-slate-800">{post.title}</h3></div>
+            <div className="flex gap-2">
+              <button onClick={() => handleEdit(post)} className="p-2 text-slate-400 hover:text-amber-500"><Edit className="w-4 h-4" /></button>
+              <button onClick={() => onDelete(post.id)} className="p-2 text-slate-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
             </div>
           </div>
         ))}
@@ -424,13 +356,6 @@ const DashboardApp = () => {
         if (data.status === 'success') {
           setDashboardStats(data.data);
         }
-      } else if (activeTab === 'blog-manager') {
-        const res = await fetch(`${apiUrl}/get_blogs.php`);
-        const data = await res.json();
-        // Since get_blogs returns an array directly, we use it. 
-        // If it returned {status: success, data: []} we would need to adjust.
-        // Based on my get_blogs.php, it returns JSON array.
-        setAppData(prev => ({ ...prev, 'blog-posts': data }));
       } else if (activeTab === 'volunteer-form') {
         const res = await fetch(`${apiUrl}/get_general_volunteers.php`);
         const data = await res.json();
@@ -563,43 +488,7 @@ const DashboardApp = () => {
         </header>
         <main className="flex-1 p-6 overflow-hidden flex flex-col overflow-y-auto">
           {activeTab === 'dashboard' ? (<DashboardStats stats={dashboardStats} />)
-            : activeTab === 'blog-manager' ? (
-              <BlogManager
-                posts={appData['blog-posts'] || []}
-                onSave={async (formData) => {
-                  try {
-                    const response = await fetch(`${apiUrl}/submit_blog.php`, { method: 'POST', body: formData });
-                    const result = await response.json();
-                    if (result.status === 'success') { alert("Saved successfully!"); fetchData(); }
-                    else { alert("Error: " + result.message); }
-                  } catch (error) { alert("Network Error"); }
-                }}
-                onDelete={async (id) => {
-                  if (!window.confirm("Delete this post?")) return;
-                  try {
-                    const response = await fetch(`${apiUrl}/delete_common.php`, {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ id: id, type: 'blog-post' }) // Note: need to support blog-post in delete_common or create specific delete
-                    });
-                    // Assuming delete_common is generic enough or I should update it. 
-                    // For now let's hope delete_common handles table logic dynamically or I will create a specific delete function for blogs if needed.
-                    // Actually better to use a specific delete logic here given delete_common implementation is unknown to me fully. 
-                    // Let's assume delete_common checks 'type' and maps to table.
-                    // I'll create a delete_blog.php or modify delete_common if I could, but wait, I can just use a simple fetch here if I had a delete endpoint.
-                    // Let's assume for now I should use a new endpoint for safety or simply try `delete_common`.
-
-                    // Revised strategy: Use a dedicated delete call here if delete_common is complex.
-                    // I will update delete_common later if it fails. For now let's stick to the pattern.
-                    // Actually, looking at file list, delete_common.php exists.
-
-                    const result = await response.json();
-                    if (result.status === 'success') { alert("Deleted!"); fetchData(); }
-                    else { alert("Error: " + result.message); }
-                  } catch (e) { alert("Delete failed"); }
-                }}
-              />
-            )
+            : activeTab === 'blog-manager' ? (<BlogManager posts={appData['blog-posts'] || []} onSave={(post) => console.log(post)} onDelete={() => { }} />)
               : (<DataTable type={activeTab} data={currentData} onRefresh={fetchData} onAdd={() => { setCurrentEditItem(null); setModalOpen(true); }} onEdit={(item) => { setCurrentEditItem(item); setModalOpen(true); }} onDelete={handleDelete} />)}
         </main>
       </div>
