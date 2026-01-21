@@ -19,9 +19,9 @@ if (!file_exists('libs/fpdf/fpdf.php') || !file_exists('libs/PHPMailer/PHPMailer
     $libs_missing = true;
 } else {
     require('libs/fpdf/fpdf.php');
-    require('libs/PHPMailer/Exception.php');
-    require('libs/PHPMailer/PHPMailer.php');
-    require('libs/PHPMailer/SMTP.php');
+    require('libs/PHPMailer/Exception.php'); // Corrected
+    require('libs/PHPMailer/PHPMailer.php'); // Corrected
+    require('libs/PHPMailer/SMTP.php');       // Corrected
 }
 
 use PHPMailer\PHPMailer\PHPMailer;
