@@ -119,8 +119,13 @@ foreach ($donorTables as $tableName => $sql) {
 }
 
 // 3. Add Columns if missing (Safe ALTER)
-$tables = ['cricket_members', 'cricket_players'];
+$tables = ['cricket_members', 'cricket_players', 'donations'];
 $columns = ['aadhaar_path', 'disability_cert_path', 'photo_path'];
+
+// Special check for PAN in donations
+$conn->query("ALTER TABLE `donations` ADD COLUMN `pan_card_no` varchar(20) DEFAULT NULL");
+$conn->query("ALTER TABLE `donations` ADD COLUMN `donor_name` varchar(255) DEFAULT NULL"); // Ensure these exist too
+$conn->query("ALTER TABLE `donations` ADD COLUMN `email_id` varchar(255) DEFAULT NULL");
 
 foreach ($tables as $table) {
     foreach ($columns as $col) {
