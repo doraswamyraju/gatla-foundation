@@ -127,6 +127,8 @@ $columns = ['aadhaar_path', 'disability_cert_path', 'photo_path', 'payment_id'];
 $conn->query("ALTER TABLE `donations` ADD COLUMN `payment_id` varchar(255) DEFAULT NULL");
 // Remove duplicate pan_card_no if it exists (legacy table uses pan_number)
 $conn->query("ALTER TABLE `donations` DROP COLUMN `pan_card_no`");
+// Remove duplicate pan_card_no if it exists (legacy table uses pan_number)
+$conn->query("ALTER TABLE `donations` DROP COLUMN `pan_card_no`");
 
 foreach ($tables as $table) {
     foreach ($columns as $col) {

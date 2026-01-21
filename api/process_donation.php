@@ -76,31 +76,29 @@ if (!$conn) {
 }
 
 // Prepare Column Names based on table
-// 'donations' table has 'email', 'phone'
-// Club tables have 'email_id', 'phone_no'
+// Prepare Column Names based on table
+// 'donations' table has 'email', 'phone', 'pan_number'
+// Club tables have 'email_id', 'phone_no', 'pan_card_no'
 if ($tableName === 'donations') {
     $col_email = 'email';
     $col_phone = 'phone';
+    $col_pan   = 'pan_number';
 } else {
     $col_email = 'email_id';
     $col_phone = 'phone_no';
+    $col_pan   = 'pan_card_no';
 }
 
-// Insert with PAN
-$stmt = $conn->prepare("INSERT INTO $tableName (donor_name, $col_email, $col_phone, pan_card_no, amount) VALUES (?, ?, ?, ?, ?)");
+// Insert with PAN and Payment ID
+$stmt = $conn->prepare("INSERT INTO $tableName (donor_name, $col_email, $col_phone, $col_pan, amount, payment_id) VALUES (?, ?, ?, ?, ?, ?)");
 
 if (!$stmt) {
      logDebug("Prepare Failed: " . $conn->error);
      echo json_encode(["status" => "error", "message" => "Prepare failed: " . $conn->error . ". Hint: Run setup_db.php"]);
      exit;
 }
-// Note: payment_id column might be missing in new tables? 
-// The setup_db.sql did NOT have payment_id. I should stick to columns I created: donor_name, amount, phone_no, email_id, address, pan_card_no.
-// AND submission_date.
-// Wait, I designed the tables without 'payment_id' in my SQL artifact. I should probably add it or just ignore it.
-// The user didn't explicitly ask for payment_id, but good for tracking.
-// I will bind to the columns that DEFINITELY exist.
-$stmt->bind_param("ssssd", $name, $email, $phone, $pan, $amount);
+
+$stmt->bind_param("ssssds", $name, $email, $phone, $pan, $amount, $payment_id);
 
 if ($stmt->execute()) {
     $receiptNo = $stmt->insert_id;
