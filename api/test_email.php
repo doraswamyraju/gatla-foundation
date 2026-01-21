@@ -33,7 +33,7 @@ try {
     
     // UPDATED CREDENTIALS
     $mail->Username   = 'rajugariventures@gmail.com'; 
-    $mail->Password   = 'hkqvcycnylgqhzim'; // <--- PASTE NEW APP PASSWORD
+    $mail->Password   = 'znejpufbvcwqcast'; // <--- PASTE NEW APP PASSWORD
     
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
     $mail->Port       = 465;

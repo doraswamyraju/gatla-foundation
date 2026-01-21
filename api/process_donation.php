@@ -162,12 +162,12 @@ if ($stmt->execute()) {
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com'; 
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'drgatlasrinivasareddy@gmail.com'; 
-        $mail->Password   = 'hkqvcycnylgqhzim'; // App Password
+        $mail->Username   = 'rajugariventures@gmail.com'; 
+        $mail->Password   = 'znejpufbvcwqcast'; // App Password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
     
-        $mail->setFrom('drgatlasrinivasareddy@gmail.com', 'Gatla Foundation');
+        $mail->setFrom('rajugariventures@gmail.com', 'Gatla Foundation');
         $mail->addAddress($email, $name);
     
         $mail->addStringAttachment($pdfContent, "Receipt_$receiptString.pdf");
