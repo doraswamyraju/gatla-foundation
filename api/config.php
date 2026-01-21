@@ -1,14 +1,17 @@
 <?php
 // api/config.php
 
-// 1. Load credentials securely
-// Check if a local environment file exists
-if (file_exists(__DIR__ . '/db_env.php')) {
+// 1. Load Credentials
+// Priority 1: Local Override (Ignored by Git)
+if (file_exists(__DIR__ . '/db_credentials.php')) {
+    require_once __DIR__ . '/db_credentials.php';
+} 
+// Priority 2: Production Defaults (Committed in Git)
+else if (file_exists(__DIR__ . '/db_env.php')) {
     include(__DIR__ . '/db_env.php');
-} else {
-    // FALLBACK / PRODUCTION CREDENTIALS
-    // On cPanel, you can either create a db_env.php manually 
-    // OR edit these lines directly on the server once.
+}
+else {
+    // Priority 3: Hardcoded Fallback (Should not be needed if db_env.php is committed)
     define('DB_SERVER', 'localhost');
     define('DB_USERNAME', 'rajugda1_gf'); 
     define('DB_PASSWORD', 'BOHPM6139n@');

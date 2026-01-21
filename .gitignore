@@ -23,7 +23,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # Database Credentials
-api/db_env.php
+# api/db_env.php is COMMITTED (Production Defaults)
+api/db_credentials.php
 
 # Editor
 .vscode/

@@ -5,6 +5,7 @@ import './App.css';
 // --- 1. CORE IMPORTS ---
 import Navbar from './components/Navbar.jsx';
 import Footer from './components/Footer.jsx';
+import LatestNews from './components/LatestNews.jsx';
 import Home from './pages/Home.jsx';
 import About from './pages/About.jsx';
 import Projects from './pages/Projects.jsx';
@@ -138,6 +139,7 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
                         <About onNavigate={onNavClick} />
                         <Projects onSelectWing={(id) => handleNavigate('Wing', id)} />
                         <Awards />
+                        <LatestNews />
                     </>
                 );
                 break;

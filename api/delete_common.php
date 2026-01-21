@@ -30,7 +30,8 @@ $tableMap = [
     'cricket-player'          => 'cricket_players',
     'cricket-club-member'     => 'cricket_members', // Fixed Mapping
     'music-singer'            => 'music_singers',
-    'business-member'         => 'business_members'
+    'business-member'         => 'business_members',
+    'blog-post'               => 'blog_posts' // Added for Blog Post deletion
 ];
 
 if (!array_key_exists($type, $tableMap)) {
