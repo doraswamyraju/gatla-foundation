@@ -36,7 +36,7 @@ const EducationDonorForm = ({ onClose, initialData, onSaveSuccess }) => {
       const result = await res.json();
 
       if (result.status === 'success') {
-        alert("Donation Saved & Receipt Sent!");
+        alert(result.message); // Show actual backend message (including email errors)
         onSaveSuccess();
         onClose();
       } else {
