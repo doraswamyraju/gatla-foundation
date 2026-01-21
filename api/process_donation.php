@@ -75,8 +75,19 @@ if (!$conn) {
     exit;
 }
 
+// Prepare Column Names based on table
+// 'donations' table has 'email', 'phone'
+// Club tables have 'email_id', 'phone_no'
+if ($tableName === 'donations') {
+    $col_email = 'email';
+    $col_phone = 'phone';
+} else {
+    $col_email = 'email_id';
+    $col_phone = 'phone_no';
+}
+
 // Insert with PAN
-$stmt = $conn->prepare("INSERT INTO $tableName (donor_name, email_id, phone_no, pan_card_no, amount) VALUES (?, ?, ?, ?, ?)");
+$stmt = $conn->prepare("INSERT INTO $tableName (donor_name, $col_email, $col_phone, pan_card_no, amount) VALUES (?, ?, ?, ?, ?)");
 
 if (!$stmt) {
      logDebug("Prepare Failed: " . $conn->error);
