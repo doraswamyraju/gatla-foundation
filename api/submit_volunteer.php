@@ -18,14 +18,9 @@ error_reporting(E_ALL);
 require_once 'config.php';
 
 try {
-    // 4. Input Handling
-    $inputJSON = file_get_contents("php://input");
-    $data = json_decode($inputJSON, true);
-
-    if (!$data) {
-        throw new Exception("No data received");
-    }
-
+    // 4. Input Handling (Switch from JSON to POST/FILES)
+    $data = $_POST;
+    
     // 5. Database Connection (Exception safe)
     try {
         $conn = connectDB();
@@ -46,7 +41,34 @@ try {
     $pan_card_no = $data['pan'] ?? '';
     $qualification = $data['qualification'] ?? '';
     $occupation = $data['occupation'] ?? '';
+    $availability = $data['availability'] ?? '';
+    $preferred_time = $data['preferredTime'] ?? '';
     $club_preference = $data['clubPreference'] ?? 'Education Club';
+
+    // 6a. File Upload Handling
+    $upload_dir = '../uploads/';
+    if (!file_exists($upload_dir)) {
+        mkdir($upload_dir, 0777, true);
+    }
+    
+    $aadhaar_path = '';
+    $photo_path = '';
+
+    // Handle Aadhaar File
+    if (isset($_FILES['aadhaarFile']) && $_FILES['aadhaarFile']['error'] === UPLOAD_ERR_OK) {
+        $tmp_name = $_FILES['aadhaarFile']['tmp_name'];
+        $name = basename($_FILES['aadhaarFile']['name']);
+        $aadhaar_path = 'volunteer_aadhaar_' . time() . '_' . $name;
+        move_uploaded_file($tmp_name, $upload_dir . $aadhaar_path);
+    }
+
+    // Handle Photo File
+    if (isset($_FILES['photoFile']) && $_FILES['photoFile']['error'] === UPLOAD_ERR_OK) {
+        $tmp_name = $_FILES['photoFile']['tmp_name'];
+        $name = basename($_FILES['photoFile']['name']);
+        $photo_path = 'volunteer_photo_' . time() . '_' . $name;
+        move_uploaded_file($tmp_name, $upload_dir . $photo_path);
+    }
 
     // 7. Route to Correct Table
     $tableMap = [
@@ -61,7 +83,8 @@ try {
     $table = $tableMap[$club_preference] ?? 'general_volunteers';
 
     // 8. Prepare Query
-    $sql = "INSERT INTO $table (full_name, father_name, address, phone_no, email_id, aadhaar_no, pan_card_no, qualification, occupation, club_preference, status, submission_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
+    // Updated to include availability, preferred_time, aadhaar_path, photo_path
+    $sql = "INSERT INTO $table (full_name, father_name, address, phone_no, email_id, aadhaar_no, pan_card_no, qualification, occupation, availability, preferred_time, aadhaar_path, photo_path, club_preference, status, submission_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
 
     $stmt = $conn->prepare($sql);
 
@@ -70,7 +93,8 @@ try {
         throw new Exception("Prepare failed: " . $conn->error);
     }
 
-    $stmt->bind_param("ssssssssss", $full_name, $father_name, $address, $phone_no, $email_id, $aadhaar_no, $pan_card_no, $qualification, $occupation, $club_preference);
+    // Bind 14 parameters (ssssssssssssss)
+    $stmt->bind_param("ssssssssssssss", $full_name, $father_name, $address, $phone_no, $email_id, $aadhaar_no, $pan_card_no, $qualification, $occupation, $availability, $preferred_time, $aadhaar_path, $photo_path, $club_preference);
 
     if ($stmt->execute()) {
         $response = ["status" => "success", "message" => "Application submitted successfully for $club_preference"];

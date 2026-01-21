@@ -60,11 +60,12 @@ export const FORM_SCHEMAS = {
     { name: 'occupation', label: 'Occupation', type: 'text' },
     { name: 'interest', label: 'Area of Interest', type: 'select', options: ['Education', 'Sports', 'Music', 'Business', 'General Help'] },
     // NEW: Requested Availability Options
-    { name: 'availability', label: 'General Availability', type: 'select', options: ['Weekdays', 'Weekends', 'Events Only'] },
+    { name: 'availability', label: 'Availability', type: 'text' },
     // NEW: Dynamic Date/Time
-    { name: 'preferredTime', label: 'Preferred Date/Time', type: 'datetime-local' },
+    { name: 'preferred_time', label: 'Preferred Time', type: 'text' },
     // NEW: File Upload
-    { name: 'document', label: 'Upload Document (Aadhar/Photo)', type: 'file' }
+    { name: 'aadhaar_path', label: 'Aadhaar Card', type: 'file' },
+    { name: 'photo_path', label: 'Photo', type: 'file' }
   ],
 
   // --- 2. CRICKET CLUB ---

@@ -5,8 +5,10 @@ const VolunteerForm = ({ onClose, initialData }) => {
   const [formData, setFormData] = useState({
     fullName: '', fatherName: '', address: '', phone: '', email: '',
     aadhar: '', pan: '', qualification: '', occupation: '',
+    availability: '', preferredTime: '', // NEW FIELDS
     clubPreference: 'Education Club'
   });
+  const [files, setFiles] = useState({ aadhaarFile: null, photoFile: null }); // NEW STATE FOR FILES
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -23,23 +25,30 @@ const VolunteerForm = ({ onClose, initialData }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e) => {
+    setFiles({ ...files, [e.target.name]: e.target.files[0] });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
+    // switch to FormData for file upload
+    const payload = new FormData();
+    Object.keys(formData).forEach(key => payload.append(key, formData[key]));
+    if (files.aadhaarFile) payload.append('aadhaarFile', files.aadhaarFile);
+    if (files.photoFile) payload.append('photoFile', files.photoFile);
+
     try {
-      // 1. Make Request
       const response = await fetch(`${process.env.REACT_APP_API_URL}/submit_volunteer.php`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        // headers: { 'Content-Type': 'multipart/form-data' }, // DO NOT SET CONTENT-TYPE MANUALLY WITH FORMDATA
+        body: payload
       });
 
-      // 2. Get Raw Text (To debug HTML errors)
       const text = await response.text();
 
       try {
-        // 3. Attempt to Parse JSON
         const result = JSON.parse(text);
 
         if (result.status === 'success') {
@@ -47,13 +56,10 @@ const VolunteerForm = ({ onClose, initialData }) => {
           if (onClose) onClose();
           else window.location.reload();
         } else {
-          // Show specific database error
           alert("Error: " + result.message);
         }
       } catch (jsonError) {
-        // 4. If JSON parse fails, it means PHP crashed. Show the HTML error.
         console.error("Server Crash:", text);
-        // Strip HTML tags for a cleaner alert
         const cleanError = text.replace(/<[^>]*>?/gm, '').substring(0, 200);
         alert("Server Error: " + cleanError);
       }
@@ -111,6 +117,29 @@ const VolunteerForm = ({ onClose, initialData }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input required name="qualification" value={formData.qualification} placeholder="Qualification" onChange={handleChange} className="bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-amber-500 outline-none" />
             <input required name="occupation" value={formData.occupation} placeholder="Occupation" onChange={handleChange} className="bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-amber-500 outline-none" />
+          </div>
+
+          {/* NEW FIELDS: Availability & Files */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs text-slate-400 mb-1">Availability (Days/Hours)</label>
+              <input required name="availability" value={formData.availability} placeholder="e.g. Weekends, 10am-5pm" onChange={handleChange} className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-amber-500 outline-none" />
+            </div>
+            <div>
+              <label className="block text-xs text-slate-400 mb-1">Preferred Date/Time</label>
+              <input type="datetime-local" name="preferredTime" value={formData.preferredTime} onChange={handleChange} className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-amber-500 outline-none" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs text-slate-400 mb-1">Upload Aadhaar (PDF/Image)</label>
+              <input type="file" name="aadhaarFile" accept="image/*,.pdf" onChange={handleFileChange} className="w-full bg-slate-900 border border-slate-700 text-slate-300 p-2 rounded-lg text-sm" />
+            </div>
+            <div>
+              <label className="block text-xs text-slate-400 mb-1">Passport Size Photo</label>
+              <input type="file" name="photoFile" accept="image/*" onChange={handleFileChange} className="w-full bg-slate-900 border border-slate-700 text-slate-300 p-2 rounded-lg text-sm" />
+            </div>
           </div>
 
           <button type="submit" disabled={loading} className="w-full bg-amber-500 text-slate-900 font-bold py-3 rounded-lg hover:bg-amber-400 transition-all flex justify-center items-center gap-2">
