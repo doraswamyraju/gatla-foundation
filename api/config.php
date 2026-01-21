@@ -7,15 +7,11 @@ if (file_exists(__DIR__ . '/db_credentials.php')) {
     require_once __DIR__ . '/db_credentials.php';
 } 
 // Priority 2: Old db_env.php (Legacy/Local)
-else if (file_exists(__DIR__ . '/db_env.php')) {
-    include(__DIR__ . '/db_env.php');
-} 
 else {
-    // FALLBACK / PRODUCTION CREDENTIALS (Restored)
-    define('DB_SERVER', 'localhost');
-    define('DB_USERNAME', 'rajugda1_gf'); 
-    define('DB_PASSWORD', 'BOHPM6139n@');
-    define('DB_NAME', 'rajugda1_gatla_foundation');
+    // Priority 2: Standard Environment File (Committed with Production Defaults)
+    if (file_exists(__DIR__ . '/db_env.php')) {
+        include(__DIR__ . '/db_env.php');
+    }
 }
 
 // 2. Connect to Database
