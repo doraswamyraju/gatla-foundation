@@ -224,11 +224,7 @@ const App = () => {
                 handleNavigate={handleNavigate}
                 handleOpenForm={handleOpenForm}
             />
-            <FormModal
-                isOpen={isFormModalOpen}
-                categoryId={activeFormId}
-                onClose={handleCloseForm}
-            />
+
             {isFormModalOpen && activeFormId === 'volunteer-form' && (
                 <VolunteerForm onClose={handleCloseForm} />
             )}
