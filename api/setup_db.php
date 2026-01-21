@@ -130,6 +130,10 @@ $conn->query("ALTER TABLE `donations` DROP COLUMN `pan_card_no`");
 // Remove duplicate pan_card_no if it exists (legacy table uses pan_number)
 $conn->query("ALTER TABLE `donations` DROP COLUMN `pan_card_no`");
 
+// FIX EDUCATION TABLE SCHEMA (Standardize to donor_name / pan_card_no)
+$conn->query("ALTER TABLE `education_donors` CHANGE `full_name` `donor_name` VARCHAR(255)");
+$conn->query("ALTER TABLE `education_donors` CHANGE `pan_no` `pan_card_no` VARCHAR(20)");
+
 foreach ($tables as $table) {
     foreach ($columns as $col) {
         $check = $conn->query("SHOW COLUMNS FROM `$table` LIKE '$col'");

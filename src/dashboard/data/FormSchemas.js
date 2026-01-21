@@ -90,9 +90,39 @@ export const FORM_SCHEMAS = {
     { name: 'status', label: 'Status', type: 'text' }
   ],
   'education-donor': [
-    { name: 'full_name', label: 'Donor', type: 'text' },
+    { name: 'donor_name', label: 'Donor', type: 'text' },
     { name: 'amount', label: 'Amount', type: 'text' },
     { name: 'payment_id', label: 'Txn ID', type: 'text' },
+    { name: 'email_id', label: 'Email', type: 'text' },
+    { name: 'phone_no', label: 'Phone', type: 'text' },
+    { name: 'pan_card_no', label: 'PAN', type: 'text' },
+    { name: 'status', label: 'Status', type: 'text' }
+  ],
+  'cricket-donor': [
+    { name: 'donor_name', label: 'Donor', type: 'text' },
+    { name: 'amount', label: 'Amount', type: 'text' },
+    { name: 'payment_id', label: 'Txn ID', type: 'text' },
+    { name: 'email_id', label: 'Email', type: 'text' },
+    { name: 'phone_no', label: 'Phone', type: 'text' },
+    { name: 'pan_card_no', label: 'PAN', type: 'text' },
+    { name: 'status', label: 'Status', type: 'text' }
+  ],
+  'music-donor': [
+    { name: 'donor_name', label: 'Donor', type: 'text' },
+    { name: 'amount', label: 'Amount', type: 'text' },
+    { name: 'payment_id', label: 'Txn ID', type: 'text' },
+    { name: 'email_id', label: 'Email', type: 'text' },
+    { name: 'phone_no', label: 'Phone', type: 'text' },
+    { name: 'pan_card_no', label: 'PAN', type: 'text' },
+    { name: 'status', label: 'Status', type: 'text' }
+  ],
+  'business-donor': [
+    { name: 'donor_name', label: 'Donor', type: 'text' },
+    { name: 'amount', label: 'Amount', type: 'text' },
+    { name: 'payment_id', label: 'Txn ID', type: 'text' },
+    { name: 'email_id', label: 'Email', type: 'text' },
+    { name: 'phone_no', label: 'Phone', type: 'text' },
+    { name: 'pan_card_no', label: 'PAN', type: 'text' },
     { name: 'status', label: 'Status', type: 'text' }
   ],
 
