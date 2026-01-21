@@ -322,6 +322,18 @@ const DashboardApp = () => {
         const res = await fetch(`${apiUrl}/get_cricket_players.php`);
         const data = await res.json();
         setAppData(prev => ({ ...prev, 'cricket-player': data }));
+      } else if (activeTab === 'cricket-donor') {
+        const res = await fetch(`${apiUrl}/get_cricket_donors.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'cricket-donor': data }));
+      } else if (activeTab === 'music-donor') {
+        const res = await fetch(`${apiUrl}/get_music_donors.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'music-donor': data }));
+      } else if (activeTab === 'business-donor') {
+        const res = await fetch(`${apiUrl}/get_business_donors.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'business-donor': data }));
       } else {
         const res = await fetch(`${apiUrl}/get_dashboard_data.php`);
         try {
