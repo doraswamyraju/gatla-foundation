@@ -28,6 +28,7 @@ $tableMap = [
     
     // Future Clubs (Add them here when you build them)
     'cricket-player'          => 'cricket_players',
+    'cricket-club-member'     => 'cricket_members', // Fixed Mapping
     'music-singer'            => 'music_singers',
     'business-member'         => 'business_members'
 ];

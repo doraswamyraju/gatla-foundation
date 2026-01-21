@@ -64,10 +64,11 @@ const CricketClub = ({ onNavigate }) => {
 
               <div className="space-y-4">
                 {[
-                  { name: "Player Form", icon: User, target: "cricket-player" },
                   { name: "Club Member Form", icon: User, target: "cricket-club-member" },
+                  { name: "Player Form", icon: User, target: "cricket-player" },
                   { name: "Umpire Form", icon: FileText, target: "cricket-umpire" },
                   { name: "Volunteer Form", icon: User, target: "volunteer-form" },
+                  { name: "Supporter Form", icon: User, target: "cricket-supporter" }, // Placeholder target
                   { name: "Donor Form", icon: Gift, target: "cricket-donor" },
                 ].map((form, index) => (
                   <button

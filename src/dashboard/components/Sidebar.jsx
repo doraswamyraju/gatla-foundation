@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { 
-  LayoutDashboard, Users, DollarSign, Trophy, BookOpen, 
-  Music, Briefcase, Award, PenTool, LogOut, ChevronUp, ChevronDown 
+import {
+  LayoutDashboard, Users, DollarSign, Trophy, BookOpen,
+  Music, Briefcase, Award, PenTool, LogOut, ChevronUp, ChevronDown
 } from 'lucide-react';
 
 const SidebarGroup = ({ title, icon, id, forms, activeTab, setActiveTab, isOpen, toggleOpen }) => {
   return (
     <div className="mb-2">
-      <button 
+      <button
         onClick={() => toggleOpen(id)}
         className={`w-full flex items-center justify-between px-4 py-3 text-sm font-medium transition-colors hover:text-white hover:bg-slate-800 ${isOpen ? 'text-white' : 'text-slate-400'}`}
       >
@@ -17,18 +17,17 @@ const SidebarGroup = ({ title, icon, id, forms, activeTab, setActiveTab, isOpen,
         </div>
         {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
       </button>
-      
+
       {isOpen && (
         <div className="bg-slate-900/50 py-1">
           {forms.map(form => (
             <button
               key={form.id}
               onClick={() => setActiveTab(form.id)}
-              className={`w-full text-left pl-12 pr-4 py-2 text-xs transition-colors ${
-                activeTab === form.id 
-                  ? 'text-amber-500 font-bold border-r-2 border-amber-500 bg-slate-800' 
+              className={`w-full text-left pl-12 pr-4 py-2 text-xs transition-colors ${activeTab === form.id
+                  ? 'text-amber-500 font-bold border-r-2 border-amber-500 bg-slate-800'
                   : 'text-slate-500 hover:text-slate-300'
-              }`}
+                }`}
             >
               {form.label}
             </button>
@@ -42,12 +41,12 @@ const SidebarGroup = ({ title, icon, id, forms, activeTab, setActiveTab, isOpen,
 const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout }) => {
   // All groups are FALSE (closed) by default
   const [openGroups, setOpenGroups] = useState({
-    general: false, 
-    cricket: false, 
-    education: false, 
-    music: false, 
-    business: false, 
-    awards: false, 
+    general: false,
+    cricket: false,
+    education: false,
+    music: false,
+    business: false,
+    awards: false,
     finance: false
   });
 
@@ -56,76 +55,84 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout 
   // UPDATED STRUCTURE: Preserved Finance/General, Reordered & Renamed Clubs
   const navStructure = [
     // 1. Admin / General Modules (Kept at top for standard access)
-    { 
-      id: 'finance', 
-      title: 'Donations', 
-      icon: <DollarSign className="w-5 h-5 text-emerald-400" />, 
-      forms: [{ id: 'donations-list', label: 'All Donations' }] 
+    {
+      id: 'finance',
+      title: 'Donations',
+      icon: <DollarSign className="w-5 h-5 text-emerald-400" />,
+      forms: [{ id: 'donations-list', label: 'All Donations' }]
     },
-    { 
-      id: 'general', 
-      title: 'General', 
-      icon: <Users className="w-5 h-5 text-slate-200" />, 
-      forms: [{ id: 'volunteer-form', label: 'Volunteer Applications' }] 
+    {
+      id: 'general',
+      title: 'General',
+      icon: <Users className="w-5 h-5 text-slate-200" />,
+      forms: [{ id: 'volunteer-form', label: 'Volunteer Applications' }]
     },
 
     // 2. Gatla Education Club
-    { 
-      id: 'education', 
-      title: 'Gatla Education Club', 
-      icon: <BookOpen className="w-5 h-5 text-green-400" />, 
+    {
+      id: 'education',
+      title: 'Gatla Education Club',
+      icon: <BookOpen className="w-5 h-5 text-green-400" />,
       forms: [
-        { id: 'education-student', label: 'Student Form' }, 
+        { id: 'education-student', label: 'Student Form' },
         { id: 'education-scriber', label: 'Scriber Form' },
         { id: 'education-volunteer', label: 'Volunteer Form' }, // Added
         { id: 'education-donor', label: 'Donor Form' }
-      ] 
+      ]
     },
 
     // 3. Gatla Cricket Club
-    { 
-      id: 'cricket', 
-      title: 'Gatla Cricket Club', 
-      icon: <Trophy className="w-5 h-5 text-blue-400" />, 
+    {
+      id: 'cricket',
+      title: 'Gatla Cricket Club',
+      icon: <Trophy className="w-5 h-5 text-blue-400" />,
       forms: [
-        { id: 'cricket-club-member', label: 'Club Member Form' }, 
-        { id: 'cricket-player', label: 'Player Form' }, 
-        { id: 'cricket-umpire', label: 'Umpire Form' }
-      ] 
+        { id: 'cricket-club-member', label: 'Club Member Form' },
+        { id: 'cricket-player', label: 'Player Form' },
+        { id: 'cricket-umpire', label: 'Umpire Form' },
+        { id: 'cricket-volunteer', label: 'Volunteer Form' }, // Added
+        { id: 'cricket-supporter', label: 'Supporter Form' }, // Added
+        { id: 'cricket-donor', label: 'Donor Form' }          // Added
+      ]
     },
 
     // 4. Gatla Music Club
-    { 
-      id: 'music', 
-      title: 'Gatla Music Club', 
-      icon: <Music className="w-5 h-5 text-purple-400" />, 
+    {
+      id: 'music',
+      title: 'Gatla Music Club',
+      icon: <Music className="w-5 h-5 text-purple-400" />,
       forms: [
-        { id: 'music-member', label: 'Member Form' }, 
-        { id: 'music-singer', label: 'Singer Form' }, 
-        { id: 'music-judge', label: 'Judge Form' }
-      ] 
+        { id: 'music-member', label: 'Member Form' },
+        { id: 'music-singer', label: 'Singer Form' },
+        { id: 'music-judge', label: 'Judge Form' },
+        { id: 'music-supporter', label: 'Supporter Form' }, // Added
+        { id: 'music-stipend', label: 'Stipend Form' },    // Added
+        { id: 'music-donor', label: 'Donor Form' }          // Added
+      ]
     },
 
     // 5. Gatla Business Club
-    { 
-      id: 'business', 
-      title: 'Gatla Business Club', 
-      icon: <Briefcase className="w-5 h-5 text-red-400" />, 
+    {
+      id: 'business',
+      title: 'Gatla Business Club',
+      icon: <Briefcase className="w-5 h-5 text-red-400" />,
       forms: [
-        { id: 'business-member', label: 'Club Member Form' }, 
-        { id: 'business-entrepreneur', label: 'Entrepreneur Form' }
-      ] 
+        { id: 'business-member', label: 'Club Member Form' },
+        { id: 'business-entrepreneur', label: 'Entrepreneur Form' },
+        { id: 'business-supporter', label: 'Supporter Form' }, // Added
+        { id: 'business-donor', label: 'Donor Form' }          // Added
+      ]
     },
 
     // 6. Gatla Awards
-    { 
-      id: 'awards', 
-      title: 'Gatla Awards', 
-      icon: <Award className="w-5 h-5 text-amber-400" />, 
+    {
+      id: 'awards',
+      title: 'Gatla Awards',
+      icon: <Award className="w-5 h-5 text-amber-400" />,
       forms: [
-        { id: 'awards-nomination', label: 'Nomination Form' }, 
+        { id: 'awards-nomination', label: 'Nomination Form' },
         { id: 'awards-sponsor', label: 'Sponsor Form' }
-      ] 
+      ]
     }
   ];
 

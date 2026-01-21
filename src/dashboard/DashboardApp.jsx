@@ -169,7 +169,7 @@ const ModalWrapper = ({ title, children }) => (
 );
 
 // --- 3. DATA TABLE ---
-const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
+const DataTable = ({ type, data, onAdd, onEdit, onDelete, onRefresh }) => {
   const schema = FORM_SCHEMAS[type] || FORM_SCHEMAS['volunteer-form'];
   const getFieldKey = (field) => field.name || field.key;
   // REMOVED SLICE TO SHOW ALL COLUMNS
@@ -209,6 +209,11 @@ const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
       <div className="p-6 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-4">
         <div><h2 className="text-lg font-bold text-slate-800 capitalize">{type.replace(/-/g, ' ')}</h2><p className="text-sm text-slate-500">{data.length} records found</p></div>
         <div className="flex gap-2">
+          {onRefresh && (
+            <button onClick={onRefresh} className="flex items-center px-3 py-2 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded border border-blue-200" title="Refresh Data">
+              <Loader2 className="w-4 h-4 mr-1" /> Refresh
+            </button>
+          )}
           {type !== 'donations-list' && (<button onClick={onAdd} className="flex items-center px-4 py-2 text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-lg transition-colors"><Plus className="w-4 h-4 mr-2" /> Add New</button>)}
           <div className="h-8 w-px bg-slate-200 mx-2"></div>
           <button onClick={handleExportExcel} className="flex items-center px-3 py-2 text-xs font-bold text-green-700 bg-green-50 hover:bg-green-100 rounded border border-green-200"><FileSpreadsheet className="w-4 h-4 mr-1" /> Excel</button>
@@ -386,7 +391,7 @@ const DashboardApp = () => {
         <main className="flex-1 p-6 overflow-hidden flex flex-col">
           {activeTab === 'dashboard' ? (<div className="p-10 text-center text-slate-500"><h1 className="text-2xl font-bold text-slate-800 mb-2">Welcome Admin</h1></div>)
             : activeTab === 'blog-manager' ? (<BlogManager posts={appData['blog-posts'] || []} onSave={(post) => console.log(post)} onDelete={() => { }} />)
-              : (<DataTable type={activeTab} data={currentData} onAdd={() => { setCurrentEditItem(null); setModalOpen(true); }} onEdit={(item) => { setCurrentEditItem(item); setModalOpen(true); }} onDelete={handleDelete} />)}
+              : (<DataTable type={activeTab} data={currentData} onRefresh={fetchData} onAdd={() => { setCurrentEditItem(null); setModalOpen(true); }} onEdit={(item) => { setCurrentEditItem(item); setModalOpen(true); }} onDelete={handleDelete} />)}
         </main>
       </div>
       <FormModal isOpen={modalOpen} onClose={() => setModalOpen(false)} categoryId={activeTab} initialData={currentEditItem} onSaveSuccess={() => { fetchData(); setModalOpen(false); }} onGenericSave={handleGenericSave} isSaving={isSaving} />
