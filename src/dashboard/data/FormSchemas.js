@@ -13,6 +13,20 @@ export const FORM_SCHEMAS = {
   ],
 
   // --- 1. GENERAL FORMS (Navbar & Hero) ---
+  'supporter-form': [
+    { name: 'full_name', label: 'Full Name', type: 'text' },
+    { name: 'father_name', label: 'Father Name', type: 'text' },
+    { name: 'address', label: 'Address', type: 'textarea' },
+    { name: 'phone_no', label: 'Phone', type: 'tel' },
+    { name: 'email_id', label: 'Email', type: 'email' },
+    { name: 'aadhaar_no', label: 'Aadhaar', type: 'text' },
+    { name: 'pan_card_no', label: 'PAN', type: 'text' },
+    { name: 'qualification', label: 'Qualification', type: 'text' },
+    { name: 'occupation', label: 'Occupation', type: 'text' },
+    { name: 'areas_of_interest', label: 'Interests', type: 'text' },
+    { name: 'support_mode', label: 'Support Mode', type: 'text' },
+    { name: 'status', label: 'Status', type: 'text' }
+  ],
   'volunteer-form': [
     { name: 'fullName', label: 'Full Name', type: 'text', required: true },
     { name: 'fatherName', label: 'Father Name', type: 'text', required: true },
