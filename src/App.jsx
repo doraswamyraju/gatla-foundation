@@ -9,6 +9,7 @@ import Home from './pages/Home.jsx';
 import About from './pages/About.jsx';
 import Projects from './pages/Projects.jsx';
 import Awards from './pages/Awards.jsx';
+import LatestNews from './components/LatestNews.jsx'; // ADDED
 import EducationClub from './pages/EducationClub.jsx';
 import CricketClub from './pages/CricketClub.jsx';
 import MusicClub from './pages/MusicClub.jsx';
@@ -138,6 +139,7 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
                         <About onNavigate={onNavClick} />
                         <Projects onSelectWing={(id) => handleNavigate('Wing', id)} />
                         <Awards />
+                        <LatestNews />
                     </>
                 );
                 break;
