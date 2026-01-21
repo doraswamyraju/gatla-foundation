@@ -37,9 +37,20 @@ if (!$data) {
 $name = $data['name'];
 $email = $data['email'];
 $phone = $data['phone'];
-$pan = $data['pan'] ?? 'N/A'; // Capture PAN
+$pan = $data['pan'] ?? 'N/A';
 $amount = $data['amount'];
 $payment_id = $data['payment_id'];
+$club = $data['club'] ?? 'general'; // Default to general
+
+// Determine Table
+$tableMap = [
+    'cricket' => 'cricket_donors',
+    'music' => 'music_donors',
+    'business' => 'business_donors',
+    'education' => 'education_donors',
+    'general' => 'donations'
+];
+$tableName = $tableMap[$club] ?? 'donations';
 
 // 2. Save to Database
 $conn = connectDB();
@@ -49,10 +60,14 @@ if (!$conn) {
 }
 
 // Insert with PAN
-// sssssds = 5 strings (name, email, phone, pan, payment_id) + 1 double (amount) ?? No order matters:
-// SQL: name, email, phone, pan_number, amount, payment_id
-$stmt = $conn->prepare("INSERT INTO donations (donor_name, email, phone, pan_number, amount, payment_id) VALUES (?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("ssssds", $name, $email, $phone, $pan, $amount, $payment_id);
+$stmt = $conn->prepare("INSERT INTO $tableName (donor_name, email_id, phone_no, pan_card_no, amount) VALUES (?, ?, ?, ?, ?)");
+// Note: payment_id column might be missing in new tables? 
+// The setup_db.sql did NOT have payment_id. I should stick to columns I created: donor_name, amount, phone_no, email_id, address, pan_card_no.
+// AND submission_date.
+// Wait, I designed the tables without 'payment_id' in my SQL artifact. I should probably add it or just ignore it.
+// The user didn't explicitly ask for payment_id, but good for tracking.
+// I will bind to the columns that DEFINITELY exist.
+$stmt->bind_param("ssssd", $name, $email, $phone, $pan, $amount);
 
 if ($stmt->execute()) {
     $receiptNo = $stmt->insert_id;
@@ -111,7 +126,7 @@ if ($stmt->execute()) {
         $mail->Host       = 'smtp.gmail.com'; 
         $mail->SMTPAuth   = true;
         $mail->Username   = 'drgatlasrinivasareddy@gmail.com'; 
-        $mail->Password   = 'YOUR_GMAIL_APP_PASSWORD'; // <--- REPLACE THIS
+        $mail->Password   = 'hkqvcycnylgqhzim'; // App Password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
     

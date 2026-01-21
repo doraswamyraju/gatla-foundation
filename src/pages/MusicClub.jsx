@@ -1,5 +1,5 @@
 // src/pages/MusicClub.jsx
-import React from 'react'; 
+import React from 'react';
 import { Music, CheckCircle2, User, FileText, Gift, ArrowRight, Award } from 'lucide-react';
 // Local form imports are removed
 
@@ -10,7 +10,7 @@ const MusicClub = ({ onNavigate }) => {
   return (
     <div className="pt-20 pb-16 bg-[#050914] min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Header and Title */}
         <div className="text-center mb-12 border-b border-slate-700/50 pb-6">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-2">Music Club</h1>
@@ -18,10 +18,10 @@ const MusicClub = ({ onNavigate }) => {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-12">
-          
+
           {/* Main Content Column */}
           <div className="lg:col-span-2 space-y-12">
-            
+
             {/* About The Wing */}
             <div className="bg-[#0B1120] p-8 rounded-lg border border-slate-800 shadow-xl">
               <h2 className={`${accentClass} font-bold tracking-[0.2em] uppercase text-xs mb-3 flex items-center gap-2`}>
@@ -36,7 +36,7 @@ const MusicClub = ({ onNavigate }) => {
             {/* Key Activities */}
             <div className="bg-[#0B1120] p-8 rounded-lg border border-slate-800 shadow-xl">
               <h2 className="text-amber-500 font-bold tracking-[0.2em] uppercase text-xs mb-6">KEY ACTIVITIES</h2>
-              
+
               <div className="grid md:grid-cols-2 gap-6">
                 {[
                   { title: "Club Level Singing Competitions", icon: CheckCircle2 },
@@ -69,12 +69,14 @@ const MusicClub = ({ onNavigate }) => {
                   // TARGETS: These IDs trigger the modal via App.jsx's onNavClick function
                   { name: "Member Form", icon: User, target: "music-member" },
                   { name: "Singer Form", icon: FileText, target: "music-singer" },
-                  { name: "Judge Form", icon: Award, target: "music-judge" }, 
+                  { name: "Judge Form", icon: Award, target: "music-judge" },
+                  { name: "Supporter Form", icon: User, target: "music-supporter" }, // Added
+                  { name: "Stipend Form", icon: FileText, target: "music-stipend" }, // Added
                   { name: "Donor Form", icon: Gift, target: "music-donor" },
                 ].map((form, index) => (
-                  <button 
+                  <button
                     key={index}
-                    onClick={() => onNavigate(form.target)} 
+                    onClick={() => onNavigate(form.target)}
                     className={`w-full flex justify-between items-center bg-[#050914] text-slate-300 p-3 rounded-md border border-slate-800 hover:bg-purple-600 hover:text-white transition group`}
                   >
                     <span className="flex items-center gap-3">

@@ -10,7 +10,7 @@ const BusinessClub = ({ onNavigate }) => {
   return (
     <div className="pt-20 pb-16 bg-[#050914] min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Header and Title */}
         <div className="text-center mb-12 border-b border-slate-700/50 pb-6">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-2">Business Club</h1>
@@ -18,10 +18,10 @@ const BusinessClub = ({ onNavigate }) => {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-12">
-          
+
           {/* Main Content Column */}
           <div className="lg:col-span-2 space-y-12">
-            
+
             {/* About The Wing */}
             <div className="bg-[#0B1120] p-8 rounded-lg border border-slate-800 shadow-xl">
               <h2 className={`${accentClass} font-bold tracking-[0.2em] uppercase text-xs mb-3 flex items-center gap-2`}>
@@ -36,7 +36,7 @@ const BusinessClub = ({ onNavigate }) => {
             {/* Key Activities */}
             <div className="bg-[#0B1120] p-8 rounded-lg border border-slate-800 shadow-xl">
               <h2 className="text-amber-500 font-bold tracking-[0.2em] uppercase text-xs mb-6">KEY ACTIVITIES</h2>
-              
+
               <div className="grid md:grid-cols-2 gap-6">
                 {[
                   { title: "Seminars for Entrepreneurs", icon: CheckCircle2 },
@@ -65,11 +65,12 @@ const BusinessClub = ({ onNavigate }) => {
 
               <div className="space-y-4">
                 {[
-                  { name: "Club Member Form", icon: User, target: "club_member_form" },
-                  { name: "Entrepreneur Form", icon: FileText, target: "entrepreneur_form" },
-                  { name: "Donor Form", icon: Gift, target: "donate" },
+                  { name: "Club Member Form", icon: User, target: "business-member" },
+                  { name: "Entrepreneur Form", icon: FileText, target: "business-entrepreneur" },
+                  { name: "Supporter Form", icon: User, target: "business-supporter" }, // Added
+                  { name: "Donor Form", icon: Gift, target: "business-donor" },
                 ].map((form, index) => (
-                  <button 
+                  <button
                     key={index}
                     onClick={() => onNavigate(form.target)}
                     className={`w-full flex justify-between items-center bg-[#050914] text-slate-300 p-3 rounded-md border border-slate-800 hover:bg-red-600 hover:text-white transition group`}

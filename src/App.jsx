@@ -43,6 +43,8 @@ const CatchAllPage = ({ pageName }) => <div className="p-20 min-h-[60vh] flex it
 // --- C. PUBLIC SITE CONTAINER ---
 const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenForm }) => {
 
+    const [donationClub, setDonationClub] = useState('general'); // State to track which club is receiving donation
+
     const onNavClick = (id) => {
         const lowerId = id.toLowerCase();
 
@@ -51,6 +53,14 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
 
         // Specific check for Donate Page
         if (lowerId === 'donate') {
+            setDonationClub('general');
+            return handleNavigate('Donate');
+        }
+
+        // INTERCEPT DONOR FORMS: Route to Donate Page Instead of Modal
+        if (lowerId.endsWith('-donor')) {
+            const clubName = lowerId.split('-')[0]; // e.g. 'cricket' from 'cricket-donor'
+            setDonationClub(clubName);
             return handleNavigate('Donate');
         }
 
@@ -61,7 +71,8 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
             'music-member', 'music-singer', 'music-judge',
             'cricket-player', 'cricket-umpire', 'cricket-club-member',
             'business-member', 'business-entrepreneur',
-            'awards-nomination', 'awards-sponsor'
+            'awards-nomination', 'awards-sponsor',
+            'music-stipend', 'business-entrepreneur', 'cricket-volunteer'
         ];
 
         if (formIds.includes(lowerId)) {
@@ -96,8 +107,8 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
 
     // 1. DEDICATED PAGES
     if (currentLowerPage === 'donate') {
-        // CHANGE THIS LINE: Pass onNavigate prop
-        content = <DonateForm onNavigate={handleNavigate} />;
+        // Pass the club prop
+        content = <DonateForm onNavigate={handleNavigate} club={donationClub} />;
     }
     // 2. WING PAGES
     else if (currentLowerPage === 'education') {
