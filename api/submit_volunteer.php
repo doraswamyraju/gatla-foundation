@@ -47,9 +47,21 @@ $occupation = $data['occupation'] ?? '';
 $club_preference = $data['clubPreference'] ?? 'Education Club';
 
 // 7. Route to Correct Table
-$table = ($club_preference === 'Cricket Club') ? 'cricket_volunteers' : 'education_volunteers';
+$tableMap = [
+    'Education Club' => 'education_volunteers',
+    'Cricket Club'   => 'cricket_volunteers',
+    'Music Club'     => 'music_volunteers',
+    'Business Club'  => 'business_volunteers',
+    'Awards Club'    => 'awards_volunteers',
+    'General'        => 'general_volunteers'
+];
+
+// Normalize input just in case
+$table = $tableMap[$club_preference] ?? 'general_volunteers';
 
 // 8. Prepare Query
+// Note: Changed 'status' default to 'Pending' in SQL manually or here.
+// Added NOW() for date.
 $sql = "INSERT INTO $table (full_name, father_name, address, phone_no, email_id, aadhaar_no, pan_card_no, qualification, occupation, club_preference, status, submission_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
 
 $stmt = $conn->prepare($sql);
@@ -58,7 +70,7 @@ if (!$stmt) {
     // CAPTURE THE SPECIFIC ERROR (Table missing, column missing, etc.)
     $errorMsg = $conn->error;
     ob_clean();
-    echo json_encode(["status" => "error", "message" => "Database Error: Table '$table' likely missing. Details: $errorMsg"]);
+    echo json_encode(["status" => "error", "message" => "Database Error: Table '$table' likely missing or schema mismatch. Details: $errorMsg"]);
     exit;
 }
 

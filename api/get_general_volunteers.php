@@ -7,7 +7,26 @@ require_once 'config.php';
 $conn = connectDB();
 
 // Select all fields matching the frontend state names
-$sql = "SELECT 
+// Combine all volunteer tables
+// Using UNION ALL since IDs might collide, we might want to differentiate or just show them.
+// Since Dashboard expects unique key, we can construct one or just rely on data.
+
+$tables = [
+    'general_volunteers',
+    'education_volunteers',
+    'cricket_volunteers',
+    'music_volunteers',
+    'business_volunteers',
+    'awards_volunteers'
+];
+
+$sqlParts = [];
+
+foreach ($tables as $t) {
+    // Ensure table exists to prevent SQL error if one is missing
+    $check = $conn->query("SHOW TABLES LIKE '$t'");
+    if ($check && $check->num_rows > 0) {
+        $sqlParts[] = "SELECT 
             id, 
             full_name as fullName, 
             father_name as fatherName, 
@@ -17,14 +36,20 @@ $sql = "SELECT
             aadhaar_no as aadhar,          
             qualification, 
             occupation, 
-            interest_area as interest,     
-            availability, 
-            preferred_time as preferredTime, 
-            document_path, 
+            '$t' as source_table, /* Useful for debugging or specific actions */
+            club_preference,      /* Ensure this column exists in all tables */
             status, 
             submission_date as date 
-        FROM general_volunteers 
-        ORDER BY submission_date DESC";
+        FROM $t"; // Removed some unused columns for brevity/errors, add if needed: area_of_interest, etc.
+    }
+}
+
+if (empty($sqlParts)) {
+    echo json_encode([]);
+    exit;
+}
+
+$sql = implode(" UNION ALL ", $sqlParts) . " ORDER BY date DESC";
 
 $result = $conn->query($sql);
 $data = [];
