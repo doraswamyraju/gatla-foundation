@@ -360,6 +360,10 @@ const DashboardApp = () => {
         const res = await fetch(`${apiUrl}/get_general_volunteers.php`);
         const data = await res.json();
         setAppData(prev => ({ ...prev, 'volunteer-form': data }));
+      } else if (activeTab === 'supporter-form') {
+        const res = await fetch(`${apiUrl}/get_supporters.php`); // FETCH SUPPORTERS
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'supporter-form': data }));
       } else if (activeTab === 'donations-list') {
         const res = await fetch(`${apiUrl}/get_donations.php`);
         const data = await res.json();

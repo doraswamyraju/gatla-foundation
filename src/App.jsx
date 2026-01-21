@@ -15,6 +15,7 @@ import MusicClub from './pages/MusicClub.jsx';
 import BusinessClub from './pages/BusinessClub.jsx';
 import AwardsClub from './pages/AwardsClub.jsx';
 import VolunteerForm from './pages/forms/VolunteerForm.jsx';
+import SupporterForm from './pages/forms/SupporterForm.jsx';
 
 // NEW: Import the Donation Form
 import DonateForm from './pages/forms/DonateForm.jsx';
@@ -247,6 +248,15 @@ const App = () => {
                 </div>
             )}
 
+            {isFormModalOpen && activeFormId === 'supporter-form' && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
+                    <div className="bg-[#0B1120] w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] relative">
+                        <button onClick={handleCloseForm} className="absolute top-4 right-4 text-white hover:text-red-500 z-10"><i className="lucide-x w-6 h-6"></i> Close</button>
+                        <SupporterForm onClose={handleCloseForm} />
+                    </div>
+                </div>
+            )}
+
             {/* PUBLIC CRICKET FORMS */}
             {isFormModalOpen && activeFormId === 'cricket-player' && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
@@ -267,7 +277,7 @@ const App = () => {
 
             {/* GENERIC FORM MODAL (Fallback for other forms) */}
             <FormModal
-                isOpen={isFormModalOpen && activeFormId !== 'volunteer-form' && activeFormId !== 'cricket-player' && activeFormId !== 'cricket-club-member'}
+                isOpen={isFormModalOpen && activeFormId !== 'volunteer-form' && activeFormId !== 'cricket-player' && activeFormId !== 'cricket-club-member' && activeFormId !== 'supporter-form'}
                 categoryId={activeFormId}
                 onClose={handleCloseForm}
                 initialData={null}
