@@ -14,13 +14,14 @@ require_once 'config.php';
 
 // Check for Libraries
 $libs_missing = false;
-if (!file_exists('libs/fpdf/fpdf.php') || !file_exists('libs/phpmailer/PHPMailer.php')) {
+// Updated to match Case Sensitivity (PHPMailer folder is capitalized on server usually if unzipped from official source, or matching local listing)
+if (!file_exists('libs/fpdf/fpdf.php') || !file_exists('libs/PHPMailer/PHPMailer.php')) {
     $libs_missing = true;
 } else {
     require('libs/fpdf/fpdf.php');
-    require('libs/phpmailer/Exception.php');
-    require('libs/phpmailer/PHPMailer.php');
-    require('libs/phpmailer/SMTP.php');
+    require('libs/PHPMailer/Exception.php');
+    require('libs/PHPMailer/PHPMailer.php');
+    require('libs/PHPMailer/SMTP.php');
 }
 
 use PHPMailer\PHPMailer\PHPMailer;
