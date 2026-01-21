@@ -95,7 +95,7 @@ $stmt = $conn->prepare("INSERT INTO $tableName (donor_name, $col_email, $col_pho
 
 if (!$stmt) {
      logDebug("Prepare Failed: " . $conn->error);
-     echo json_encode(["status" => "error", "message" => "Prepare failed: " . $conn->error . ". Hint: Run setup_db.php"]);
+     echo json_encode(["status" => "error", "message" => "SQL Error: " . $conn->error]);
      exit;
 }
 
