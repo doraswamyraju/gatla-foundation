@@ -25,8 +25,8 @@ const SidebarGroup = ({ title, icon, id, forms, activeTab, setActiveTab, isOpen,
               key={form.id}
               onClick={() => setActiveTab(form.id)}
               className={`w-full text-left pl-12 pr-4 py-2 text-xs transition-colors ${activeTab === form.id
-                  ? 'text-amber-500 font-bold border-r-2 border-amber-500 bg-slate-800'
-                  : 'text-slate-500 hover:text-slate-300'
+                ? 'text-amber-500 font-bold border-r-2 border-amber-500 bg-slate-800'
+                : 'text-slate-500 hover:text-slate-300'
                 }`}
             >
               {form.label}
@@ -76,7 +76,8 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout 
       forms: [
         { id: 'education-student', label: 'Student Form' },
         { id: 'education-scriber', label: 'Scriber Form' },
-        { id: 'education-volunteer', label: 'Volunteer Form' }, // Added
+        { id: 'education-volunteer', label: 'Volunteer Form' },
+        { id: 'education-supporter', label: 'Education Supporters' }, // Added
         { id: 'education-donor', label: 'Donor Form' }
       ]
     },
@@ -90,9 +91,9 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout 
         { id: 'cricket-club-member', label: 'Club Member Form' },
         { id: 'cricket-player', label: 'Player Form' },
         { id: 'cricket-umpire', label: 'Umpire Form' },
-        { id: 'cricket-volunteer', label: 'Volunteer Form' }, // Added
-        { id: 'cricket-supporter', label: 'Supporter Form' }, // Added
-        { id: 'cricket-donor', label: 'Donor Form' }          // Added
+        { id: 'cricket-volunteer', label: 'Volunteer Form' },
+        { id: 'cricket-supporter', label: 'Cricket Supporters' }, // Added
+        { id: 'cricket-donor', label: 'Donor Form' }
       ]
     },
 
@@ -105,9 +106,9 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout 
         { id: 'music-member', label: 'Member Form' },
         { id: 'music-singer', label: 'Singer Form' },
         { id: 'music-judge', label: 'Judge Form' },
-        { id: 'music-supporter', label: 'Supporter Form' }, // Added
-        { id: 'music-stipend', label: 'Stipend Form' },    // Added
-        { id: 'music-donor', label: 'Donor Form' }          // Added
+        { id: 'music-supporter', label: 'Music Supporters' }, // Added
+        { id: 'music-stipend', label: 'Stipend Form' },
+        { id: 'music-donor', label: 'Donor Form' }
       ]
     },
 
@@ -119,8 +120,8 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout 
       forms: [
         { id: 'business-member', label: 'Club Member Form' },
         { id: 'business-entrepreneur', label: 'Entrepreneur Form' },
-        { id: 'business-supporter', label: 'Supporter Form' }, // Added
-        { id: 'business-donor', label: 'Donor Form' }          // Added
+        { id: 'business-supporter', label: 'Business Supporters' }, // Added
+        { id: 'business-donor', label: 'Donor Form' }
       ]
     },
 
@@ -131,7 +132,8 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout 
       icon: <Award className="w-5 h-5 text-amber-400" />,
       forms: [
         { id: 'awards-nomination', label: 'Nomination Form' },
-        { id: 'awards-sponsor', label: 'Sponsor Form' }
+        { id: 'awards-sponsor', label: 'Sponsor Form' },
+        { id: 'awards-supporter', label: 'Awards Supporters' } // Added
       ]
     }
   ];

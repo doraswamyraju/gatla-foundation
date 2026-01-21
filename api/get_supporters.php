@@ -6,8 +6,21 @@ require_once 'config.php';
 
 $conn = connectDB();
 
-$sql = "SELECT * FROM supporters ORDER BY submission_date DESC";
-$result = $conn->query($sql);
+$club_filter = isset($_GET['club']) ? $_GET['club'] : '';
+
+if ($club_filter) {
+    // Filter by areas_of_interest using LIKE query
+    // NOTE: This is a simple text search. If 'Education' matches 'Education Club', it works.
+    $sql = "SELECT * FROM supporters WHERE areas_of_interest LIKE ? ORDER BY submission_date DESC";
+    $search_term = "%" . $club_filter . "%";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $search_term);
+    $stmt->execute();
+    $result = $stmt->get_result();
+} else {
+    $sql = "SELECT * FROM supporters ORDER BY submission_date DESC";
+    $result = $conn->query($sql);
+}
 
 $data = [];
 if ($result) {

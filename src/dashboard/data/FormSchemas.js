@@ -27,6 +27,28 @@ export const FORM_SCHEMAS = {
     { name: 'support_mode', label: 'Support Mode', type: 'text' },
     { name: 'status', label: 'Status', type: 'text' }
   ],
+  // Alias other supporter tabs to the same structure (Dynamic Mapping would optionally be better, but explicit is safer here)
+  // BETTER APPROACH: In DataTable, we default to supporter-form schema if specific one is empty/missing but logic implies similarity.
+  // BUT the provided DataTable uses `FORM_SCHEMAS[type] || FORM_SCHEMAS['volunteer-form']`.
+  // So we MUST define them or change DataTable logic.
+  // Let's copy the array for now to ensure it works 100%.
+
+  'education-supporter': [
+    { name: 'full_name', label: 'Full Name', type: 'text' }, { name: 'phone_no', label: 'Phone', type: 'tel' }, { name: 'areas_of_interest', label: 'Interests', type: 'text' }, { name: 'support_mode', label: 'Support', type: 'text' }
+  ],
+  'cricket-supporter': [
+    { name: 'full_name', label: 'Full Name', type: 'text' }, { name: 'phone_no', label: 'Phone', type: 'tel' }, { name: 'areas_of_interest', label: 'Interests', type: 'text' }, { name: 'support_mode', label: 'Support', type: 'text' }
+  ],
+  'music-supporter': [
+    { name: 'full_name', label: 'Full Name', type: 'text' }, { name: 'phone_no', label: 'Phone', type: 'tel' }, { name: 'areas_of_interest', label: 'Interests', type: 'text' }, { name: 'support_mode', label: 'Support', type: 'text' }
+  ],
+  'business-supporter': [
+    { name: 'full_name', label: 'Full Name', type: 'text' }, { name: 'phone_no', label: 'Phone', type: 'tel' }, { name: 'areas_of_interest', label: 'Interests', type: 'text' }, { name: 'support_mode', label: 'Support', type: 'text' }
+  ],
+  'awards-supporter': [
+    { name: 'full_name', label: 'Full Name', type: 'text' }, { name: 'phone_no', label: 'Phone', type: 'tel' }, { name: 'areas_of_interest', label: 'Interests', type: 'text' }, { name: 'support_mode', label: 'Support', type: 'text' }
+  ],
+
   'volunteer-form': [
     { name: 'fullName', label: 'Full Name', type: 'text', required: true },
     { name: 'fatherName', label: 'Father Name', type: 'text', required: true },

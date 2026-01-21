@@ -361,9 +361,29 @@ const DashboardApp = () => {
         const data = await res.json();
         setAppData(prev => ({ ...prev, 'volunteer-form': data }));
       } else if (activeTab === 'supporter-form') {
-        const res = await fetch(`${apiUrl}/get_supporters.php`); // FETCH SUPPORTERS
+        const res = await fetch(`${apiUrl}/get_supporters.php`); // FETCH ALL SUPPORTERS
         const data = await res.json();
         setAppData(prev => ({ ...prev, 'supporter-form': data }));
+      } else if (activeTab === 'education-supporter') {
+        const res = await fetch(`${apiUrl}/get_supporters.php?club=Education`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'education-supporter': data }));
+      } else if (activeTab === 'cricket-supporter') {
+        const res = await fetch(`${apiUrl}/get_supporters.php?club=Cricket`); // Filter for Cricket
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'cricket-supporter': data }));
+      } else if (activeTab === 'music-supporter') {
+        const res = await fetch(`${apiUrl}/get_supporters.php?club=Music`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'music-supporter': data }));
+      } else if (activeTab === 'business-supporter') {
+        const res = await fetch(`${apiUrl}/get_supporters.php?club=Business`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'business-supporter': data }));
+      } else if (activeTab === 'awards-supporter') {
+        const res = await fetch(`${apiUrl}/get_supporters.php?club=Awards`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'awards-supporter': data }));
       } else if (activeTab === 'donations-list') {
         const res = await fetch(`${apiUrl}/get_donations.php`);
         const data = await res.json();
