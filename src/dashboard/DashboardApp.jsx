@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Menu, X, FileSpreadsheet, File as FileIcon, Plus, Trash2, Edit, Save,
-  UploadCloud, Loader2, FileText, ChevronDown, LogOut, ImageIcon
+  UploadCloud, Loader2, FileText, ChevronDown, LogOut, ImageIcon, Gift, User
 } from 'lucide-react';
 
 // --- EXPORT LIBRARIES ---
@@ -266,7 +266,66 @@ const ProfileSection = ({ onLogout }) => {
 // --- 5. LOGIN PAGE ---
 const LoginPage = ({ onLogin }) => (<div className="min-h-screen bg-[#0B1120] flex items-center justify-center p-4"><div className="bg-white w-full max-w-md rounded-2xl shadow-2xl p-8 space-y-6 text-center"><h2 className="text-2xl font-bold text-slate-900">Admin Login</h2><button onClick={onLogin} className="w-full bg-amber-500 text-slate-900 font-bold py-3 rounded-lg">Access Dashboard</button></div></div>);
 
-// --- 6. MAIN APP ---
+// --- 7. DASHBOARD STATS COMPONENT ---
+const DashboardStats = ({ stats }) => {
+  if (!stats) return <div className="p-10 text-center"><Loader2 className="w-8 h-8 animate-spin mx-auto text-amber-500" /></div>;
+
+  const { total_amount, total_donors, breakdown } = stats;
+
+  const cards = [
+    { title: 'Total Donations', value: `₹${total_amount?.toLocaleString()}`, icon: Gift, color: 'bg-green-500' },
+    { title: 'Total Donors', value: total_donors, icon: User, color: 'bg-blue-500' },
+  ];
+
+  const clubs = [
+    { key: 'general', name: 'General', color: 'text-slate-600', bg: 'bg-slate-100' },
+    { key: 'education', name: 'Education', color: 'text-green-600', bg: 'bg-green-100' },
+    { key: 'cricket', name: 'Cricket', color: 'text-blue-600', bg: 'bg-blue-100' },
+    { key: 'music', name: 'Music', color: 'text-purple-600', bg: 'bg-purple-100' },
+    { key: 'business', name: 'Business', color: 'text-red-600', bg: 'bg-red-100' },
+    { key: 'awards', name: 'Awards', color: 'text-amber-600', bg: 'bg-amber-100' },
+  ];
+
+  return (
+    <div className="space-y-8 animate-in fade-in duration-500">
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {cards.map((card, idx) => (
+          <div key={idx} className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex items-center gap-4">
+            <div className={`p-4 rounded-full ${card.color} text-white`}>
+              <card.icon className="w-8 h-8" />
+            </div>
+            <div>
+              <p className="text-slate-500 font-medium">{card.title}</p>
+              <h3 className="text-3xl font-bold text-slate-800">{card.value}</h3>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Club Breakdown */}
+      <div>
+        <h3 className="text-lg font-bold text-slate-800 mb-4">Donations by Club</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {clubs.map((club) => {
+            const data = breakdown?.[club.key] || { count: 0, amount: 0 };
+            return (
+              <div key={club.key} className="bg-white p-5 rounded-lg shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+                <div className="flex justify-between items-start mb-2">
+                  <h4 className={`font-bold ${club.color}`}>{club.name}</h4>
+                  <span className={`text-xs px-2 py-1 rounded-full font-bold ${club.bg} ${club.color}`}>{data.count} Donors</span>
+                </div>
+                <p className="text-2xl font-bold text-slate-800">₹{data.amount.toLocaleString()}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// --- 6. MAIN APP --- (Updated)
 const DashboardApp = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -275,6 +334,7 @@ const DashboardApp = () => {
   const [currentEditItem, setCurrentEditItem] = useState(null);
   const [appData, setAppData] = useState({});
   const [isSaving, setIsSaving] = useState(false);
+  const [dashboardStats, setDashboardStats] = useState(null); // State for Stats
 
   // DYNAMIC URL FIX
   const getApiUrl = () => {
@@ -290,7 +350,13 @@ const DashboardApp = () => {
 
   const fetchData = async () => {
     try {
-      if (activeTab === 'volunteer-form') {
+      if (activeTab === 'dashboard') {
+        const res = await fetch(`${apiUrl}/get_dashboard_stats.php`);
+        const data = await res.json();
+        if (data.status === 'success') {
+          setDashboardStats(data.data);
+        }
+      } else if (activeTab === 'volunteer-form') {
         const res = await fetch(`${apiUrl}/get_general_volunteers.php`);
         const data = await res.json();
         setAppData(prev => ({ ...prev, 'volunteer-form': data }));
@@ -335,11 +401,7 @@ const DashboardApp = () => {
         const data = await res.json();
         setAppData(prev => ({ ...prev, 'business-donor': data }));
       } else {
-        const res = await fetch(`${apiUrl}/get_dashboard_data.php`);
-        try {
-          const data = await res.json();
-          if (data.status !== 'error') setAppData(data);
-        } catch (e) { console.error("API Error: Response was not JSON"); }
+        // Fallback or other tabs
       }
     } catch (err) { console.error("Fetch error:", err); }
   };
@@ -400,8 +462,8 @@ const DashboardApp = () => {
           <div className="flex items-center gap-4"><button onClick={() => setMobileOpen(!mobileOpen)} className="lg:hidden p-2"><Menu className="w-6 h-6" /></button><h2 className="text-xl font-bold text-slate-800 hidden sm:block capitalize">{activeTab.replace(/-/g, ' ')}</h2></div>
           <ProfileSection onLogout={handleLogout} />
         </header>
-        <main className="flex-1 p-6 overflow-hidden flex flex-col">
-          {activeTab === 'dashboard' ? (<div className="p-10 text-center text-slate-500"><h1 className="text-2xl font-bold text-slate-800 mb-2">Welcome Admin</h1></div>)
+        <main className="flex-1 p-6 overflow-hidden flex flex-col overflow-y-auto">
+          {activeTab === 'dashboard' ? (<DashboardStats stats={dashboardStats} />)
             : activeTab === 'blog-manager' ? (<BlogManager posts={appData['blog-posts'] || []} onSave={(post) => console.log(post)} onDelete={() => { }} />)
               : (<DataTable type={activeTab} data={currentData} onRefresh={fetchData} onAdd={() => { setCurrentEditItem(null); setModalOpen(true); }} onEdit={(item) => { setCurrentEditItem(item); setModalOpen(true); }} onDelete={handleDelete} />)}
         </main>
