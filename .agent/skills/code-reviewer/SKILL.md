@@ -1,229 +1,253 @@
 # SKILL.md
-## AVR Associates – CA Management ERP
+## Gatla Foundation Digital Platform
 
-This document defines the **skills, competencies, and responsibilities** required to design, build, operate, and scale the AVR Associates ERP as an **enterprise-grade production system**.  
-It also serves as a **governance guide** for AI-assisted development using Antigravity Agent Mode.
+This document defines the **skills, competencies, and development standards** required to build, maintain, and scale the Gatla Foundation Digital Platform.  
+It also acts as a **governance guide** for AI-assisted development using Antigravity Agent Mode.
 
 ---
 
 ## 1. Core Engineering Skills
 
-### 1.1 Frontend Engineering (Admin & Client Portal)
-**Stack**
-- React 19 (Functional Components)
-- TypeScript (strict mode)
+### 1.1 Frontend Engineering (Public Website & Admin Dashboard)
+
+**Technology Stack**
+- React.js
 - Tailwind CSS
-- Recharts
-- Lucide React
-- Vite
+- Lucide React (Icons)
+- JavaScript (ES6+)
 
 **Required Skills**
-- Component-driven UI architecture
-- State management (context/hooks)
-- Form handling with validation
-- File uploads (FormData, previews)
-- Role-based UI rendering
-- Responsive & accessible design
-- Performance optimization (memoization, lazy loading)
+- Component-based UI design
+- Controlled form handling
+- Modal-driven UX flows
+- File upload handling via FormData
+- Conditional rendering for Admin vs Public UI
+- Reusable table components
+- Client-side validation
 
 **Enterprise Expectations**
-- Clear separation of Admin vs Client UI
-- Predictable state flows
-- Consistent design language
-- Zero direct business logic in UI components
+- Public pages must remain lightweight and accessible
+- Admin dashboard must be data-dense and efficient
+- No backend logic embedded in frontend components
+- Clear separation between **Public Forms** and **Admin Forms**
 
 ---
 
-### 1.2 Backend Engineering (API & Services)
-**Stack**
-- Node.js / Express (or PHP APIs for legacy modules)
-- RESTful API design
-- JWT authentication
-- Role-Based Access Control (RBAC)
-- Multi-branch data isolation
+### 1.2 Backend Engineering (PHP + MySQL)
+
+**Technology Stack**
+- Native / Procedural PHP
+- MySQL
+- JSON-based APIs
+- Razorpay Web Checkout
 
 **Required Skills**
-- Secure API design
-- Middleware-based authorization
-- Validation & sanitization
-- File upload handling
-- Error handling & logging
-- Pagination & filtering
-- Soft deletes & audit safety
+- Secure form handling
+- Multipart form processing
+- File upload validation
+- MySQL CRUD operations
+- JSON request handling
+- Consistent API response structures
+- Payment ID tracking
 
 **Enterprise Expectations**
-- No business logic in controllers
-- Predictable response formats
-- Explicit error codes
-- Idempotent operations where applicable
+- All APIs must be predictable and stateless
+- Files must be safely stored with collision-resistant naming
+- Database writes must be atomic
+- No direct echoing of sensitive data
 
 ---
 
-## 2. Domain & Business Skills (CA / FinTech)
+## 2. Domain & Platform Skills
 
-### 2.1 Chartered Accountant Domain Knowledge
-- GST compliance workflows
-- TDS & Income Tax deadlines
-- Audit project lifecycle
-- Client onboarding processes
-- Statutory calendars
-- Document sensitivity handling
+### 2.1 Philanthropy Platform Understanding
+- Donation-driven workflows
+- Volunteer management
+- Non-profit transparency
+- Public trust preservation
+- Sensitive personal data handling
 
 **Expectation**
-> Domain logic correctness is **more important than code elegance**.
+> The platform must prioritize **trust, clarity, and simplicity** over complexity.
 
 ---
 
-### 2.2 Financial & Billing Logic
-- Time-based billing
-- Hourly rate calculations
-- Yield margin analysis
-- Paid vs unpaid invoice lifecycle
-- Financial data immutability principles
+### 2.2 Pillar-Based Modular Thinking
+
+Each initiative (Pillar) is an independent domain:
+- Education
+- Cricket (Sports)
+- Music
+- Business
+- Awards
+- General / Finance
 
 **Expectation**
-- All calculations must be deterministic
-- Financial records must be auditable
-- Historical data must never be silently modified
+- Pillars must be logically isolated
+- Shared utilities must be centralized
+- Changes in one pillar must not break others
 
 ---
 
-## 3. Security & Compliance Skills
+## 3. Payments & Financial Handling
 
-### 3.1 Application Security
-- JWT & refresh token handling
-- Secure file uploads
-- Rate limiting
-- CORS management
-- Secure headers
-- Input validation
+### Payment Gateway
+- Razorpay
 
-### 3.2 Data Protection
-- Client data isolation
-- Branch-level access control
-- Least-privilege RBAC
-- Secure document storage
+**Required Skills**
+- Client-side checkout integration
+- Server-side payment ID validation
+- JSON request processing
+- Donation record immutability
+
+**Enterprise Expectations**
+- Payment IDs must always be stored
+- No recalculation or mutation of donation records
+- Payment failures must not create partial records
+
+---
+
+## 4. File Handling & Storage
+
+### File Uploads
+- Student documents
+- Disability certificates
+- Photos
+- ID proofs
+
+**Required Skills**
+- PHP `move_uploaded_file`
+- MIME type validation
+- Safe file naming with timestamps
+- Public vs protected file access distinction
 
 **Expectation**
-> Assume every external request is hostile.
+> Files are treated as **sensitive assets**, not generic uploads.
 
 ---
 
-## 4. Architecture & System Design Skills
-
-### 4.1 Enterprise Architecture
-- Modular monolith or service-based design
-- Clear domain boundaries
-- Extensible compliance engine
-- Scalable task & time tracking engine
-
-### 4.2 Multi-Branch & Multi-Tenant Thinking
-- Branch-aware queries
-- Global vs branch-level views
-- Admin cross-branch visibility
-- Client data isolation
-
----
-
-## 5. Observability & Operations
+## 5. Database & Data Modeling
 
 ### Required Skills
-- Structured logging
-- Audit trails for sensitive actions
-- Error monitoring
-- Performance monitoring
-- Debuggable production builds
+- Table-per-form modeling
+- Clear column naming
+- Timestamp-based ordering
+- Referential consistency (where applicable)
+- Query optimization for admin views
 
-**Expectation**
-> If it cannot be observed, it cannot be trusted.
-
----
-
-## 6. Testing & Quality Assurance
-
-### Testing Levels
-- Unit tests (business logic)
-- Integration tests (API + DB)
-- Negative test cases
-- Role & permission tests
-- Regression tests for compliance deadlines
-
-**Expectation**
-- Auth, billing, and compliance logic must be tested first
-- No feature is “done” without verification steps
+### Key Principles
+- No silent data overwrites
+- Submissions are append-only
+- Admin edits (if added later) must be audited
 
 ---
 
-## 7. AI-Assisted Development Skills (Antigravity Mode)
+## 6. API Design Skills
 
-### 7.1 Allowed AI Responsibilities
-- Feature implementation
-- Multi-file refactoring
-- UI wiring
-- CRUD generation
-- Boilerplate creation
-- Test scaffolding
+### Submission APIs (`submit_*.php`)
+- Accept `multipart/form-data` OR `application/json`
+- Validate required fields
+- Return clear success/failure JSON
+- Handle file and non-file submissions correctly
 
-### 7.2 Human-Only Responsibilities
+### Retrieval APIs (`get_*.php`)
+- Return clean JSON arrays
+- Order by submission date DESC
+- Used exclusively by Admin Dashboard
+
+**Expectation**
+> API behavior must remain consistent across all pillars.
+
+---
+
+## 7. Admin Dashboard Engineering
+
+### Required Skills
+- Tab-based navigation
+- Data table rendering
+- Dynamic form selection
+- File link detection & rendering
+- State-driven UI updates
+
+**Key Components**
+- DashboardApp.jsx
+- Sidebar.jsx
+- DataTable.jsx
+- FormModal.jsx
+
+**Expectation**
+- Admin dashboard is a **control center**, not a public UI
+- Admin views must favor clarity over aesthetics
+
+---
+
+## 8. AI-Assisted Development (Antigravity Agent Mode)
+
+### Allowed AI Responsibilities
+- CRUD form generation
+- API wiring
+- UI cleanup & consistency
+- Refactoring repeated logic
+- Dashboard data integrations
+- Implementation plan generation
+
+### Human-Only Responsibilities
 - Architecture decisions
-- Security policy definition
-- Compliance interpretation
-- Financial calculation approval
-- Production readiness sign-off
+- Payment workflow approval
+- Data privacy decisions
+- Pillar prioritization
+- Production deployment
 
-### 7.3 AI Governance Rules
-- AI must follow existing folder structure
+### AI Governance Rules
 - AI must not invent business rules
-- AI must request review before risky changes
-- All AI output is reviewed by a human
+- AI must respect existing file & DB structure
+- AI must request approval before destructive changes
+- All AI-generated changes are reviewed by humans
 
 ---
 
-## 8. Role-Based Skill Expectations
+## 9. Security & Trust Skills
 
-### Admin (System Owner)
-- Full system understanding
-- Cross-branch visibility
-- Financial & reporting access
-- Audit responsibility
+### Required Skills
+- Input sanitization
+- SQL injection prevention
+- Safe file access
+- Payment data isolation
+- Admin-only endpoint protection
 
-### Employee (Staff)
-- Task execution
-- Time tracking accuracy
-- Client interaction discipline
-
-### Client (External User)
-- Minimal UI exposure
-- Read-only compliance tracking
-- Secure document exchange
+**Expectation**
+> This platform handles real donors and vulnerable individuals.  
+Security and dignity are mandatory.
 
 ---
 
-## 9. Production Readiness Skills
+## 10. Testing & Verification
 
-### Mandatory Before Release
-- Security review completed
-- Financial calculations verified
-- Compliance deadlines validated
-- Client data isolation tested
-- Manual verification checklist executed
+### Manual Verification Required For:
+- Form submissions
+- File uploads
+- Donation success/failure
+- Admin dashboard data rendering
+- Razorpay payment flows
+
+**Expectation**
+- No feature is complete without admin-side verification
 
 ---
 
-## 10. Engineering Mindset
+## 11. Engineering Mindset
 
-- Correctness over speed
-- Auditability over convenience
+- Stability over speed
+- Trust over features
 - Clarity over cleverness
-- Stability over premature optimization
+- Reusability over duplication
 
-> **This ERP is a professional system for professionals.  
-Trust is the core feature.**
+> **This platform represents a public-facing foundation.  
+Every bug impacts trust.**
 
 ---
 
 ## Maintainers
-- Product Owner / Architect: Human
+- Product Owner / Decision Maker: Human
 - Implementation Engineer: Antigravity Agent (Governed)
 - Final Authority: Human Review
-
