@@ -11,7 +11,7 @@ export const FORM_SCHEMAS = {
     { name: 'pan_number', label: 'PAN', type: 'text' },
     { name: 'donation_date', label: 'Date', type: 'date' },
   ],
-  
+
   // --- 1. GENERAL FORMS (Navbar & Hero) ---
   'volunteer-form': [
     { name: 'fullName', label: 'Full Name', type: 'text', required: true },
@@ -34,30 +34,21 @@ export const FORM_SCHEMAS = {
   // --- 2. CRICKET CLUB ---
   'cricket-club-member': [
     { name: 'full_name', label: 'Member Name', type: 'text' },
+    { name: 'father_name', label: 'Father Name', type: 'text' },
     { name: 'phone_no', label: 'Phone', type: 'text' },
     { name: 'category', label: 'Category', type: 'text' },
     { name: 'aadhaar_path', label: 'Aadhaar', type: 'file' },
     { name: 'disability_cert_path', label: 'Certificate', type: 'file' },
-    { name: 'photo_path', label: 'Photo', type: 'file' },
-    { name: 'status', label: 'Status', type: 'text' }
+    { name: 'photo_path', label: 'Photo', type: 'file' }
   ],
   'cricket-player': [
     { name: 'full_name', label: 'Player Name', type: 'text' },
+    { name: 'father_name', label: 'Father Name', type: 'text' },
     { name: 'phone_no', label: 'Phone', type: 'text' },
     { name: 'category', label: 'Category', type: 'text' },
     { name: 'aadhaar_path', label: 'Aadhaar', type: 'file' },
     { name: 'disability_cert_path', label: 'Certificate', type: 'file' },
-    { name: 'photo_path', label: 'Photo', type: 'file' },
-    { name: 'status', label: 'Status', type: 'text' }
-  ],
-  'cricket-player': [
-    { name: 'fullName', label: 'Player Name', type: 'text', required: true },
-    { name: 'fatherName', label: 'Father Name', type: 'text' },
-    { name: 'phone', label: 'Mobile Number', type: 'tel', required: true },
-    { name: 'category', label: 'Visual Category', type: 'select', options: ['B1 (Totally Blind)', 'B2 (Partially Blind)', 'B3 (Low Vision)'] },
-    { name: 'role', label: 'Playing Role', type: 'select', options: ['Batsman', 'Bowler', 'All-Rounder', 'Wicket Keeper'] },
-    { name: 'state', label: 'State/District', type: 'text' },
-    { name: 'address', label: 'Address', type: 'textarea' }
+    { name: 'photo_path', label: 'Photo', type: 'file' }
   ],
   'cricket-umpire': [
     { name: 'fullName', label: 'Umpire Name', type: 'text', required: true },
@@ -65,12 +56,6 @@ export const FORM_SCHEMAS = {
     { name: 'matchesCount', label: 'Matches Officiated (Approx)', type: 'number' },
     { name: 'experience', label: 'Years of Experience', type: 'text' },
     { name: 'certification', label: 'Certification Level', type: 'text' }
-  ],
-  'cricket-club-member': [
-    { name: 'fullName', label: 'Member Name', type: 'text', required: true },
-    { name: 'phone', label: 'Phone Number', type: 'tel', required: true },
-    { name: 'role', label: 'Role in Club', type: 'text' },
-    { name: 'address', label: 'Address', type: 'textarea' }
   ],
 
   // --- 3. EDUCATION CLUB ---
@@ -85,8 +70,8 @@ export const FORM_SCHEMAS = {
     { name: 'disability_certificate_path', label: 'Certificate', type: 'file' },
     { name: 'status', label: 'Status', type: 'text' }
   ],
-  
-'education-scriber': [
+
+  'education-scriber': [
     { name: 'full_name', label: 'Scribe Name', type: 'text' },
     { name: 'father_name', label: 'Father Name', type: 'text' },
     { name: 'phone_no', label: 'Mobile No', type: 'tel' },
@@ -97,7 +82,7 @@ export const FORM_SCHEMAS = {
     { name: 'status', label: 'Status', type: 'text' }
   ],
 
- 'education-volunteer': [
+  'education-volunteer': [
     { name: 'full_name', label: 'Name', type: 'text' },
     { name: 'phone_no', label: 'Phone', type: 'text' },
     { name: 'area_of_interest', label: 'Interest', type: 'text' },
@@ -109,7 +94,7 @@ export const FORM_SCHEMAS = {
     { name: 'amount', label: 'Amount', type: 'text' },
     { name: 'payment_id', label: 'Txn ID', type: 'text' },
     { name: 'status', label: 'Status', type: 'text' }
-  ], 
+  ],
 
   // --- 4. MUSIC CLUB ---
   'music-singer': [

@@ -18,9 +18,9 @@ const CricketMemberForm = ({ onClose }) => {
     e.preventDefault(); setLoading(true);
     const data = new FormData();
     Object.keys(formData).forEach(k => data.append(k, formData[k]));
-    if(files.aadhaar_file) data.append('aadhaar_file', files.aadhaar_file);
-    if(files.disability_cert_file) data.append('disability_cert_file', files.disability_cert_file);
-    if(files.photo_file) data.append('photo_file', files.photo_file);
+    if (files.aadhaar_file) data.append('aadhaar_file', files.aadhaar_file);
+    if (files.disability_cert_file) data.append('disability_cert_file', files.disability_cert_file);
+    if (files.photo_file) data.append('photo_file', files.photo_file);
 
     try {
       const isLocal = window.location.hostname === 'localhost';
@@ -32,11 +32,11 @@ const CricketMemberForm = ({ onClose }) => {
     } catch (err) { setError(err.message); } finally { setLoading(false); }
   };
 
-  if (success) return <div className="p-12 text-center text-white"><CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4"/><h3>Submitted Successfully!</h3></div>;
+  if (success) return <div className="p-12 text-center text-white"><CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" /><h3>Submitted Successfully!</h3></div>;
 
   return (
     <div className="flex flex-col bg-[#0B1120] text-white h-full">
-      <div className="px-8 py-6 border-b border-slate-800"><h2 className="text-2xl font-bold text-blue-500">Club Member Registration</h2></div>
+      <div className="px-8 py-6 border-b border-slate-800"><h2 className="text-2xl font-bold text-blue-500">Cricket Club Member Form</h2></div>
       <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-8 space-y-6">
         {error && <div className="bg-red-500/20 text-red-400 p-4 rounded">{error}</div>}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -52,14 +52,14 @@ const CricketMemberForm = ({ onClose }) => {
             <option value="B3">Category B3 (Low Vision)</option>
           </select>
           <textarea name="address" rows="2" placeholder="Full Address *" required onChange={handleChange} className="md:col-span-2 bg-slate-900/50 border border-slate-700 rounded-xl p-3" />
-          
+
           <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div><label className="block text-xs text-slate-400 mb-2">Upload Aadhaar</label><input type="file" name="aadhaar_file" onChange={handleFile} className="text-sm text-slate-400"/></div>
-            <div><label className="block text-xs text-slate-400 mb-2">Upload Disability Cert</label><input type="file" name="disability_cert_file" onChange={handleFile} className="text-sm text-slate-400"/></div>
-            <div><label className="block text-xs text-slate-400 mb-2">Upload Passport Photo</label><input type="file" name="photo_file" onChange={handleFile} className="text-sm text-slate-400"/></div>
+            <div><label className="block text-xs text-slate-400 mb-2">Upload Aadhaar</label><input type="file" name="aadhaar_file" onChange={handleFile} className="text-sm text-slate-400" /></div>
+            <div><label className="block text-xs text-slate-400 mb-2">Upload Disability Cert</label><input type="file" name="disability_cert_file" onChange={handleFile} className="text-sm text-slate-400" /></div>
+            <div><label className="block text-xs text-slate-400 mb-2">Upload Passport Photo</label><input type="file" name="photo_file" onChange={handleFile} className="text-sm text-slate-400" /></div>
           </div>
         </div>
-        <button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2">{loading ? <Loader2 className="animate-spin"/> : 'Register Member'}</button>
+        <button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2">{loading ? <Loader2 className="animate-spin" /> : 'Register Member'}</button>
       </form>
     </div>
   );

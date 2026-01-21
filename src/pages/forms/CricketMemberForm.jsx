@@ -39,7 +39,7 @@ const CricketMemberForm = ({ onClose, initialData, onSaveSuccess }) => {
 
     const data = new FormData();
     Object.keys(formData).forEach(k => data.append(k, formData[k]));
-    
+
     // Append files if they exist
     if (files.aadhaar_file) data.append('aadhaar_file', files.aadhaar_file);
     if (files.disability_cert_file) data.append('disability_cert_file', files.disability_cert_file);
@@ -48,12 +48,12 @@ const CricketMemberForm = ({ onClose, initialData, onSaveSuccess }) => {
     try {
       const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       const apiUrl = isLocal ? 'http://localhost/gatla-foundation/api/submit_cricket_member.php' : 'https://gatlafoundation.org/api/submit_cricket_member.php';
-      
+
       const res = await fetch(apiUrl, { method: 'POST', body: data });
       const result = await res.json();
-      
+
       if (result.status === 'success') {
-        if(onSaveSuccess) onSaveSuccess();
+        if (onSaveSuccess) onSaveSuccess();
         onClose();
       } else {
         alert(result.message || 'Submission failed');
@@ -73,11 +73,11 @@ const CricketMemberForm = ({ onClose, initialData, onSaveSuccess }) => {
         <span className="text-xs font-bold text-slate-600 mt-2 text-center">
           {files[name] ? files[name].name : (currentPath ? "File Uploaded (Click to Change)" : "Click to Upload")}
         </span>
-        <input 
-          type="file" 
+        <input
+          type="file"
           name={name}
-          className="absolute inset-0 opacity-0 cursor-pointer" 
-          onChange={(e) => handleFileChange(e, name)} 
+          className="absolute inset-0 opacity-0 cursor-pointer"
+          onChange={(e) => handleFileChange(e, name)}
         />
       </div>
     </div>
@@ -85,7 +85,7 @@ const CricketMemberForm = ({ onClose, initialData, onSaveSuccess }) => {
 
   return (
     <form onSubmit={handleSubmit} className="p-6 space-y-6 bg-white text-slate-900">
-      
+
       {/* 1. Personal Information */}
       <div className="space-y-4">
         <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-100 pb-2 flex items-center gap-2">
@@ -94,14 +94,13 @@ const CricketMemberForm = ({ onClose, initialData, onSaveSuccess }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Full Name *</label><input name="full_name" value={formData.full_name} onChange={handleChange} required className="w-full border border-slate-300 rounded-lg p-3 text-sm focus:border-amber-500 outline-none transition-colors" /></div>
           <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Father Name *</label><input name="father_name" value={formData.father_name} onChange={handleChange} required className="w-full border border-slate-300 rounded-lg p-3 text-sm focus:border-amber-500 outline-none transition-colors" /></div>
-          <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Role/Category *</label>
+          <div className="md:col-span-2"><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Role/Category *</label>
             <select name="category" value={formData.category} onChange={handleChange} className="w-full border border-slate-300 rounded-lg p-3 text-sm focus:border-amber-500 outline-none transition-colors bg-white">
               <option value="B1">Category B1 (Totally Blind)</option>
               <option value="B2">Category B2 (Partially Blind)</option>
               <option value="B3">Category B3 (Low Vision)</option>
             </select>
           </div>
-          <div><label className="block text-xs font-bold text-slate-500 uppercase mb-1">Age</label><input type="number" name="age"  placeholder="Optional" className="w-full border border-slate-300 rounded-lg p-3 text-sm focus:border-amber-500 outline-none transition-colors" /></div>
         </div>
       </div>
 

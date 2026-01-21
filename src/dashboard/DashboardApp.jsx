@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Menu, X, FileSpreadsheet, File as FileIcon, Plus, Trash2, Edit, Save, 
-  UploadCloud, Loader2, FileText, ChevronDown, LogOut, ImageIcon 
+import {
+  Menu, X, FileSpreadsheet, File as FileIcon, Plus, Trash2, Edit, Save,
+  UploadCloud, Loader2, FileText, ChevronDown, LogOut, ImageIcon
 } from 'lucide-react';
 
 // --- EXPORT LIBRARIES ---
@@ -10,7 +10,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 // --- IMPORTS ---
-import Sidebar from './components/Sidebar'; 
+import Sidebar from './components/Sidebar';
 import { FORM_SCHEMAS } from './data/FormSchemas';
 
 // --- IMPORT ADMIN FORMS ---
@@ -47,14 +47,14 @@ const BlogManager = ({ posts, onSave, onDelete }) => {
         <form onSubmit={handleSavePost} className="space-y-6">
           <div>
             <label className="block text-sm font-bold text-slate-700 mb-2">Title</label>
-            <input type="text" className="w-full border border-slate-300 rounded-lg p-3 outline-none" value={currentPost.title} onChange={(e) => setCurrentPost({...currentPost, title: e.target.value})} required />
+            <input type="text" className="w-full border border-slate-300 rounded-lg p-3 outline-none" value={currentPost.title} onChange={(e) => setCurrentPost({ ...currentPost, title: e.target.value })} required />
           </div>
           <div>
             <label className="block text-sm font-bold text-slate-700 mb-2">Content</label>
-            <textarea className="w-full border border-slate-300 rounded-lg p-3 h-64 outline-none" value={currentPost.content} onChange={(e) => setCurrentPost({...currentPost, content: e.target.value})} required />
+            <textarea className="w-full border border-slate-300 rounded-lg p-3 h-64 outline-none" value={currentPost.content} onChange={(e) => setCurrentPost({ ...currentPost, content: e.target.value })} required />
           </div>
           <div className="flex justify-end gap-3">
-             <button type="submit" className="px-6 py-2 bg-amber-500 text-white font-bold rounded-lg hover:bg-amber-600">Publish</button>
+            <button type="submit" className="px-6 py-2 bg-amber-500 text-white font-bold rounded-lg hover:bg-amber-600">Publish</button>
           </div>
         </form>
       </div>
@@ -72,8 +72,8 @@ const BlogManager = ({ posts, onSave, onDelete }) => {
           <div key={post.id} className="p-4 flex items-center justify-between hover:bg-slate-50">
             <div><h3 className="font-bold text-slate-800">{post.title}</h3></div>
             <div className="flex gap-2">
-              <button onClick={() => handleEdit(post)} className="p-2 text-slate-400 hover:text-amber-500"><Edit className="w-4 h-4"/></button>
-              <button onClick={() => onDelete(post.id)} className="p-2 text-slate-400 hover:text-red-500"><Trash2 className="w-4 h-4"/></button>
+              <button onClick={() => handleEdit(post)} className="p-2 text-slate-400 hover:text-amber-500"><Edit className="w-4 h-4" /></button>
+              <button onClick={() => onDelete(post.id)} className="p-2 text-slate-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
             </div>
           </div>
         ))}
@@ -87,11 +87,11 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
   const [formData, setFormData] = useState({});
   const [fileData, setFileData] = useState(null);
 
-  useEffect(() => { 
-     if(isOpen) { 
-        setFormData(initialData || {}); 
-        setFileData(null); 
-     } 
+  useEffect(() => {
+    if (isOpen) {
+      setFormData(initialData || {});
+      setFileData(null);
+    }
   }, [initialData, isOpen]);
 
   if (!isOpen) return null;
@@ -115,14 +115,14 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
   }
   // Added Cricket Forms
   if (categoryId === 'cricket-club-member') {
-    return <ModalWrapper title="Cricket Member"><CricketMemberForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></ModalWrapper>;
+    return <ModalWrapper title="Cricket Club Member Form"><CricketMemberForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></ModalWrapper>;
   }
   if (categoryId === 'cricket-player') {
     return <ModalWrapper title="Cricket Player"><CricketPlayerForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></ModalWrapper>;
   }
 
   // --- Generic Fallback ---
-  const schema = FORM_SCHEMAS[categoryId] || []; 
+  const schema = FORM_SCHEMAS[categoryId] || [];
   const title = categoryId.replace(/-/g, ' ').toUpperCase();
   const handleSubmit = (e) => { e.preventDefault(); onGenericSave(formData, fileData); };
   const getFieldKey = (field) => field.name || field.key;
@@ -130,27 +130,27 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
       <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-        <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4"/> : <Plus className="w-4 h-4"/>} {title}</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
+        <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0"><h3 className="font-bold flex items-center gap-2">{initialData ? <Edit className="w-4 h-4" /> : <Plus className="w-4 h-4" />} {title}</h3><button onClick={onClose}><X className="w-5 h-5" /></button></div>
         <div className="p-6 overflow-y-auto">
           <form id="dynamic-form" onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {schema.map((field) => {
-               const fieldName = getFieldKey(field);
-               return (
-                  <div key={fieldName} className={(field.type === 'textarea' || field.type === 'file') ? 'md:col-span-2' : ''}>
-                    <label className="block text-xs font-bold text-slate-500 uppercase mb-1">{field.label}</label>
-                    {field.type === 'textarea' ? (
-                      <textarea className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" rows="3" value={formData[fieldName] || ''} onChange={(e) => setFormData({...formData, [fieldName]: e.target.value})} />
-                    ) : field.type === 'file' ? (
-                        <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 flex flex-col items-center justify-center relative"><UploadCloud className="w-8 h-8 mb-2 text-amber-500" /><span className="text-sm">{fileData ? fileData.name : "Upload File"}</span><input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => e.target.files[0] && setFileData(e.target.files[0])} /></div>
-                    ) : (
-                      <input type={field.type} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" value={formData[fieldName] || ''} onChange={(e) => setFormData({...formData, [fieldName]: e.target.value})} />
-                    )}
-                  </div>
-               );
+              const fieldName = getFieldKey(field);
+              return (
+                <div key={fieldName} className={(field.type === 'textarea' || field.type === 'file') ? 'md:col-span-2' : ''}>
+                  <label className="block text-xs font-bold text-slate-500 uppercase mb-1">{field.label}</label>
+                  {field.type === 'textarea' ? (
+                    <textarea className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" rows="3" value={formData[fieldName] || ''} onChange={(e) => setFormData({ ...formData, [fieldName]: e.target.value })} />
+                  ) : field.type === 'file' ? (
+                    <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 flex flex-col items-center justify-center relative"><UploadCloud className="w-8 h-8 mb-2 text-amber-500" /><span className="text-sm">{fileData ? fileData.name : "Upload File"}</span><input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => e.target.files[0] && setFileData(e.target.files[0])} /></div>
+                  ) : (
+                    <input type={field.type} className="w-full border border-slate-300 rounded-lg p-3 text-sm outline-none" value={formData[fieldName] || ''} onChange={(e) => setFormData({ ...formData, [fieldName]: e.target.value })} />
+                  )}
+                </div>
+              );
             })}
           </form>
         </div>
-        <div className="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3 shrink-0"><button type="submit" form="dynamic-form" disabled={isSaving} className="px-6 py-2 text-sm font-bold text-white bg-amber-500 hover:bg-amber-600 rounded-lg shadow-md flex items-center gap-2">{isSaving ? <Loader2 className="w-4 h-4 animate-spin"/> : <Save className="w-4 h-4" />} Save Record</button></div>
+        <div className="p-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3 shrink-0"><button type="submit" form="dynamic-form" disabled={isSaving} className="px-6 py-2 text-sm font-bold text-white bg-amber-500 hover:bg-amber-600 rounded-lg shadow-md flex items-center gap-2">{isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Save Record</button></div>
       </div>
     </div>
   );
@@ -158,14 +158,14 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
 
 // Helper Wrapper Component
 const ModalWrapper = ({ title, children }) => (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
-        <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-            <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0">
-                <h3 className="font-bold flex items-center gap-2"><Edit className="w-4 h-4"/> {title}</h3>
-            </div>
-            <div className="overflow-y-auto">{children}</div>
-        </div>
+  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in zoom-in duration-200">
+    <div className="bg-white w-full max-w-3xl rounded-xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+      <div className="bg-slate-900 p-4 flex justify-between items-center text-white shrink-0">
+        <h3 className="font-bold flex items-center gap-2"><Edit className="w-4 h-4" /> {title}</h3>
+      </div>
+      <div className="overflow-y-auto">{children}</div>
     </div>
+  </div>
 );
 
 // --- 3. DATA TABLE ---
@@ -179,7 +179,7 @@ const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
     const ws = XLSX.utils.json_to_sheet(data);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-    XLSX.writeFile(wb, `${type}_export_${new Date().toISOString().slice(0,10)}.xlsx`);
+    XLSX.writeFile(wb, `${type}_export_${new Date().toISOString().slice(0, 10)}.xlsx`);
   };
 
   const handleExportPDF = () => {
@@ -193,7 +193,7 @@ const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
     });
     doc.text(`${type.replace(/-/g, ' ').toUpperCase()} REPORT`, 14, 15);
     doc.autoTable({ head: [tableColumn], body: tableRows, startY: 20 });
-    doc.save(`${type}_export_${new Date().toISOString().slice(0,10)}.pdf`);
+    doc.save(`${type}_export_${new Date().toISOString().slice(0, 10)}.pdf`);
   };
 
   return (
@@ -218,11 +218,11 @@ const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
                 <tr key={row.id} className="hover:bg-amber-50/50 transition-colors group">
                   {displayHeaders.map((header) => (
                     <td key={header.key} className="px-6 py-4 text-sm text-slate-700 whitespace-nowrap">
-                       {(header.key.includes('path') || header.key === 'document') && row[header.key] ? 
-                          <a href={`http://localhost/gatla-foundation/api/uploads/${row[header.key]}`} target="_blank" rel="noreferrer" className="text-blue-500 underline flex items-center gap-1">
-                             <FileText className="w-3 h-3"/> View File
-                          </a> 
-                          : row[header.key] || '---'}
+                      {(header.key.includes('path') || header.key === 'document') && row[header.key] ?
+                        <a href={`http://localhost/gatla-foundation/api/uploads/${row[header.key]}`} target="_blank" rel="noreferrer" className="text-blue-500 underline flex items-center gap-1">
+                          <FileText className="w-3 h-3" /> View File
+                        </a>
+                        : row[header.key] || '---'}
                     </td>
                   ))}
                   <td className="px-6 py-4 text-right"><span className={`px-2 py-1 rounded-full text-xs font-bold ${row.status === 'Approved' || row.status === 'Success' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>{row.status || 'Pending'}</span></td>
@@ -267,7 +267,7 @@ const DashboardApp = () => {
   const getApiUrl = () => {
     const hostname = window.location.hostname;
     if (hostname === 'localhost' || hostname === '127.0.0.1') return 'http://localhost/gatla-foundation/api';
-    return 'https://gatlafoundation.org/api'; 
+    return 'https://gatlafoundation.org/api';
   };
   const apiUrl = getApiUrl();
 
@@ -276,47 +276,47 @@ const DashboardApp = () => {
   const handleLogout = () => { setIsAuthenticated(false); setActiveTab('dashboard'); };
 
   const fetchData = async () => {
-      try {
-        if (activeTab === 'volunteer-form') {
-            const res = await fetch(`${apiUrl}/get_general_volunteers.php`);
-            const data = await res.json();
-            setAppData(prev => ({ ...prev, 'volunteer-form': data }));
-        } else if (activeTab === 'donations-list') {
-            const res = await fetch(`${apiUrl}/get_donations.php`);
-            const data = await res.json();
-            setAppData(prev => ({ ...prev, 'donations-list': data }));
-        } else if (activeTab === 'education-student') {
-            const res = await fetch(`${apiUrl}/get_education_students.php`);
-            const data = await res.json();
-            setAppData(prev => ({ ...prev, 'education-student': data }));
-        } else if (activeTab === 'education-scriber') {
-            const res = await fetch(`${apiUrl}/get_education_scribers.php`);
-            const data = await res.json();
-            setAppData(prev => ({ ...prev, 'education-scriber': data }));
-        } else if (activeTab === 'education-volunteer') { 
-            const res = await fetch(`${apiUrl}/get_education_volunteers.php`);
-            const data = await res.json();
-            setAppData(prev => ({ ...prev, 'education-volunteer': data }));
-        } else if (activeTab === 'education-donor') { 
-            const res = await fetch(`${apiUrl}/get_education_donors.php`);
-            const data = await res.json();
-            setAppData(prev => ({ ...prev, 'education-donor': data }));
-        } else if (activeTab === 'cricket-club-member') {
-            const res = await fetch(`${apiUrl}/get_cricket_members.php`);
-            const data = await res.json();
-            setAppData(prev => ({ ...prev, 'cricket-club-member': data }));
-        } else if (activeTab === 'cricket-player') {
-            const res = await fetch(`${apiUrl}/get_cricket_players.php`);
-            const data = await res.json();
-            setAppData(prev => ({ ...prev, 'cricket-player': data }));
-        } else {
-            const res = await fetch(`${apiUrl}/get_dashboard_data.php`);
-            try {
-                const data = await res.json();
-                if (data.status !== 'error') setAppData(data);
-            } catch (e) { console.error("API Error: Response was not JSON"); }
-        }
-      } catch (err) { console.error("Fetch error:", err); }
+    try {
+      if (activeTab === 'volunteer-form') {
+        const res = await fetch(`${apiUrl}/get_general_volunteers.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'volunteer-form': data }));
+      } else if (activeTab === 'donations-list') {
+        const res = await fetch(`${apiUrl}/get_donations.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'donations-list': data }));
+      } else if (activeTab === 'education-student') {
+        const res = await fetch(`${apiUrl}/get_education_students.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'education-student': data }));
+      } else if (activeTab === 'education-scriber') {
+        const res = await fetch(`${apiUrl}/get_education_scribers.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'education-scriber': data }));
+      } else if (activeTab === 'education-volunteer') {
+        const res = await fetch(`${apiUrl}/get_education_volunteers.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'education-volunteer': data }));
+      } else if (activeTab === 'education-donor') {
+        const res = await fetch(`${apiUrl}/get_education_donors.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'education-donor': data }));
+      } else if (activeTab === 'cricket-club-member') {
+        const res = await fetch(`${apiUrl}/get_cricket_members.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'cricket-club-member': data }));
+      } else if (activeTab === 'cricket-player') {
+        const res = await fetch(`${apiUrl}/get_cricket_players.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'cricket-player': data }));
+      } else {
+        const res = await fetch(`${apiUrl}/get_dashboard_data.php`);
+        try {
+          const data = await res.json();
+          if (data.status !== 'error') setAppData(data);
+        } catch (e) { console.error("API Error: Response was not JSON"); }
+      }
+    } catch (err) { console.error("Fetch error:", err); }
   };
 
   useEffect(() => { if (isAuthenticated) fetchData(); }, [isAuthenticated, activeTab]);
@@ -324,27 +324,27 @@ const DashboardApp = () => {
   // DELETE FUNCTION
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this record? This cannot be undone.")) {
-        return;
+      return;
     }
     try {
-        const response = await fetch(`${apiUrl}/delete_common.php`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                id: id, 
-                type: activeTab 
-            }) 
-        });
-        const result = await response.json();
-        if (result.status === 'success') {
-            alert("Record deleted successfully.");
-            fetchData(); 
-        } else {
-            alert("Error: " + result.message);
-        }
+      const response = await fetch(`${apiUrl}/delete_common.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: id,
+          type: activeTab
+        })
+      });
+      const result = await response.json();
+      if (result.status === 'success') {
+        alert("Record deleted successfully.");
+        fetchData();
+      } else {
+        alert("Error: " + result.message);
+      }
     } catch (error) {
-        console.error("Delete error:", error);
-        alert("Network error while deleting.");
+      console.error("Delete error:", error);
+      alert("Network error while deleting.");
     }
   };
 
@@ -357,11 +357,11 @@ const DashboardApp = () => {
     if (fileData) payload.append('document', fileData);
 
     try {
-        const response = await fetch(`${apiUrl}/submit_common.php`, { method: 'POST', body: payload });
-        const result = await response.json();
-        if (result.status === 'success') { alert("Saved successfully!"); setModalOpen(false); fetchData(); } 
-        else { alert("Error: " + result.message); }
-    } catch (error) { alert("Network Error"); } 
+      const response = await fetch(`${apiUrl}/submit_common.php`, { method: 'POST', body: payload });
+      const result = await response.json();
+      if (result.status === 'success') { alert("Saved successfully!"); setModalOpen(false); fetchData(); }
+      else { alert("Error: " + result.message); }
+    } catch (error) { alert("Network Error"); }
     finally { setIsSaving(false); }
   };
 
@@ -376,9 +376,9 @@ const DashboardApp = () => {
           <ProfileSection onLogout={handleLogout} />
         </header>
         <main className="flex-1 p-6 overflow-hidden flex flex-col">
-          {activeTab === 'dashboard' ? (<div className="p-10 text-center text-slate-500"><h1 className="text-2xl font-bold text-slate-800 mb-2">Welcome Admin</h1></div>) 
-          : activeTab === 'blog-manager' ? (<BlogManager posts={appData['blog-posts'] || []} onSave={(post) => console.log(post)} onDelete={() => {}} />) 
-          : (<DataTable type={activeTab} data={currentData} onAdd={() => { setCurrentEditItem(null); setModalOpen(true); }} onEdit={(item) => { setCurrentEditItem(item); setModalOpen(true); }} onDelete={handleDelete} />)}
+          {activeTab === 'dashboard' ? (<div className="p-10 text-center text-slate-500"><h1 className="text-2xl font-bold text-slate-800 mb-2">Welcome Admin</h1></div>)
+            : activeTab === 'blog-manager' ? (<BlogManager posts={appData['blog-posts'] || []} onSave={(post) => console.log(post)} onDelete={() => { }} />)
+              : (<DataTable type={activeTab} data={currentData} onAdd={() => { setCurrentEditItem(null); setModalOpen(true); }} onEdit={(item) => { setCurrentEditItem(item); setModalOpen(true); }} onDelete={handleDelete} />)}
         </main>
       </div>
       <FormModal isOpen={modalOpen} onClose={() => setModalOpen(false)} categoryId={activeTab} initialData={currentEditItem} onSaveSuccess={() => { fetchData(); setModalOpen(false); }} onGenericSave={handleGenericSave} isSaving={isSaving} />
