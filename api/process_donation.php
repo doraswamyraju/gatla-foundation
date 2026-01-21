@@ -61,6 +61,11 @@ if (!$conn) {
 
 // Insert with PAN
 $stmt = $conn->prepare("INSERT INTO $tableName (donor_name, email_id, phone_no, pan_card_no, amount) VALUES (?, ?, ?, ?, ?)");
+
+if (!$stmt) {
+     echo json_encode(["status" => "error", "message" => "Prepare failed: " . $conn->error . ". Hint: Run setup_db.php"]);
+     exit;
+}
 // Note: payment_id column might be missing in new tables? 
 // The setup_db.sql did NOT have payment_id. I should stick to columns I created: donor_name, amount, phone_no, email_id, address, pan_card_no.
 // AND submission_date.
