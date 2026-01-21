@@ -23,13 +23,24 @@ const CricketMemberForm = ({ onClose }) => {
     if (files.photo_file) data.append('photo_file', files.photo_file);
 
     try {
-      const isLocal = window.location.hostname === 'localhost';
+      const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       const apiUrl = isLocal ? 'http://localhost/gatla-foundation/api/submit_cricket_member.php' : 'https://gatlafoundation.org/api/submit_cricket_member.php';
+
       const res = await fetch(apiUrl, { method: 'POST', body: data });
       const result = await res.json();
-      if (result.status === 'success') { setSuccess(true); setTimeout(onClose, 3000); }
-      else throw new Error(result.message);
-    } catch (err) { setError(err.message); } finally { setLoading(false); }
+
+      if (result.status === 'success') {
+        setSuccess(true);
+        setTimeout(() => { if (onClose) onClose(); }, 3000);
+      } else {
+        throw new Error(result.message || 'Submission failed');
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Failed to submit form");
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (success) return <div className="p-12 text-center text-white"><CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" /><h3>Submitted Successfully!</h3></div>;

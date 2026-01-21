@@ -172,7 +172,15 @@ const ModalWrapper = ({ title, children }) => (
 const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
   const schema = FORM_SCHEMAS[type] || FORM_SCHEMAS['volunteer-form'];
   const getFieldKey = (field) => field.name || field.key;
-  const displayHeaders = schema.slice(0, 5).map(f => ({ key: getFieldKey(f), label: f.label }));
+  // REMOVED SLICE TO SHOW ALL COLUMNS
+  const displayHeaders = schema.map(f => ({ key: getFieldKey(f), label: f.label }));
+
+  const getApiUrl = () => {
+    const hostname = window.location.hostname;
+    if (hostname === 'localhost' || hostname === '127.0.0.1') return 'http://localhost/gatla-foundation/api';
+    return 'https://gatlafoundation.org/api';
+  };
+  const apiUrl = getApiUrl();
 
   const handleExportExcel = () => {
     if (!data || data.length === 0) return alert("No data to export");
@@ -219,7 +227,7 @@ const DataTable = ({ type, data, onAdd, onEdit, onDelete }) => {
                   {displayHeaders.map((header) => (
                     <td key={header.key} className="px-6 py-4 text-sm text-slate-700 whitespace-nowrap">
                       {(header.key.includes('path') || header.key === 'document') && row[header.key] ?
-                        <a href={`http://localhost/gatla-foundation/api/uploads/${row[header.key]}`} target="_blank" rel="noreferrer" className="text-blue-500 underline flex items-center gap-1">
+                        <a href={`${apiUrl}/uploads/${row[header.key]}`} target="_blank" rel="noreferrer" className="text-blue-500 underline flex items-center gap-1">
                           <FileText className="w-3 h-3" /> View File
                         </a>
                         : row[header.key] || '---'}
