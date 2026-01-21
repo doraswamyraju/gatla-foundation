@@ -62,6 +62,7 @@ $tableMap = [
     'music' => 'music_donors',
     'business' => 'business_donors',
     'education' => 'education_donors',
+    'awards' => 'awards_donors', // Added Awards Logic
     'general' => 'donations'
 ];
 $tableName = $tableMap[$club] ?? 'donations';

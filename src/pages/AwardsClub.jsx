@@ -1,17 +1,19 @@
 // src/pages/AwardsClub.jsx
-import React from 'react';
-import { Award, CheckCircle2, User, FileText, Gift, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Award, CheckCircle2, User, FileText, Gift, ArrowRight, X } from 'lucide-react';
+import AwardsDonorForm from '../components/pillars/AwardsDonorForm';
 
 const AwardsClub = ({ onNavigate }) => {
+  const [activeForm, setActiveForm] = useState(null);
   const color = 'amber';
   const accentClass = 'text-amber-500';
   const borderClass = 'border-amber-500/50';
-  const hoverClass = 'hover:bg-amber-600'; // Define a class for the hover background effect
+  const hoverClass = 'hover:bg-amber-600';
 
   return (
     <div className="pt-20 pb-16 bg-[#050914] min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Header and Title */}
         <div className="text-center mb-12 border-b border-slate-700/50 pb-6">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-2">Awards Club</h1>
@@ -19,10 +21,10 @@ const AwardsClub = ({ onNavigate }) => {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-12">
-          
+
           {/* Main Content Column */}
           <div className="lg:col-span-2 space-y-12">
-            
+
             {/* About The Wing */}
             <div className="bg-[#0B1120] p-8 rounded-lg border border-slate-800 shadow-xl">
               <h2 className={`${accentClass} font-bold tracking-[0.2em] uppercase text-xs mb-3 flex items-center gap-2`}>
@@ -37,7 +39,7 @@ const AwardsClub = ({ onNavigate }) => {
             {/* Key Activities */}
             <div className="bg-[#0B1120] p-8 rounded-lg border border-slate-800 shadow-xl">
               <h2 className="text-amber-500 font-bold tracking-[0.2em] uppercase text-xs mb-6">AWARDING PROCESS</h2>
-              
+
               <div className="grid md:grid-cols-2 gap-6">
                 {[
                   { title: "Nomination Process & Screening", icon: CheckCircle2, desc: "Receiving and vetting nominations from the public and internal teams." },
@@ -68,11 +70,11 @@ const AwardsClub = ({ onNavigate }) => {
                 {[
                   { name: "Nomination Form", icon: User, target: "nomination_form" },
                   { name: "Sponsor Form", icon: FileText, target: "sponsor_form" },
-                  { name: "Event Donor Form", icon: Gift, target: "donate" },
+                  { name: "Event Donor Form", icon: Gift, target: "donate", isLocal: true },
                 ].map((form, index) => (
-                  <button 
+                  <button
                     key={index}
-                    onClick={() => onNavigate(form.target)}
+                    onClick={() => form.isLocal ? setActiveForm('donor') : onNavigate(form.target)}
                     className={`w-full flex justify-between items-center bg-[#050914] text-slate-300 p-3 rounded-md border border-slate-800 ${hoverClass} hover:text-[#0B1120] transition group`}
                   >
                     <span className="flex items-center gap-3">
@@ -85,9 +87,23 @@ const AwardsClub = ({ onNavigate }) => {
               </div>
             </div>
           </div> {/* End Sidebar Column */}
-
         </div>
       </div>
+
+      {/* LOCAL MODAL FOR DONOR FORM */}
+      {activeForm === 'donor' && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="relative w-full max-w-lg bg-[#0B1120] border border-slate-800 rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+            <button
+              onClick={() => setActiveForm(null)}
+              className="absolute top-4 right-4 z-20 p-2 bg-slate-900/50 hover:bg-slate-800 text-slate-400 hover:text-white rounded-full transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <AwardsDonorForm onClose={() => setActiveForm(null)} />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
