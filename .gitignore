@@ -26,4 +26,4 @@ yarn-error.log*
 api/db_env.php
 
 # Editor
-.vscode/
+.vscode/api/db_credentials.php

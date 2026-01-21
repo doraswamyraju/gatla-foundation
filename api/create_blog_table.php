@@ -3,13 +3,10 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
-require 'db_env.php';
 
-$conn = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+require 'config.php';
 
-if ($conn->connect_error) {
-    die(json_encode(["status" => "error", "message" => "Connection failed: " . $conn->connect_error]));
-}
+$conn = connectDB();
 
 // SQL to create table
 $sql = "CREATE TABLE IF NOT EXISTS blog_posts (

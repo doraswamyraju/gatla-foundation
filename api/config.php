@@ -2,17 +2,20 @@
 // api/config.php
 
 // 1. Load credentials securely
-// Check if a local environment file exists
-if (file_exists(__DIR__ . '/db_env.php')) {
+// Priority 1: Git-Ignored Credentials File (For Production which user manages manually)
+if (file_exists(__DIR__ . '/db_credentials.php')) {
+    require_once __DIR__ . '/db_credentials.php';
+} 
+// Priority 2: Old db_env.php (Legacy/Local)
+else if (file_exists(__DIR__ . '/db_env.php')) {
     include(__DIR__ . '/db_env.php');
-} else {
-    // FALLBACK / PRODUCTION CREDENTIALS
-    // On cPanel, you can either create a db_env.php manually 
-    // OR edit these lines directly on the server once.
+} 
+else {
+    // FALLBACK DEFAULTS
     define('DB_SERVER', 'localhost');
-    define('DB_USERNAME', 'rajugda1_gf'); 
-    define('DB_PASSWORD', 'BOHPM6139n@');
-    define('DB_NAME', 'rajugda1_gatla_foundation');
+    define('DB_USERNAME', 'root');
+    define('DB_PASSWORD', '');
+    define('DB_NAME', 'gatla_foundation');
 }
 
 // 2. Connect to Database
