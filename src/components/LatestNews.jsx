@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, ArrowRight } from 'lucide-react';
+import { Calendar, ArrowRight, X } from 'lucide-react';
 
 const LatestNews = () => {
     const [news, setNews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [selectedStory, setSelectedStory] = useState(null);
 
     useEffect(() => {
         const fetchNews = async () => {
@@ -29,6 +30,18 @@ const LatestNews = () => {
 
         fetchNews();
     }, []);
+
+    // Prevent body scroll when modal is open
+    useEffect(() => {
+        if (selectedStory) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [selectedStory]);
 
     if (loading || error || news.length === 0) {
         return null;
@@ -90,7 +103,10 @@ const LatestNews = () => {
                                 </p>
 
                                 <div className="mt-auto pt-4 border-t border-slate-800/50">
-                                    <button className="text-amber-500 text-xs font-bold uppercase tracking-widest hover:text-amber-400 transition-colors flex items-center group/btn">
+                                    <button
+                                        onClick={() => setSelectedStory(item)}
+                                        className="text-amber-500 text-xs font-bold uppercase tracking-widest hover:text-amber-400 transition-colors flex items-center group/btn"
+                                    >
                                         Read Story <ArrowRight className="w-3.5 h-3.5 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                                     </button>
                                 </div>
@@ -99,6 +115,66 @@ const LatestNews = () => {
                     ))}
                 </div>
             </div>
+
+            {/* Story Modal */}
+            {selectedStory && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-in fade-in duration-200">
+                    <div
+                        className="bg-[#0B1120] w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col relative border border-slate-800 animate-in zoom-in-95 duration-200"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Close Button */}
+                        <button
+                            onClick={() => setSelectedStory(null)}
+                            className="absolute top-4 right-4 z-50 p-2 bg-black/50 text-white hover:text-amber-500 rounded-full transition-colors"
+                        >
+                            <X className="w-6 h-6" />
+                        </button>
+
+                        {/* Modal Content - Scrollable */}
+                        <div className="overflow-y-auto custom-scrollbar">
+                            {/* Hero Image */}
+                            {selectedStory.image_path && (
+                                <div className="h-64 md:h-96 w-full relative">
+                                    <img
+                                        src={selectedStory.image_path.startsWith('http') ? selectedStory.image_path : `https://gatlafoundation.org/api/uploads/${selectedStory.image_path}`}
+                                        alt={selectedStory.title}
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#0B1120] to-transparent"></div>
+                                    <div className="absolute bottom-0 left-0 p-6 md:p-10 w-full">
+                                        <span className="bg-amber-500/90 text-[#0B1120] text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-sm mb-4 inline-block">
+                                            {selectedStory.category}
+                                        </span>
+                                        <h2 className="text-2xl md:text-4xl font-serif font-bold text-white mb-2 shadow-sm">
+                                            {selectedStory.title}
+                                        </h2>
+                                        <div className="flex items-center text-sm font-medium text-slate-300 space-x-2">
+                                            <Calendar className="w-4 h-4 text-amber-500" />
+                                            <span>{new Date(selectedStory.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Article Body */}
+                            <div className="p-6 md:p-10 text-slate-300 text-lg leading-relaxed whitespace-pre-wrap">
+                                {!selectedStory.image_path && (
+                                    <div className="mb-8 border-b border-slate-800 pb-8">
+                                        <span className="text-amber-500 font-bold uppercase tracking-widest text-xs mb-2 block">{selectedStory.category}</span>
+                                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-4">{selectedStory.title}</h2>
+                                        <div className="flex items-center text-slate-400 text-sm">
+                                            <Calendar className="w-4 h-4 mr-2 text-amber-500" />
+                                            {new Date(selectedStory.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+                                        </div>
+                                    </div>
+                                )}
+                                {selectedStory.content}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </section>
     );
 };
