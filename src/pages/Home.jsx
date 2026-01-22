@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Star, Users, Calendar, Award, Globe, ArrowRight, Trophy, CheckCircle2 } from 'lucide-react';
+import LatestNews from '../components/LatestNews';
 
 // Utility component for the Image Wheel
 const ImageWheel = () => {
-  
+
   const imageBasePath = process.env.PUBLIC_URL + "/assets/images/";
-  
+
   const images = [
     // Central logo: kept at w-40 h-40
-    { id: 1, src: imageBasePath + "1.png", size: "w-40 h-40", position: "center" }, 
+    { id: 1, src: imageBasePath + "1.png", size: "w-40 h-40", position: "center" },
     // UPDATED: Spoke logo sizes increased from w-16 to w-24
     { id: 2, src: imageBasePath + "2.png", size: "w-24 h-24", angle: 0 },
     { id: 3, src: imageBasePath + "3.png", size: "w-24 h-24", angle: 72 },
@@ -18,13 +19,13 @@ const ImageWheel = () => {
   ];
 
   // UPDATED: Radius increased to 175 to accommodate larger spokes
-  const radius = 175; 
+  const radius = 175;
 
   return (
     // UPDATED: Increased container size to fit new radius
     <div className="relative w-[26rem] h-[26rem] flex items-center justify-center">
       {/* Central Logo (1.png) */}
-      <div 
+      <div
         className={`absolute ${images[0].size} border-2 border-amber-500 rounded-full flex items-center justify-center z-10 p-2 bg-[#0B1120] 
                    shadow-2xl shadow-amber-500/50 
                    hover:shadow-amber-500/80 hover:scale-105 transition-all duration-500 cursor-pointer`} // ADDED: Scale effect
@@ -37,18 +38,18 @@ const ImageWheel = () => {
         // Calculate X and Y positions using trigonometry
         const x = radius * Math.cos((img.angle - 90) * (Math.PI / 180));
         const y = radius * Math.sin((img.angle - 90) * (Math.PI / 180));
-        
+
         return (
           <div
             key={img.id}
             // UPDATED: Added hover:border-amber-500 and hover:shadow-amber-500/50
             className={`absolute ${img.size} rounded-full border-2 border-slate-700 p-2 bg-[#050914] shadow-lg flex items-center justify-center 
                        transition-all duration-300 hover:scale-110 hover:border-amber-500 hover:shadow-[0_0_15px_rgba(245,158,11,0.5)] cursor-pointer`}
-            style={{ 
-              transform: `translate(${x}px, ${y}px)`, 
+            style={{
+              transform: `translate(${x}px, ${y}px)`,
             }}
           >
-            <img src={img.src} alt={`Pillar ${img.id-1}`} className="w-full h-full object-cover rounded-full" />
+            <img src={img.src} alt={`Pillar ${img.id - 1}`} className="w-full h-full object-cover rounded-full" />
           </div>
         );
       })}
@@ -82,10 +83,10 @@ const Hero = ({ onNavigate }) => (
             </button>
           </div>
         </div>
-        
+
         {/* New Image Wheel Implementation */}
         <div className="relative mt-12 md:mt-0 flex justify-center py-10 md:py-20">
-           <ImageWheel />
+          <ImageWheel />
         </div>
       </div>
     </div>
@@ -94,16 +95,16 @@ const Hero = ({ onNavigate }) => (
 
 // Utility component to display number with 'start from 1' effect (simple implementation)
 const AnimatedNumber = ({ value }) => {
-    // Simple logic to show a leading '1' effect if the number is large
-    const displayValue = value.replace('+', '').replace('k', '000').replace(',', '');
-    
-    // We will just display the original value with plus sign for simplicity, 
-    // as the "start from 1" effect is tricky without state/animation logic
-    return (
-        <h4 className="text-3xl font-serif font-bold text-[#0B1120] mb-1">
-            <span className="tabular-nums">{value.replace('+', '')}</span>+
-        </h4>
-    );
+  // Simple logic to show a leading '1' effect if the number is large
+  const displayValue = value.replace('+', '').replace('k', '000').replace(',', '');
+
+  // We will just display the original value with plus sign for simplicity, 
+  // as the "start from 1" effect is tricky without state/animation logic
+  return (
+    <h4 className="text-3xl font-serif font-bold text-[#0B1120] mb-1">
+      <span className="tabular-nums">{value.replace('+', '')}</span>+
+    </h4>
+  );
 };
 
 const ImpactSection = () => (
@@ -132,6 +133,8 @@ const Home = ({ onNavigate, onSelectWing }) => {
     <>
       <Hero onNavigate={onNavigate} />
       <ImpactSection />
+      {/* Pass onNavigate down to LatestNews */}
+      <LatestNews onNavigate={onNavigate} />
     </>
   );
 };

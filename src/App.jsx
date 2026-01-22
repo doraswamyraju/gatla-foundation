@@ -20,6 +20,7 @@ import SupporterForm from './pages/forms/SupporterForm.jsx';
 
 // NEW: Import the Donation Form
 import DonateForm from './pages/forms/DonateForm.jsx';
+import BlogPost from './pages/BlogPost.jsx'; // NEW: Import BlogPost
 import CricketPlayerForm from './components/pillars/CricketPlayerForm.jsx';
 import CricketMemberForm from './components/pillars/CricketMemberForm.jsx';
 
@@ -43,7 +44,7 @@ const UpcomingEventsSection = () => <div className="p-20 min-h-[60vh] flex items
 const CatchAllPage = ({ pageName }) => <div className="p-20 min-h-[60vh] flex items-center justify-center text-xl bg-white text-gray-900">Placeholder for: **{pageName}**</div>;
 
 // --- C. PUBLIC SITE CONTAINER ---
-const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenForm }) => {
+const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenForm, newsId }) => { // Added newsId prop
 
     const [donationClub, setDonationClub] = useState('general'); // State to track which club is receiving donation
 
@@ -117,6 +118,9 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
         // Pass the club prop
         content = <DonateForm onNavigate={handleNavigate} club={donationClub} />;
     }
+    else if (currentLowerPage === 'news') { // Added News Page Handler
+        content = <BlogPost id={newsId} onNavigate={handleNavigate} />;
+    }
     // 2. WING PAGES
     else if (currentLowerPage === 'education') {
         content = <EducationClub onNavigate={onNavClick} />;
@@ -139,7 +143,8 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
                         <About onNavigate={onNavClick} />
                         <Projects onSelectWing={(id) => handleNavigate('Wing', id)} />
                         <Awards />
-                        <LatestNews />
+                        {/* Pass onNavigate to LatestNews to enable linking to 'News' page */}
+                        <LatestNews onNavigate={handleNavigate} />
                     </>
                 );
                 break;
@@ -160,6 +165,7 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
         }
     }
 
+    // Only show Navbar/Footer if NOT a standalone page if desired, but for now keep them.
     return (
         <div className="min-h-screen flex flex-col bg-[#050914]">
             <Navbar onNavigate={onNavClick} />
@@ -172,29 +178,56 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
 // --- A. MAIN APP ---
 const App = () => {
 
+    // Helper to extract News ID from URL if present
+    const getNewsIdFromUrl = () => {
+        const path = window.location.pathname;
+        if (path.startsWith('/news/')) {
+            const parts = path.split('/');
+            return parts[2]; // /news/123 -> 123
+        }
+        return null;
+    };
+
     const getInitialPage = () => {
         const path = window.location.pathname.toLowerCase();
         if (path.includes('/login') || path.includes('/dashboard')) return 'Login';
         if (path.includes('/donate')) return 'Donate';
+        if (path.startsWith('/news/')) return 'News'; // Initial check for News
         if (path.length > 1) return path.substring(1).charAt(0).toUpperCase() + path.substring(2);
         return 'Home';
     };
 
     const [currentPage, setCurrentPage] = useState(getInitialPage());
+    const [newsId, setNewsId] = useState(getNewsIdFromUrl()); // State for News ID
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
     const [activeFormId, setActiveFormId] = useState('');
 
-    const handleNavigate = useCallback((page, wingId = null) => {
+    // Listen for popstate (browser back/forward button)
+    React.useEffect(() => {
+        const handlePopState = () => {
+            const newPage = getInitialPage();
+            setCurrentPage(newPage);
+            setNewsId(getNewsIdFromUrl()); // Update News ID on back button
+        };
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, []);
+
+    const handleNavigate = useCallback((page, param = null) => { // Updated to accept param (like wingId or newsId)
         const lowerId = page.toLowerCase();
         let path = `/${lowerId}`;
 
         if (lowerId === 'login' || lowerId === 'dashboard') {
             setCurrentPage('Login');
             path = '/login';
-        } else if (lowerId === 'wing' && wingId) {
-            setCurrentPage(wingId);
-            path = `/${wingId}`;
+        } else if (lowerId === 'wing' && param) {
+            setCurrentPage(param);
+            path = `/${param}`;
+        } else if (lowerId === 'news' && param) { // Handle News Navigation
+            setCurrentPage('News');
+            setNewsId(param);
+            path = `/news/${param}`;
         } else if (lowerId === 'home') {
             setCurrentPage('Home');
             path = '/';
@@ -242,6 +275,7 @@ const App = () => {
                 currentPage={currentPage}
                 handleNavigate={handleNavigate}
                 handleOpenForm={handleOpenForm}
+                newsId={newsId}
             />
 
             {isFormModalOpen && activeFormId === 'volunteer-form' && (
