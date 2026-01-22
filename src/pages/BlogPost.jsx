@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, ArrowLeft, User, Share2 } from 'lucide-react';
+import { Calendar, ArrowLeft, Share2, Clock, User } from 'lucide-react';
 
 const BlogPost = ({ id, onNavigate }) => {
     const [post, setPost] = useState(null);
@@ -14,10 +14,6 @@ const BlogPost = ({ id, onNavigate }) => {
                 const apiUrl = (hostname === 'localhost' || hostname === '127.0.0.1')
                     ? 'http://localhost/gatla-foundation/api'
                     : 'https://gatlafoundation.org/api';
-
-                // We'll fetch all and find by ID, or if API supports get_blog.php?id=X (we only have get_blogs.php currently)
-                // Let's assume we can fetch all and filter, or update get_blogs to filter by ID.
-                // For now, let's fetch all (since dataset is small) or check if get_blogs params.
 
                 const response = await fetch(`${apiUrl}/get_blogs.php?status=Published`);
                 if (!response.ok) throw new Error('Failed to fetch post');
@@ -57,69 +53,79 @@ const BlogPost = ({ id, onNavigate }) => {
     );
 
     return (
-        <div className="min-h-screen bg-[#050914] text-slate-300 font-sans selection:bg-amber-500/30">
+        <div className="min-h-screen bg-[#f8f9fa] md:bg-[#050914] pt-4 md:pt-12 pb-20 font-sans">
 
-            {/* Scroll Progress Bar (Optional, can add later) */}
+            {/* Navigation Breadcrumb - Outside the card on desktop */}
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+                <button
+                    onClick={() => onNavigate('Home')}
+                    className="flex items-center text-sm font-bold text-slate-500 md:text-slate-400 hover:text-amber-500 transition-colors uppercase tracking-widest"
+                >
+                    <ArrowLeft className="w-4 h-4 mr-2" /> Back to News
+                </button>
+            </div>
 
-            {/* Hero Section */}
-            <div className="relative w-full h-[60vh] md:h-[70vh]">
-                {/* Background Image with Overlay */}
-                <div className="absolute inset-0">
-                    {post.image_path && (
+            {/* Main Content Card */}
+            <article className="max-w-5xl mx-auto bg-white rounded-none md:rounded-2xl shadow-xl overflow-hidden min-h-[80vh]">
+
+                {/* Featured Image - Standard Aspect Ratio */}
+                {post.image_path && (
+                    <div className="w-full h-64 md:h-[500px] overflow-hidden relative group">
                         <img
                             src={post.image_path.startsWith('http') ? post.image_path : `https://gatlafoundation.org/api/uploads/${post.image_path}`}
                             alt={post.title}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                         />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#050914] via-[#050914]/60 to-transparent"></div>
-                </div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent md:hidden"></div>
+                    </div>
+                )}
 
-                {/* Hero Content */}
-                <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 lg:p-20 z-10 max-w-5xl mx-auto">
-                    <button
-                        onClick={() => onNavigate('Home')}
-                        className="mb-6 flex items-center text-sm font-bold text-amber-500 hover:text-white transition-colors uppercase tracking-widest"
-                    >
-                        <ArrowLeft className="w-4 h-4 mr-2" /> Back to News
-                    </button>
+                {/* Content Body */}
+                <div className="px-6 py-8 md:px-16 md:py-12">
 
-                    <div className="flex flex-wrap gap-3 mb-4">
-                        <span className="bg-amber-600 text-white text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-sm shadow-lg">
+                    {/* Metadata */}
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500 mb-6 font-medium">
+                        <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
                             {post.category}
                         </span>
-                        <span className="bg-slate-800/80 backdrop-blur text-slate-300 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-sm flex items-center">
-                            <Calendar className="w-3 h-3 mr-2 text-amber-500" />
+                        <span className="flex items-center">
+                            <Calendar className="w-4 h-4 mr-2 text-slate-400" />
                             {new Date(post.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+                        </span>
+                        <span className="flex items-center">
+                            <User className="w-4 h-4 mr-2 text-slate-400" />
+                            Admin
                         </span>
                     </div>
 
-                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-white leading-tight shadow-sm mb-4">
+                    {/* Title */}
+                    <h1 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 leading-tight mb-8">
                         {post.title}
                     </h1>
-                </div>
-            </div>
 
-            {/* Main Content */}
-            <div className="max-w-4xl mx-auto px-6 py-12 md:py-20">
-                <div className="prose prose-lg prose-invert prose-amber max-w-none">
-                    {/* Content rendering - preserving line breaks */}
-                    <div className="text-lg leading-relaxed md:text-xl text-slate-300 whitespace-pre-wrap">
+                    {/* Separator */}
+                    <hr className="border-slate-100 mb-10" />
+
+                    {/* The Article Text */}
+                    <div className="prose prose-lg prose-slate max-w-none text-slate-700 leading-relaxed whitespace-pre-wrap">
                         {post.content}
                     </div>
-                </div>
 
-                {/* Share / Footer of Post */}
-                <div className="mt-16 pt-8 border-t border-slate-800 flex justify-between items-center">
-                    <div className="text-slate-500 text-sm">
-                        Posted by <span className="text-amber-500">Admin</span>
+                    {/* Footer / Share */}
+                    <div className="mt-16 pt-8 border-t border-slate-100 flex justify-between items-center">
+                        <div className="text-slate-400 text-sm italic">
+                            Gatla Foundation • Excellence in Service
+                        </div>
+                        <button className="flex items-center text-slate-600 hover:text-amber-600 font-bold transition-colors space-x-2 text-sm uppercase tracking-wider">
+                            <Share2 className="w-4 h-4" /> <span>Share Story</span>
+                        </button>
                     </div>
-                    <button className="flex items-center text-slate-400 hover:text-white transition-colors space-x-2">
-                        <Share2 className="w-4 h-4" /> <span>Share this story</span>
-                    </button>
-                </div>
-            </div>
 
+                </div>
+            </article>
+
+            {/* Footer Space for aesthetics */}
+            <div className="h-20"></div>
         </div>
     );
 };
