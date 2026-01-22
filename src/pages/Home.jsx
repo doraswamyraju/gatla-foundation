@@ -3,19 +3,19 @@ import { Star, Users, Calendar, Award, Globe, ArrowRight, Trophy, CheckCircle2 }
 import FadeInSection from '../components/FadeInSection';
 
 // Utility component for the Image Wheel
-const ImageWheel = () => {
+const ImageWheel = ({ onNavigate }) => {
 
   const imageBasePath = process.env.PUBLIC_URL + "/assets/images/";
 
   const images = [
     // Central logo: kept at w-40 h-40
-    { id: 1, src: imageBasePath + "1.png", size: "w-40 h-40", position: "center" },
-    // UPDATED: Spoke logo sizes increased from w-16 to w-24
-    { id: 2, src: imageBasePath + "2.png", size: "w-24 h-24", angle: 0 },
-    { id: 3, src: imageBasePath + "3.png", size: "w-24 h-24", angle: 72 },
-    { id: 4, src: imageBasePath + "4.png", size: "w-24 h-24", angle: 144 },
-    { id: 5, src: imageBasePath + "5.png", size: "w-24 h-24", angle: 216 },
-    { id: 6, src: imageBasePath + "6.png", size: "w-24 h-24", angle: 288 },
+    { id: 'about', src: imageBasePath + "1.png", size: "w-40 h-40", position: "center" },
+    // Spoke logos mapped to routes
+    { id: 'education', src: imageBasePath + "2.png", size: "w-24 h-24", angle: 0 },
+    { id: 'cricket', src: imageBasePath + "3.png", size: "w-24 h-24", angle: 72 },
+    { id: 'music', src: imageBasePath + "4.png", size: "w-24 h-24", angle: 144 },
+    { id: 'business', src: imageBasePath + "5.png", size: "w-24 h-24", angle: 216 },
+    { id: 'awards', src: imageBasePath + "6.png", size: "w-24 h-24", angle: 288 },
   ];
 
   // UPDATED: Radius increased to 175 to accommodate larger spokes
@@ -23,12 +23,13 @@ const ImageWheel = () => {
 
   return (
     // UPDATED: Increased container size to fit new radius
-    <div className="relative w-[26rem] h-[26rem] flex items-center justify-center">
+    <div className="relative w-[26rem] h-[26rem] flex items-center justify-center animate-spin-slow-reverse"> {/* Added slow spin container if desired, or keep static */}
       {/* Central Logo (1.png) */}
       <div
+        onClick={() => onNavigate('about')}
         className={`absolute ${images[0].size} border-2 border-amber-500 rounded-full flex items-center justify-center z-10 p-2 bg-[#0B1120] 
                    shadow-2xl shadow-amber-500/50 
-                   hover:shadow-amber-500/80 hover:scale-105 transition-all duration-500 cursor-pointer`} // ADDED: Scale effect
+                   hover:shadow-amber-500/80 hover:scale-105 transition-all duration-500 cursor-pointer`}
       >
         <img src={images[0].src} alt="Gatla Foundation Logo" className="w-full h-full object-contain" />
       </div>
@@ -42,14 +43,15 @@ const ImageWheel = () => {
         return (
           <div
             key={img.id}
+            onClick={() => onNavigate(img.id)}
             // UPDATED: Added hover:border-amber-500 and hover:shadow-amber-500/50
             className={`absolute ${img.size} rounded-full border-2 border-slate-700 p-2 bg-[#050914] shadow-lg flex items-center justify-center 
-                       transition-all duration-300 hover:scale-110 hover:border-amber-500 hover:shadow-[0_0_15px_rgba(245,158,11,0.5)] cursor-pointer`}
+                       transition-all duration-300 hover:scale-110 hover:border-amber-500 hover:shadow-[0_0_15px_rgba(245,158,11,0.5)] cursor-pointer group`}
             style={{
               transform: `translate(${x}px, ${y}px)`,
             }}
           >
-            <img src={img.src} alt={`Pillar ${img.id - 1}`} className="w-full h-full object-cover rounded-full" />
+            <img src={img.src} alt={`Pillar ${img.id}`} className="w-full h-full object-cover rounded-full group-hover:rotate-12 transition-transform duration-500" />
           </div>
         );
       })}
@@ -58,27 +60,34 @@ const ImageWheel = () => {
 };
 
 
-const Hero = ({ onNavigate }) => (
+const Hero = ({ onNavigate, onSelectWing }) => (
   <div id="home" className="relative bg-[#050914] min-h-[80vh] flex items-center overflow-hidden">
-    <div className="absolute inset-0">
+    {/* Animated Background */}
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
       <div className="absolute top-0 right-0 w-full md:w-2/3 h-full bg-gradient-to-l from-[#0B1120] via-[#0B1120]/90 to-transparent z-10"></div>
-      <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-amber-900/20 via-[#050914] to-[#050914]"></div>
+      <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-amber-900/20 via-[#050914] to-[#050914] animate-pulse-slow"></div>
+
+      {/* Floating Orbs */}
+      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl animate-blob"></div>
+      <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
+      <div className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
     </div>
+
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full py-12 md:py-16">
       <div className="grid md:grid-cols-2 gap-8 items-center">
         <div className="text-left space-y-6">
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif font-bold text-white leading-[1.1]">
             Vision Beyond <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600">Sight</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 animate-gradient-x">Sight</span>
           </h1>
           <p className="text-base md:text-lg text-slate-400 max-w-lg leading-relaxed border-l-2 border-amber-500/30 pl-4">
             The Gatla Foundation Tirupati represents the pinnacle of service, orchestrating a brighter future for the visually impaired through five pillars of excellence.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 pt-2">
-            <button onClick={() => onNavigate('volunteer')} className="px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-[#0B1120] font-bold text-xs uppercase tracking-widest hover:from-amber-400 hover:to-amber-500 transition shadow-[0_0_20px_rgba(245,158,11,0.3)]">
+            <button onClick={() => onNavigate('volunteer')} className="px-8 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-[#0B1120] font-bold text-xs uppercase tracking-widest hover:from-amber-400 hover:to-amber-500 transition shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:scale-105 duration-300">
               Join The Mission
             </button>
-            <button onClick={() => onNavigate('about')} className="px-8 py-3 bg-transparent border border-slate-700 text-slate-300 font-bold text-xs uppercase tracking-widest hover:border-amber-500/50 hover:text-white transition">
+            <button onClick={() => onNavigate('about')} className="px-8 py-3 bg-transparent border border-slate-700 text-slate-300 font-bold text-xs uppercase tracking-widest hover:border-amber-500/50 hover:text-white transition hover:scale-105 duration-300">
               View Heritage
             </button>
           </div>
@@ -86,7 +95,8 @@ const Hero = ({ onNavigate }) => (
 
         {/* New Image Wheel Implementation */}
         <div className="relative mt-12 md:mt-0 flex justify-center py-10 md:py-20">
-          <ImageWheel />
+          {/* Pass onSelectWing to ImageWheel so it can navigate to pillars */}
+          <ImageWheel onNavigate={onSelectWing} />
         </div>
       </div>
     </div>
@@ -134,7 +144,7 @@ const Home = ({ onNavigate, onSelectWing }) => {
   return (
     <>
       <FadeInSection>
-        <Hero onNavigate={onNavigate} />
+        <Hero onNavigate={onNavigate} onSelectWing={onSelectWing} />
       </FadeInSection>
       <FadeInSection delay={200}>
         <ImpactSection />
