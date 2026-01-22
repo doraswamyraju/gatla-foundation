@@ -23,6 +23,9 @@ import DonateForm from './pages/forms/DonateForm.jsx';
 import BlogPost from './pages/BlogPost.jsx'; // NEW: Import BlogPost
 import CricketPlayerForm from './components/pillars/CricketPlayerForm.jsx';
 import CricketMemberForm from './components/pillars/CricketMemberForm.jsx';
+import GallerySection from './components/GallerySection.jsx';
+import Gallery from './pages/Gallery.jsx';
+import ContactSection from './components/ContactSection.jsx';
 
 // CRITICAL: Import the correct Modal Component
 import FormModal from './dashboard/components/FormModal.jsx';
@@ -144,9 +147,18 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
                         <About onNavigate={onNavClick} />
                         <Projects onSelectWing={(id) => handleNavigate('Wing', id)} />
                         <Awards />
+
+                        <FadeInSection delay={300}>
+                            <GallerySection onNavigate={handleNavigate} />
+                        </FadeInSection>
+
                         {/* Pass onNavigate to LatestNews to enable linking to 'News' page */}
                         <FadeInSection delay={400}>
                             <LatestNews onNavigate={handleNavigate} />
+                        </FadeInSection>
+
+                        <FadeInSection delay={500}>
+                            <ContactSection />
                         </FadeInSection>
                     </>
                 );
@@ -195,6 +207,8 @@ const App = () => {
         const path = window.location.pathname.toLowerCase();
         if (path.includes('/login') || path.includes('/dashboard')) return 'Login';
         if (path.includes('/donate')) return 'Donate';
+        if (path.includes('/gallery')) return 'Gallery';
+        if (path.includes('/contact')) return 'Contact';
         if (path.startsWith('/news/')) return 'News'; // Initial check for News
         if (path.length > 1) return path.substring(1).charAt(0).toUpperCase() + path.substring(2);
         return 'Home';
@@ -231,6 +245,12 @@ const App = () => {
             setCurrentPage('News');
             setNewsId(param);
             path = `/news/${param}`;
+        } else if (lowerId === 'gallery') {
+            setCurrentPage('Gallery');
+            path = '/gallery';
+        } else if (lowerId === 'contact') {
+            setCurrentPage('Contact');
+            path = '/contact';
         } else if (lowerId === 'home') {
             setCurrentPage('Home');
             path = '/';

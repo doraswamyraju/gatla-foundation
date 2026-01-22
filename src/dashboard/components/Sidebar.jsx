@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   LayoutDashboard, Users, DollarSign, Trophy, BookOpen,
-  Music, Briefcase, Award, PenTool, LogOut, ChevronUp, ChevronDown
+  Music, Briefcase, Award, PenTool, LogOut, ChevronUp, ChevronDown, Image as ImageIcon
 } from 'lucide-react';
 
 const SidebarGroup = ({ title, icon, id, forms, activeTab, setActiveTab, isOpen, toggleOpen }) => {
@@ -149,6 +149,7 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout 
         <nav className="flex-1 overflow-y-auto py-4 custom-scrollbar">
           <button onClick={() => setActiveTab('dashboard')} className={`w-full flex items-center gap-3 px-4 py-3 mb-4 text-sm font-medium transition-colors ${activeTab === 'dashboard' ? 'bg-amber-500 text-[#0B1120]' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}><LayoutDashboard className="w-5 h-5" />Dashboard Overview</button>
           <button onClick={() => setActiveTab('blog-manager')} className={`w-full flex items-center gap-3 px-4 py-3 mb-4 text-sm font-medium transition-colors ${activeTab === 'blog-manager' ? 'bg-amber-500 text-[#0B1120]' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}><PenTool className="w-5 h-5" />Blog Manager</button>
+          <button onClick={() => setActiveTab('gallery-manager')} className={`w-full flex items-center gap-3 px-4 py-3 mb-4 text-sm font-medium transition-colors ${activeTab === 'gallery-manager' ? 'bg-amber-500 text-[#0B1120]' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}><ImageIcon className="w-5 h-5" />Gallery Manager</button>
           <div className="px-4 mb-2 text-[10px] font-bold uppercase text-slate-600 tracking-wider">Management Modules</div>
           {navStructure.map(group => <SidebarGroup key={group.id} {...group} activeTab={activeTab} setActiveTab={setActiveTab} isOpen={openGroups[group.id]} toggleOpen={toggleGroup} />)}
         </nav>

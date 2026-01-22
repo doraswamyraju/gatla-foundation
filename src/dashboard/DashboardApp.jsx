@@ -24,6 +24,8 @@ import CricketPlayerForm from '../pages/forms/CricketPlayerForm'; // Added
 
 
 // --- 1. BLOG MANAGER ---
+import GalleryManager from './components/GalleryManager';
+
 const BlogManager = ({ posts, onSave, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentPost, setCurrentPost] = useState(null);
@@ -573,7 +575,10 @@ const DashboardApp = () => {
                 onDelete={handleDelete}
               />
             )
-              : (<DataTable type={activeTab} data={currentData} onRefresh={fetchData} onAdd={() => { setCurrentEditItem(null); setModalOpen(true); }} onEdit={(item) => { setCurrentEditItem(item); setModalOpen(true); }} onDelete={handleDelete} />)}
+              : activeTab === 'gallery-manager' ? (
+                <GalleryManager />
+              )
+                : (<DataTable type={activeTab} data={currentData} onRefresh={fetchData} onAdd={() => { setCurrentEditItem(null); setModalOpen(true); }} onEdit={(item) => { setCurrentEditItem(item); setModalOpen(true); }} onDelete={handleDelete} />)}
         </main>
       </div>
       <FormModal isOpen={modalOpen} onClose={() => setModalOpen(false)} categoryId={activeTab} initialData={currentEditItem} onSaveSuccess={() => { fetchData(); setModalOpen(false); }} onGenericSave={handleGenericSave} isSaving={isSaving} />
