@@ -57,7 +57,7 @@ const GallerySection = ({ onNavigate }) => {
                                 <img
                                     src={img.image_path.startsWith('http') ? img.image_path : `https://gatlafoundation.org/api/uploads/${img.image_path}`}
                                     alt={img.title || "Gallery Image"}
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    className="w-full h-full object-contain bg-black/50 transition-transform duration-700 group-hover:scale-105"
                                 />
                             </div>
 

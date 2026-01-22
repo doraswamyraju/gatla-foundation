@@ -137,6 +137,12 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
     } else if (currentLowerPage === 'awards') {
         content = <AwardsClub onNavigate={onNavClick} />;
     }
+    else if (currentLowerPage === 'gallery') {
+        content = <Gallery />;
+    }
+    else if (currentLowerPage === 'contact') {
+        content = <div className="pt-20"><ContactSection /></div>;
+    }
     // 3. STANDARD PAGES
     else {
         switch (currentLowerPage) {
