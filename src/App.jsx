@@ -28,6 +28,7 @@ import CricketMemberForm from './components/pillars/CricketMemberForm.jsx';
 import FormModal from './dashboard/components/FormModal.jsx';
 import AdminDashboard from './dashboard/DashboardApp.jsx'; // Pointing to your DashboardApp
 import AdminLoginPage from './pages/AdminLoginPage.jsx';
+import FadeInSection from './components/FadeInSection.jsx';
 
 // --- 2. MOCK DATA ---
 const MOCK_WINGS_DATA = {
@@ -144,7 +145,9 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
                         <Projects onSelectWing={(id) => handleNavigate('Wing', id)} />
                         <Awards />
                         {/* Pass onNavigate to LatestNews to enable linking to 'News' page */}
-                        <LatestNews onNavigate={handleNavigate} />
+                        <FadeInSection delay={400}>
+                            <LatestNews onNavigate={handleNavigate} />
+                        </FadeInSection>
                     </>
                 );
                 break;

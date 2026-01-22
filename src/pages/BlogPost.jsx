@@ -68,15 +68,14 @@ const BlogPost = ({ id, onNavigate }) => {
             {/* Main Content Card */}
             <article className="max-w-5xl mx-auto bg-white rounded-none md:rounded-2xl shadow-xl overflow-hidden min-h-[80vh]">
 
-                {/* Featured Image - Standard Aspect Ratio */}
+                {/* Featured Image - Natural Aspect Ratio */}
                 {post.image_path && (
-                    <div className="w-full h-64 md:h-[500px] overflow-hidden relative group">
+                    <div className="w-full relative group bg-slate-50 flex justify-center py-4">
                         <img
                             src={post.image_path.startsWith('http') ? post.image_path : `https://gatlafoundation.org/api/uploads/${post.image_path}`}
                             alt={post.title}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            className="w-full h-auto max-h-[800px] object-contain shadow-sm"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent md:hidden"></div>
                     </div>
                 )}
 
@@ -99,7 +98,7 @@ const BlogPost = ({ id, onNavigate }) => {
                     </div>
 
                     {/* Title */}
-                    <h1 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 leading-tight mb-8">
+                    <h1 className="text-3xl md:text-5xl font-serif font-bold text-slate-900 leading-tight mb-8 break-words">
                         {post.title}
                     </h1>
 
@@ -107,7 +106,7 @@ const BlogPost = ({ id, onNavigate }) => {
                     <hr className="border-slate-100 mb-10" />
 
                     {/* The Article Text */}
-                    <div className="prose prose-lg prose-slate max-w-none text-slate-700 leading-relaxed whitespace-pre-wrap">
+                    <div className="prose prose-lg prose-slate max-w-none text-slate-700 leading-relaxed whitespace-pre-wrap break-words overflow-hidden">
                         {post.content}
                     </div>
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Star, Users, Calendar, Award, Globe, ArrowRight, Trophy, CheckCircle2 } from 'lucide-react';
+import FadeInSection from '../components/FadeInSection';
 
 // Utility component for the Image Wheel
 const ImageWheel = () => {
@@ -127,11 +128,17 @@ const ImpactSection = () => (
   </section>
 );
 
+
+
 const Home = ({ onNavigate, onSelectWing }) => {
   return (
     <>
-      <Hero onNavigate={onNavigate} />
-      <ImpactSection />
+      <FadeInSection>
+        <Hero onNavigate={onNavigate} />
+      </FadeInSection>
+      <FadeInSection delay={200}>
+        <ImpactSection />
+      </FadeInSection>
     </>
   );
 };
