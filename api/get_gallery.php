@@ -6,6 +6,16 @@ header("Content-Type: application/json; charset=UTF-8");
 
 $conn = connectDB();
 
+// AUTO-CREATE TABLE IF NOT EXISTS (Self-Healing)
+$table_check = "CREATE TABLE IF NOT EXISTS gallery_images (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NULL,
+    category VARCHAR(100) NOT NULL,
+    image_path VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)";
+$conn->query($table_check);
+
 $category = isset($_GET['category']) ? $conn->real_escape_string($_GET['category']) : null;
 $limit = isset($_GET['limit']) ? intval($_GET['limit']) : null;
 

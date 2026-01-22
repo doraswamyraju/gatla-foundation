@@ -12,6 +12,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 $conn = connectDB();
 
+// AUTO-CREATE TABLE IF NOT EXISTS (Self-Healing)
+$table_check = "CREATE TABLE IF NOT EXISTS gallery_images (
+    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NULL,
+    category VARCHAR(100) NOT NULL,
+    image_path VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)";
+$conn->query($table_check);
+
 // Check file
 if (!isset($_FILES['image'])) {
     http_response_code(400);

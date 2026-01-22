@@ -18,8 +18,10 @@ const ContactSection = () => {
                                     <MapPin className="w-6 h-6" />
                                 </div>
                                 <div>
-                                    <h5 className="text-white font-bold text-lg mb-1">Our Location</h5>
-                                    <p className="text-slate-400">#6-1-105, Varadaraja Nagar, K.T.Road,<br />Tirupati - 517501, A.P.</p>
+                                    <div>
+                                        <h5 className="text-white font-bold text-lg mb-1">Our Location</h5>
+                                        <p className="text-slate-400">#22-10-192, Near NGM Swimming Pool,<br />Koramenugunta, Tirupati (Urban),<br />Andhra Pradesh, India-517501</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -29,7 +31,7 @@ const ContactSection = () => {
                                 </div>
                                 <div>
                                     <h5 className="text-white font-bold text-lg mb-1">Phone Number</h5>
-                                    <p className="text-slate-400 font-mono">+91 95050 56767</p>
+                                    <p className="text-slate-400 font-mono">+91 70131 38080</p>
                                 </div>
                             </div>
 
