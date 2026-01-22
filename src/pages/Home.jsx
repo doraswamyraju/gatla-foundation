@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Star, Users, Calendar, Award, Globe, ArrowRight, Trophy, CheckCircle2 } from 'lucide-react';
-import LatestNews from '../components/LatestNews';
 
 // Utility component for the Image Wheel
 const ImageWheel = () => {
@@ -133,8 +132,6 @@ const Home = ({ onNavigate, onSelectWing }) => {
     <>
       <Hero onNavigate={onNavigate} />
       <ImpactSection />
-      {/* Pass onNavigate down to LatestNews */}
-      <LatestNews onNavigate={onNavigate} />
     </>
   );
 };
