@@ -521,6 +521,10 @@ const DashboardApp = () => {
         const res = await fetch(`${apiUrl}/get_general_volunteers.php?club=Music`);
         const data = await res.json();
         setAppData(prev => ({ ...prev, 'music-volunteer': data }));
+      } else if (activeTab === 'business-member') { // Added
+        const res = await fetch(`${apiUrl}/get_business_members.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'business-member': data }));
       } else {
         // Fallback or other tabs
       }

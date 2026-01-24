@@ -215,9 +215,17 @@ export const FORM_SCHEMAS = {
     { name: 'description', label: 'Business Description', type: 'textarea' }
   ],
   'business-member': [
-    { name: 'fullName', label: 'Full Name', type: 'text', required: true },
-    { name: 'phone', label: 'Phone Number', type: 'tel', required: true },
-    { name: 'occupation', label: 'Occupation', type: 'text' }
+    { name: 'full_name', label: 'Member Name', type: 'text' },
+    { name: 'father_name', label: 'Father Name', type: 'text' },
+    { name: 'phone_no', label: 'Phone', type: 'text' },
+    { name: 'email_id', label: 'Email', type: 'text' },
+    { name: 'aadhaar_no', label: 'Aadhaar', type: 'text' },
+    { name: 'pan_no', label: 'PAN', type: 'text' },
+    { name: 'company_name', label: 'Company', type: 'text' },
+    { name: 'occupation', label: 'Role', type: 'text' },
+    { name: 'experience_years', label: 'Exp (Yrs)', type: 'text' },
+    { name: 'aadhaar_path', label: 'Aadhaar', type: 'file' },
+    { name: 'photo_path', label: 'Photo', type: 'file' }
   ],
 
   // --- 6. AWARDS ---
