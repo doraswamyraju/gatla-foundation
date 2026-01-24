@@ -36,8 +36,9 @@ try {
     $club_preference = $data['clubPreference'] ?? 'Education Club';
     $interest_area = $club_preference; // Redundant as per user request
     $availability = $data['availability'] ?? '';
-    $start_date = $data['startDate'] ?? null;
-    $end_date = $data['endDate'] ?? null;
+    // Fix: Convert empty strings to NULL to match DB schema and avoid 0000-00-00
+    $start_date = (!empty($data['startDate'])) ? $data['startDate'] : null;
+    $end_date = (!empty($data['endDate'])) ? $data['endDate'] : null;
 
     // File Upload Handling
     $upload_dir = '../uploads/';
