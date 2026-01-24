@@ -19,29 +19,32 @@ $messages = [];
 
 foreach ($tables as $table) {
     try {
-        // Helper function to check and add column
+        // Check/Add start_date
         $checkCol = $conn->query("SHOW COLUMNS FROM $table LIKE 'start_date'");
         if ($checkCol && $checkCol->num_rows == 0) {
-            $sql1 = "ALTER TABLE $table ADD COLUMN start_date DATE NULL AFTER availability";
-            if ($conn->query($sql1) === TRUE) {
-                $messages[] = "Added start_date to $table";
-            } else {
-                $messages[] = "Error adding start_date to $table: " . $conn->error;
-            }
-        } else {
-            $messages[] = "start_date already exists in $table";
+            $conn->query("ALTER TABLE $table ADD COLUMN start_date DATE NULL AFTER availability");
+            $messages[] = "Added start_date to $table";
         }
 
+        // Check/Add end_date
         $checkCol2 = $conn->query("SHOW COLUMNS FROM $table LIKE 'end_date'");
         if ($checkCol2 && $checkCol2->num_rows == 0) {
-            $sql2 = "ALTER TABLE $table ADD COLUMN end_date DATE NULL AFTER start_date";
-            if ($conn->query($sql2) === TRUE) {
-                $messages[] = "Added end_date to $table";
-            } else {
-                $messages[] = "Error adding end_date to $table: " . $conn->error;
-            }
-        } else {
-            $messages[] = "end_date already exists in $table";
+            $conn->query("ALTER TABLE $table ADD COLUMN end_date DATE NULL AFTER start_date");
+            $messages[] = "Added end_date to $table";
+        }
+
+        // Check/Add aadhaar_path
+        $checkCol3 = $conn->query("SHOW COLUMNS FROM $table LIKE 'aadhaar_path'");
+        if ($checkCol3 && $checkCol3->num_rows == 0) {
+            $conn->query("ALTER TABLE $table ADD COLUMN aadhaar_path VARCHAR(255) NULL AFTER end_date");
+            $messages[] = "Added aadhaar_path to $table";
+        }
+
+        // Check/Add photo_path
+        $checkCol4 = $conn->query("SHOW COLUMNS FROM $table LIKE 'photo_path'");
+        if ($checkCol4 && $checkCol4->num_rows == 0) {
+            $conn->query("ALTER TABLE $table ADD COLUMN photo_path VARCHAR(255) NULL AFTER aadhaar_path");
+            $messages[] = "Added photo_path to $table";
         }
 
     } catch (Exception $e) {

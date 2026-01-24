@@ -2,36 +2,24 @@
 // api/submit_volunteer.php
 // BULLETPROOF VERSION: Suppresses HTML errors to ensure clean JSON
 
-// 1. Start Output Buffering (Traps any HTML warnings/errors)
-// 1. Start Output Buffering (Traps any HTML warnings/errors)
 ob_start();
 
-// 2. Set Headers
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
-// 3. Disable Display Errors (Log them instead)
 ini_set('display_errors', 0);
 error_reporting(E_ALL);
 
 require_once 'config.php';
 
 try {
-    // 4. Input Handling (Switch from JSON to POST/FILES)
     $data = $_POST;
     
-    // 5. Database Connection (Exception safe)
-    try {
-        $conn = connectDB();
-        if (!$conn) {
-             throw new Exception("Database connection returned null");
-        }
-    } catch (Exception $e) {
-         throw new Exception("Database Connection Error: " . $e->getMessage());
-    }
+    $conn = connectDB();
+    if (!$conn) throw new Exception("Database connection returned null");
 
-    // 6. Extract Data
+    // Extract Data
     $full_name = $data['fullName'] ?? '';
     $father_name = $data['fatherName'] ?? '';
     $address = $data['address'] ?? '';
@@ -41,13 +29,13 @@ try {
     $pan_card_no = $data['pan'] ?? '';
     $qualification = $data['qualification'] ?? '';
     $occupation = $data['occupation'] ?? '';
+    $club_preference = $data['clubPreference'] ?? 'Education Club';
+    $interest_area = $club_preference; // Redundant as per user request
     $availability = $data['availability'] ?? '';
-    // $preferred_time = $data['preferredTime'] ?? ''; // DEPRECATED
     $start_date = $data['startDate'] ?? null;
     $end_date = $data['endDate'] ?? null;
-    $club_preference = $data['clubPreference'] ?? 'Education Club';
 
-    // 6a. File Upload Handling
+    // File Upload Handling
     $upload_dir = '../uploads/';
     if (!file_exists($upload_dir)) {
         mkdir($upload_dir, 0777, true);
@@ -72,49 +60,53 @@ try {
         move_uploaded_file($tmp_name, $upload_dir . $photo_path);
     }
 
-    // 7. Route to Correct Table
-    $tableMap = [
-        'Education Club' => 'education_volunteers',
-        'Cricket Club'   => 'cricket_volunteers',
-        'Music Club'     => 'music_volunteers',
-        'Business Club'  => 'business_volunteers',
-        'Awards Club'    => 'awards_volunteers',
-        'General'        => 'general_volunteers'
-    ];
+    // 1. Insert into GENERAL_VOLUNTEERS (Master Table)
+    // Using explicit columns: aadhaar_path, photo_path. Removing status to rely on default.
+    $general_sql = "INSERT INTO general_volunteers (full_name, father_name, address, phone_no, email_id, aadhaar_no, pan_card_no, qualification, occupation, interest_area, club_preference, availability, start_date, end_date, aadhaar_path, photo_path, submission_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 
-    $table = $tableMap[$club_preference] ?? 'general_volunteers';
-
-    // 8. Prepare Query
-    // Updated to include availability, start_date, end_date, aadhaar_path, photo_path
-    // Note: removed preferred_time
-    $sql = "INSERT INTO $table (full_name, father_name, address, phone_no, email_id, aadhaar_no, pan_card_no, qualification, occupation, availability, start_date, end_date, aadhaar_path, photo_path, club_preference, status, submission_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
-
-    $stmt = $conn->prepare($sql);
-
-    // If prepare fails, it might throw or return false depending on config. Handle both.
-    if (!$stmt) {
-        throw new Exception("Prepare failed: " . $conn->error);
+    $stmt = $conn->prepare($general_sql);
+    if (!$stmt) throw new Exception("Prepare General failed: " . $conn->error);
+    
+    $stmt->bind_param("ssssssssssssssss", $full_name, $father_name, $address, $phone_no, $email_id, $aadhaar_no, $pan_card_no, $qualification, $occupation, $interest_area, $club_preference, $availability, $start_date, $end_date, $aadhaar_path, $photo_path);
+    
+    if (!$stmt->execute()) {
+        throw new Exception("Execute General failed: " . $stmt->error);
     }
-
-    // Bind 15 parameters (sssssssssssssss)
-    $stmt->bind_param("sssssssssssssss", $full_name, $father_name, $address, $phone_no, $email_id, $aadhaar_no, $pan_card_no, $qualification, $occupation, $availability, $start_date, $end_date, $aadhaar_path, $photo_path, $club_preference);
-
-    if ($stmt->execute()) {
-        $response = ["status" => "success", "message" => "Application submitted successfully for $club_preference"];
-    } else {
-        throw new Exception("Execute failed: " . $stmt->error);
-    }
-
     $stmt->close();
+
+    // 2. Insert into SPECIFIC CLUB TABLE (Dual Write)
+    if ($club_preference !== 'General') {
+        $tableMap = [
+            'Education Club' => 'education_volunteers',
+            'Cricket Club'   => 'cricket_volunteers',
+            'Music Club'     => 'music_volunteers',
+            'Business Club'  => 'business_volunteers',
+            'Awards Club'    => 'awards_volunteers'
+        ];
+
+        if (array_key_exists($club_preference, $tableMap)) {
+            $specific_table = $tableMap[$club_preference];
+            
+            $club_sql = "INSERT INTO $specific_table (full_name, father_name, address, phone_no, email_id, aadhaar_no, pan_card_no, qualification, occupation, interest_area, club_preference, availability, start_date, end_date, aadhaar_path, photo_path, submission_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+            
+            $stmt_club = $conn->prepare($club_sql);
+            if ($stmt_club) {
+                $stmt_club->bind_param("ssssssssssssssss", $full_name, $father_name, $address, $phone_no, $email_id, $aadhaar_no, $pan_card_no, $qualification, $occupation, $interest_area, $club_preference, $availability, $start_date, $end_date, $aadhaar_path, $photo_path);
+                $stmt_club->execute();
+                $stmt_club->close();
+            }
+        }
+    }
+
+    $response = ["status" => "success", "message" => "Application submitted successfully"];
     $conn->close();
 
 } catch (Exception $e) {
-    // Catch ANY error (Connection, SQL, Logic) and return JSON
+    ob_clean();
     $response = ["status" => "error", "message" => $e->getMessage()];
 }
 
-// Final Output
-ob_clean(); // Discard any previous noise
+ob_clean();
 echo json_encode($response);
 exit;
 ?>
