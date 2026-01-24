@@ -488,6 +488,10 @@ const DashboardApp = () => {
         const res = await fetch(`${apiUrl}/get_cricket_players.php`);
         const data = await res.json();
         setAppData(prev => ({ ...prev, 'cricket-player': data }));
+      } else if (activeTab === 'cricket-umpire') {
+        const res = await fetch(`${apiUrl}/get_cricket_umpires.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'cricket-umpire': data }));
       } else if (activeTab === 'cricket-donor') {
         const res = await fetch(`${apiUrl}/get_cricket_donors.php`);
         const data = await res.json();
