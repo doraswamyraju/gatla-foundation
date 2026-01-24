@@ -131,9 +131,8 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout 
       title: 'Gatla Awards',
       icon: <Award className="w-5 h-5 text-amber-400" />,
       forms: [
-        { id: 'awards-nomination', label: 'Nomination Form' },
-        { id: 'awards-sponsor', label: 'Sponsor Form' },
-        { id: 'awards-supporter', label: 'Awards Supporters' } // Added
+        { id: 'awards-application', label: 'Applications' },
+        { id: 'awards-sponsor', label: 'Sponsors' }
       ]
     }
   ];

@@ -525,10 +525,14 @@ const DashboardApp = () => {
         const res = await fetch(`${apiUrl}/get_business_members.php`);
         const data = await res.json();
         setAppData(prev => ({ ...prev, 'business-member': data }));
-      } else if (activeTab === 'business-entrepreneur') { // Added
+      } else if (activeTab === 'business-entrepreneur') {
         const res = await fetch(`${apiUrl}/get_business_entrepreneurs.php`);
         const data = await res.json();
         setAppData(prev => ({ ...prev, 'business-entrepreneur': data }));
+      } else if (activeTab === 'awards-application') { // Added
+        const res = await fetch(`${apiUrl}/get_awards_applications.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'awards-application': data }));
       } else {
         // Fallback or other tabs
       }

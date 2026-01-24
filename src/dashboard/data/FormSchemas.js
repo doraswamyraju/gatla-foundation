@@ -235,11 +235,19 @@ export const FORM_SCHEMAS = {
   ],
 
   // --- 6. AWARDS ---
-  'awards-nomination': [
-    { name: 'nomineeName', label: 'Nominee Name', type: 'text', required: true },
-    { name: 'phone', label: 'Contact Number', type: 'tel', required: true },
-    { name: 'category', label: 'Award Category', type: 'select', options: ['Social Service', 'Sports Excellence', 'Arts & Culture', 'Lifetime Achievement'] },
-    { name: 'achievement', label: 'Reason for Nomination', type: 'textarea', required: true }
+  'awards-application': [
+    { name: 'full_name', label: 'Name', type: 'text' },
+    { name: 'father_name', label: 'Father Name', type: 'text' },
+    { name: 'phone_no', label: 'Phone', type: 'text' },
+    { name: 'email_id', label: 'Email', type: 'text' },
+    { name: 'aadhaar_no', label: 'Aadhaar', type: 'text' },
+    { name: 'disability_category', label: 'Disability', type: 'text' },
+    { name: 'occupation', label: 'Occupation', type: 'text' },
+    { name: 'achievement', label: 'Achv', type: 'text' },
+    { name: 'aadhaar_path', label: 'Aadhaar', type: 'file' },
+    { name: 'disability_certificate_path', label: 'Certificate', type: 'file' },
+    { name: 'photo_path', label: 'Photo', type: 'file' },
+    { name: 'biodata_path', label: 'Bio', type: 'file' }
   ],
   'awards-sponsor': [
     { name: 'sponsorName', label: 'Sponsor/Company Name', type: 'text', required: true },
