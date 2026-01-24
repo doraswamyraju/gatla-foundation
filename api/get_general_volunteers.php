@@ -11,22 +11,10 @@ $conn = connectDB();
 // Using UNION ALL since IDs might collide, we might want to differentiate or just show them.
 // Since Dashboard expects unique key, we can construct one or just rely on data.
 
-$tables = [
-    'general_volunteers',
-    'education_volunteers',
-    'cricket_volunteers',
-    'music_volunteers',
-    'business_volunteers',
-    'awards_volunteers'
-];
+// Refactored: Only fetch from general_volunteers (Master Table) to avoid duplicates
+// The 'dual write' ensures all data is here.
 
-$sqlParts = [];
-
-foreach ($tables as $t) {
-    // Ensure table exists to prevent SQL error if one is missing
-    $check = $conn->query("SHOW TABLES LIKE '$t'");
-    if ($check && $check->num_rows > 0) {
-        $sqlParts[] = "SELECT 
+$sql = "SELECT 
             id, 
             full_name as fullName, 
             father_name as fatherName, 
@@ -36,7 +24,7 @@ foreach ($tables as $t) {
             aadhaar_no as aadhar,          
             qualification, 
             occupation, 
-            '$t' as source_table,
+            'general_volunteers' as source_table,
             club_preference,
             availability,
             start_date,
@@ -44,16 +32,7 @@ foreach ($tables as $t) {
             aadhaar_path,
             photo_path,
             submission_date as date 
-        FROM $t";
-    }
-}
-
-if (empty($sqlParts)) {
-    echo json_encode([]);
-    exit;
-}
-
-$sql = implode(" UNION ALL ", $sqlParts) . " ORDER BY date DESC";
+        FROM general_volunteers ORDER BY id DESC";
 
 $result = $conn->query($sql);
 $data = [];
