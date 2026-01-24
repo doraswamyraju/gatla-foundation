@@ -304,7 +304,7 @@ const DataTable = ({ type, data, onAdd, onEdit, onDelete, onRefresh }) => {
                   {displayHeaders.map((header) => (
                     <td key={header.key} className="px-6 py-4 text-sm text-slate-700 whitespace-nowrap">
                       {(header.key.includes('path') || header.key === 'document') && row[header.key] ?
-                        <a href={`${apiUrl}/uploads/${row[header.key]}`} target="_blank" rel="noreferrer" className="text-blue-500 underline flex items-center gap-1">
+                        <a href={`${apiUrl.replace('/api', '')}/uploads/${row[header.key]}`} target="_blank" rel="noreferrer" className="text-blue-500 underline flex items-center gap-1">
                           <FileText className="w-3 h-3" /> View File
                         </a>
                         : row[header.key] || '---'}
