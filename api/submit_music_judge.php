@@ -41,10 +41,10 @@ try {
     $stmt->bind_param("sssssssssss", 
         $data['fullName'], 
         $data['fatherName'], 
-        $data['address'], // Frontend sends 'address', backend maps to 'full_address' 
+        $data['address'], // Code maps frontend 'address' to DB 'full_address'
         $data['phone'], 
         $data['email'], 
-        $data['aadhar'], 
+        $data['aadhar'], // Code maps frontend 'aadhar' to DB 'aadhaar_no'
         $data['qualification'], 
         $data['occupation'], 
         $data['experience'], 
