@@ -29,8 +29,28 @@ const AwardWinnersManager = () => {
         }
     };
 
-    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        if (name === 'awardType') {
+            if (value === 'Gatla Platinum Medal') {
+                setFormData(prev => ({ ...prev, [name]: value, category: 'General' }));
+            } else {
+                // Reset to first normal category if switching away from Platinum
+                setFormData(prev => ({ ...prev, [name]: value, category: 'Blind' }));
+            }
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
+    };
+
     const handleFileChange = (e) => setFile(e.target.files[0]);
+
+    // Helper to determine available categories
+    const getCategories = () => {
+        if (formData.awardType === 'Gatla Platinum Medal') return ['General'];
+        return ['Blind', 'Deaf & Dumb', 'Physically Handicapped', 'Wheel Chair'];
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -92,10 +112,7 @@ const AwardWinnersManager = () => {
                     </select>
 
                     <select name="category" value={formData.category} onChange={handleChange} className="bg-slate-900 border border-slate-700 text-white p-3 rounded">
-                        <option>Blind</option>
-                        <option>Deaf & Dumb</option>
-                        <option>Physically Handicapped</option>
-                        <option>Wheel Chair</option>
+                        {getCategories().map(cat => <option key={cat}>{cat}</option>)}
                     </select>
 
                     <input type="number" name="year" value={formData.year} onChange={handleChange} placeholder="Year" className="bg-slate-900 border border-slate-700 text-white p-3 rounded" />
