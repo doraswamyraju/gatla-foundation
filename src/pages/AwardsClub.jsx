@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Award, CheckCircle2, User, FileText, Gift, ArrowRight, X } from 'lucide-react';
 import AwardsDonorForm from '../components/pillars/AwardsDonorForm';
 import CombinedAwardsForm from './forms/AwardsApplicationForm';
+import AwardWinnersSection from '../components/AwardWinnersSection';
 
 
 const AwardsClub = ({ onNavigate }) => {
@@ -71,7 +72,7 @@ const AwardsClub = ({ onNavigate }) => {
               <div className="space-y-4">
                 {[
                   { name: "Application Form", icon: FileText, target: "awards-application", isLocal: true },
-                  { name: "Event Donor Form", icon: Gift, target: "awards-donor", isLocal: true },
+                  { name: "Donor Form", icon: Gift, target: "awards-donor", isLocal: true },
                 ].map((form, index) => (
                   <button
                     key={index}
@@ -122,6 +123,14 @@ const AwardsClub = ({ onNavigate }) => {
           </div>
         </div>
       )}
+      {/* LOCAL MODAL FOR SUPPORTER FORM */}
+      {/* (Existing modals...) */}
+
+      {/* AWARD WINNERS SECTION */}
+      <div className="border-t border-slate-800">
+        <AwardWinnersSection />
+      </div>
+
     </div>
   );
 };
