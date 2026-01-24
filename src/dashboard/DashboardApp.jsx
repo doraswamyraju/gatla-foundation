@@ -504,6 +504,10 @@ const DashboardApp = () => {
         const res = await fetch(`${apiUrl}/get_business_donors.php`);
         const data = await res.json();
         setAppData(prev => ({ ...prev, 'business-donor': data }));
+      } else if (activeTab === 'music-member') { // Added
+        const res = await fetch(`${apiUrl}/get_music_members.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'music-member': data }));
       } else {
         // Fallback or other tabs
       }

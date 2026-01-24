@@ -182,9 +182,16 @@ export const FORM_SCHEMAS = {
     { name: 'experience', label: 'Years of Experience', type: 'text' }
   ],
   'music-member': [
-    { name: 'fullName', label: 'Member Name', type: 'text', required: true },
-    { name: 'phone', label: 'Phone Number', type: 'tel', required: true },
-    { name: 'instrument', label: 'Instrument Played (Optional)', type: 'text' }
+    { name: 'full_name', label: 'Member Name', type: 'text' },
+    { name: 'father_name', label: 'Father Name', type: 'text' },
+    { name: 'phone_no', label: 'Phone', type: 'text' },
+    { name: 'email_id', label: 'Email', type: 'email' },
+    { name: 'aadhaar_no', label: 'Aadhaar', type: 'text' },
+    { name: 'disability_certificate_no', label: 'Disability ID', type: 'text' },
+    { name: 'music_category', label: 'Category', type: 'text' },
+    { name: 'aadhaar_path', label: 'Aadhaar', type: 'file' },
+    { name: 'disability_certificate_path', label: 'Certificate', type: 'file' },
+    { name: 'photo_path', label: 'Photo', type: 'file' }
   ],
 
   // --- 5. BUSINESS CLUB ---
