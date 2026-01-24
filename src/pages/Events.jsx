@@ -35,8 +35,8 @@ const Events = () => {
                             key={tab}
                             onClick={() => setActiveTab(tab)}
                             className={`pb-3 px-4 text-sm font-bold uppercase tracking-widest transition-all ${activeTab === tab
-                                    ? 'text-amber-500 border-b-2 border-amber-500'
-                                    : 'text-slate-500 hover:text-slate-300'
+                                ? 'text-amber-500 border-b-2 border-amber-500'
+                                : 'text-slate-500 hover:text-slate-300'
                                 }`}
                         >
                             {tab === 'past' ? 'Completed Events' : 'Upcoming Events'}
@@ -83,17 +83,18 @@ const Events = () => {
 
                 {/* DETAILS MODAL */}
                 {selectedEvent && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm animate-in fade-in zoom-in duration-200" onClick={() => setSelectedEvent(null)}>
-                        <div className="bg-[#0B1120] w-full max-w-4xl rounded-2xl overflow-hidden border border-slate-700 shadow-2xl flex flex-col md:flex-row max-h-[90vh]" onClick={e => e.stopPropagation()}>
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4 bg-black/90 backdrop-blur-sm animate-in fade-in zoom-in duration-200" onClick={() => setSelectedEvent(null)}>
+                        <div className="bg-[#0B1120] w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-6xl sm:rounded-2xl overflow-hidden border border-slate-700 shadow-2xl flex flex-col md:flex-row" onClick={e => e.stopPropagation()}>
 
                             {/* Image Side */}
-                            <div className="md:w-1/2 h-64 md:h-auto relative">
+                            <div className="md:w-1/2 h-64 md:h-auto relative shrink-0">
                                 <img src={`${process.env.PUBLIC_URL}/${selectedEvent.image_path}`} alt={selectedEvent.title} className="w-full h-full object-cover" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1120] via-transparent to-transparent md:bg-gradient-to-r" />
                             </div>
 
                             {/* Content Side */}
-                            <div className="md:w-1/2 p-8 overflow-y-auto relative">
-                                <button onClick={() => setSelectedEvent(null)} className="absolute top-4 right-4 text-slate-400 hover:text-white bg-slate-800/50 p-2 rounded-full transition-colors">
+                            <div className="md:w-1/2 p-8 overflow-y-auto relative custom-scrollbar">
+                                <button onClick={() => setSelectedEvent(null)} className="absolute top-4 right-4 z-10 text-slate-400 hover:text-white bg-slate-800/50 p-2 rounded-full transition-colors">
                                     <X className="w-5 h-5" />
                                 </button>
 
@@ -101,16 +102,16 @@ const Events = () => {
                                     <span className={`inline-block px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider mb-3 ${activeTab === 'upcoming' ? 'bg-amber-500 text-black' : 'bg-slate-700 text-slate-300'}`}>
                                         {activeTab === 'upcoming' ? 'Upcoming Event' : 'Completed Event'}
                                     </span>
-                                    <h2 className="text-3xl font-bold text-white mb-4">{selectedEvent.title}</h2>
+                                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">{selectedEvent.title}</h2>
 
                                     <div className="space-y-3 mb-6">
-                                        <p className="flex items-center gap-3 text-slate-300"><Calendar className="w-5 h-5 text-amber-500" /> {selectedEvent.event_date}</p>
-                                        <p className="flex items-center gap-3 text-slate-300"><Clock className="w-5 h-5 text-amber-500" /> {selectedEvent.event_time}</p>
-                                        <p className="flex items-center gap-3 text-slate-300"><MapPin className="w-5 h-5 text-amber-500" /> {selectedEvent.location}</p>
+                                        <p className="flex items-center gap-3 text-slate-300"><Calendar className="w-5 h-5 text-amber-500 shrink-0" /> {selectedEvent.event_date}</p>
+                                        <p className="flex items-center gap-3 text-slate-300"><Clock className="w-5 h-5 text-amber-500 shrink-0" /> {selectedEvent.event_time}</p>
+                                        <p className="flex items-center gap-3 text-slate-300"><MapPin className="w-5 h-5 text-amber-500 shrink-0" /> {selectedEvent.location}</p>
                                     </div>
                                 </div>
 
-                                <div className="prose prose-invert prose-sm max-w-none text-slate-400 border-t border-slate-800 pt-6">
+                                <div className="prose prose-invert prose-lg max-w-none text-slate-300 border-t border-slate-800 pt-6">
                                     <p className="whitespace-pre-wrap leading-relaxed">{selectedEvent.description}</p>
                                 </div>
                             </div>
