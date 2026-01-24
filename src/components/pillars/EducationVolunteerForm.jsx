@@ -1,74 +1,130 @@
 import React, { useState } from 'react';
-import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { UserPlus, Save } from 'lucide-react';
 
 const EducationVolunteerForm = ({ onClose }) => {
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
-  const [files, setFiles] = useState({ aadhaar_file: null, photo_file: null });
-
   const [formData, setFormData] = useState({
-    full_name: '', father_name: '', address: '', phone_no: '', email_id: '',
-    aadhaar_no: '', qualification: '', occupation: '', area_of_interest: 'Education', availability: ''
+    fullName: '', fatherName: '', address: '', phone: '', email: '',
+    aadhar: '', pan: '', qualification: '', occupation: '',
+    availability: '', startDate: '', endDate: '',
+    clubPreference: 'Education Club' // Hardcoded
   });
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
-  const handleFile = (e) => setFiles({ ...files, [e.target.name]: e.target.files[0] });
+  const [files, setFiles] = useState({ aadhaarFile: null, photoFile: null });
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleFileChange = (e) => {
+    setFiles({ ...files, [e.target.name]: e.target.files[0] });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); setError('');
-    const data = new FormData();
-    Object.keys(formData).forEach(k => data.append(k, formData[k]));
-    if(files.aadhaar_file) data.append('aadhaar_file', files.aadhaar_file);
-    if(files.photo_file) data.append('photo_file', files.photo_file);
+    setLoading(true);
+
+    const payload = new FormData();
+    Object.keys(formData).forEach(key => payload.append(key, formData[key]));
+
+    if (files.aadhaarFile) payload.append('aadhaarFile', files.aadhaarFile);
+    if (files.photoFile) payload.append('photoFile', files.photoFile);
 
     try {
-      const isLocal = window.location.hostname === 'localhost';
-      const apiUrl = isLocal ? 'http://localhost/gatla-foundation/api/submit_education_volunteer.php' : 'https://gatlafoundation.org/api/submit_education_volunteer.php';
-      const res = await fetch(apiUrl, { method: 'POST', body: data });
-      const result = await res.json();
-      if (result.status === 'success') { setSuccess(true); setTimeout(onClose, 3000); }
-      else throw new Error(result.message);
-    } catch (err) { setError(err.message); } finally { setLoading(false); }
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/submit_volunteer.php`, {
+        method: 'POST',
+        body: payload
+      });
+
+      const text = await response.text();
+      try {
+        const result = JSON.parse(text);
+        if (result.status === 'success') {
+          alert("Education Volunteer Application Submitted Successfully!");
+          if (onClose) onClose();
+        } else {
+          alert("Error: " + result.message);
+        }
+      } catch (jsonError) {
+        console.error("Server Crash:", text);
+        alert("Server Error");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Network Connection Error");
+    }
+    setLoading(false);
   };
 
-  if (success) return <div className="p-12 text-center text-white"><CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4"/><h3>Submitted Successfully!</h3></div>;
-
   return (
-    <div className="flex flex-col bg-[#0B1120] text-white h-full overflow-hidden">
-      <div className="px-8 py-6 border-b border-slate-800"><h2 className="text-2xl font-bold text-green-500">Education Volunteer</h2></div>
-      <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-8 space-y-6">
-        {error && <div className="bg-red-500/20 text-red-400 p-4 rounded">{error}</div>}
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <input type="text" name="full_name" placeholder="Full Name *" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3 text-white" />
-          <input type="text" name="father_name" placeholder="Father Name *" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3 text-white" />
-          <input type="tel" name="phone_no" placeholder="Phone Number *" required onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3 text-white" />
-          <input type="email" name="email_id" placeholder="Email ID" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3 text-white" />
-          <input type="text" name="aadhaar_no" placeholder="Aadhaar No" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3 text-white" />
-          <input type="text" name="qualification" placeholder="Qualification" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3 text-white" />
-          <input type="text" name="occupation" placeholder="Occupation" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3 text-white" />
-          
-          <select name="area_of_interest" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3 text-white">
-            <option value="Education">Education</option><option value="Sports">Sports</option><option value="Music">Music</option><option value="Business">Business</option><option value="Awards">Awards</option>
-          </select>
-
-          <input type="text" name="availability" placeholder="Available Date & Time" onChange={handleChange} className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3 text-white" />
-          
-          <textarea name="address" rows="2" placeholder="Full Address *" required onChange={handleChange} className="md:col-span-2 w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3 text-white" />
-          
-          <div className="md:col-span-2 grid grid-cols-2 gap-4">
-            <div><label className="block text-xs text-slate-400 mb-1">Upload Aadhaar</label><input type="file" name="aadhaar_file" onChange={handleFile} className="text-sm text-slate-400" /></div>
-            <div><label className="block text-xs text-slate-400 mb-1">Upload Photo</label><input type="file" name="photo_file" onChange={handleFile} className="text-sm text-slate-400" /></div>
-          </div>
+    <div className="w-full bg-[#0B1120] text-white">
+      <div className="p-6 border-b border-slate-800 flex justify-between items-center">
+        <div>
+          <h2 className="text-xl font-bold text-green-500 flex items-center gap-2">
+            <UserPlus className="w-5 h-5" /> Education Volunteer Registration
+          </h2>
+          <p className="text-xs text-slate-400 mt-1">Join the Education Wing</p>
         </div>
+      </div>
 
-        <button type="submit" disabled={loading} className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2">
-          {loading ? <Loader2 className="animate-spin"/> : 'Register as Volunteer'}
-        </button>
-      </form>
+      <div className="p-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input required name="fullName" value={formData.fullName} placeholder="Full Name" onChange={handleChange} className="bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-green-500 outline-none" />
+            <input required name="fatherName" value={formData.fatherName} placeholder="Father Name" onChange={handleChange} className="bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-green-500 outline-none" />
+          </div>
+
+          <textarea required name="address" value={formData.address} rows="2" placeholder="Full Address" onChange={handleChange} className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-green-500 outline-none"></textarea>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input required name="phone" value={formData.phone} type="tel" placeholder="Phone No" onChange={handleChange} className="bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-green-500 outline-none" />
+            <input required name="email" value={formData.email} type="email" placeholder="Email ID" onChange={handleChange} className="bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-green-500 outline-none" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input required name="aadhar" value={formData.aadhar} placeholder="Aadhar No" onChange={handleChange} className="bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-green-500 outline-none" />
+            <input required name="pan" value={formData.pan} placeholder="PAN Card No" onChange={handleChange} className="bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-green-500 outline-none" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input required name="qualification" value={formData.qualification} placeholder="Qualification" onChange={handleChange} className="bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-green-500 outline-none" />
+            <input required name="occupation" value={formData.occupation} placeholder="Occupation" onChange={handleChange} className="bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-green-500 outline-none" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-xs text-slate-400 mb-1">Availability (Days/Hours)</label>
+              <input required name="availability" value={formData.availability} placeholder="e.g. Weekends" onChange={handleChange} className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-green-500 outline-none" />
+            </div>
+            <div>
+              <label className="block text-xs text-slate-400 mb-1">Starting Date</label>
+              <input required type="date" name="startDate" value={formData.startDate} onChange={handleChange} className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-green-500 outline-none" />
+            </div>
+            <div>
+              <label className="block text-xs text-slate-400 mb-1">Ending Date</label>
+              <input required type="date" name="endDate" value={formData.endDate} onChange={handleChange} className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-green-500 outline-none" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs text-slate-400 mb-1">Upload Aadhaar (PDF/Image)</label>
+              <input type="file" name="aadhaarFile" accept="image/*,.pdf" onChange={handleFileChange} className="w-full bg-slate-900 border border-slate-700 text-slate-300 p-2 rounded-lg text-sm" />
+            </div>
+            <div>
+              <label className="block text-xs text-slate-400 mb-1">Passport Size Photo</label>
+              <input type="file" name="photoFile" accept="image/*" onChange={handleFileChange} className="w-full bg-slate-900 border border-slate-700 text-slate-300 p-2 rounded-lg text-sm" />
+            </div>
+          </div>
+
+          <button type="submit" disabled={loading} className="w-full bg-green-500 text-slate-900 font-bold py-3 rounded-lg hover:bg-green-400 transition-all flex justify-center items-center gap-2">
+            {loading ? 'Submitting...' : <><Save className="w-5 h-5" /> Submit Application</>}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
+
 export default EducationVolunteerForm;

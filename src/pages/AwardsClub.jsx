@@ -19,7 +19,7 @@ const AwardsClub = ({ onNavigate }) => {
 
         {/* Header and Title */}
         <div className="text-center mb-12 border-b border-slate-700/50 pb-6">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-2">Awards Club</h1>
+          <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-2">Gatla Awards Club</h1>
           <p className="text-lg font-bold text-amber-500 uppercase tracking-widest">For Unsung Heroes</p>
         </div>
 
