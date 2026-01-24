@@ -14,6 +14,10 @@ error_reporting(E_ALL);
 require_once 'config.php';
 
 try {
+    // Debug Logging
+    $logData = date('Y-m-d H:i:s') . " POST: " . print_r($_POST, true) . " FILES: " . print_r($_FILES, true) . "\n";
+    file_put_contents('../volunteer_debug.log', $logData, FILE_APPEND);
+
     $data = $_POST;
     
     $conn = connectDB();
