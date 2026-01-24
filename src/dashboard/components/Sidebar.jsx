@@ -106,8 +106,8 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout 
         { id: 'music-member', label: 'Member Form' },
         { id: 'music-singer', label: 'Singer Form' },
         { id: 'music-judge', label: 'Judge Form' },
-        { id: 'music-supporter', label: 'Music Supporters' }, // Added
-        { id: 'music-stipend', label: 'Stipend Form' },
+        { id: 'music-supporter', label: 'Music Supporters' },
+        { id: 'music-volunteer', label: 'Music Volunteers' }, // Added
         { id: 'music-donor', label: 'Donor Form' }
       ]
     },

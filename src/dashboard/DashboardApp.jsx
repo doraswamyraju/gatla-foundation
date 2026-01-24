@@ -512,6 +512,15 @@ const DashboardApp = () => {
         const res = await fetch(`${apiUrl}/get_music_singers.php`);
         const data = await res.json();
         setAppData(prev => ({ ...prev, 'music-singer': data }));
+      } else if (activeTab === 'music-judge') { // Added
+        const res = await fetch(`${apiUrl}/get_music_judges.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'music-judge': data }));
+
+      } else if (activeTab === 'music-volunteer') { // Added
+        const res = await fetch(`${apiUrl}/get_general_volunteers.php?club=Music`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'music-volunteer': data }));
       } else {
         // Fallback or other tabs
       }

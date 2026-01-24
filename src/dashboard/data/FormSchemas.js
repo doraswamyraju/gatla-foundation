@@ -182,10 +182,16 @@ export const FORM_SCHEMAS = {
     { name: 'photo_path', label: 'Photo', type: 'file' }
   ],
   'music-judge': [
-    { name: 'fullName', label: 'Judge Name', type: 'text', required: true },
-    { name: 'phone', label: 'Phone Number', type: 'tel', required: true },
-    { name: 'expertise', label: 'Musical Expertise', type: 'textarea' },
-    { name: 'experience', label: 'Years of Experience', type: 'text' }
+    { name: 'full_name', label: 'Judge Name', type: 'text' },
+    { name: 'father_name', label: 'Father Name', type: 'text' },
+    { name: 'phone_no', label: 'Phone', type: 'text' },
+    { name: 'email_id', label: 'Email', type: 'email' },
+    { name: 'aadhaar_no', label: 'Aadhaar', type: 'text' },
+    { name: 'qualification', label: 'Qualification', type: 'text' },
+    { name: 'occupation', label: 'Occupation', type: 'text' },
+    { name: 'experience_years', label: 'Experience (Yrs)', type: 'text' },
+    { name: 'aadhaar_path', label: 'Aadhaar', type: 'file' },
+    { name: 'photo_path', label: 'Photo', type: 'file' }
   ],
   'music-member': [
     { name: 'full_name', label: 'Member Name', type: 'text' },

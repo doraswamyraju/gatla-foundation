@@ -14,6 +14,15 @@ $conn = connectDB();
 // Refactored: Only fetch from general_volunteers (Master Table) to avoid duplicates
 // The 'dual write' ensures all data is here.
 
+// Check for Filter
+$clubFilter = $_GET['club'] ?? '';
+$whereClause = "";
+if ($clubFilter) {
+    // Basic sanitization
+    $clubFilter = $conn->real_escape_string($clubFilter);
+    $whereClause = "WHERE club_preference LIKE '%$clubFilter%'";
+}
+
 $sql = "SELECT 
             id, 
             full_name as fullName, 
@@ -33,7 +42,7 @@ $sql = "SELECT
             aadhaar_path,
             photo_path,
             submission_date as date 
-        FROM general_volunteers ORDER BY id DESC";
+        FROM general_volunteers $whereClause ORDER BY id DESC";
 
 $result = $conn->query($sql);
 $data = [];

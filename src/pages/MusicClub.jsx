@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import { Music, CheckCircle2, User, FileText, Gift, ArrowRight, Award, X } from 'lucide-react';
 import MusicDonorForm from '../components/pillars/MusicDonorForm';
 import MusicMemberForm from './forms/MusicMemberForm';
+
 import MusicSingerForm from './forms/MusicSingerForm';
+import MusicJudgeForm from './forms/MusicJudgeForm';
 
 const MusicClub = ({ onNavigate }) => {
   const [activeForm, setActiveForm] = useState(null);
@@ -130,6 +132,16 @@ const MusicClub = ({ onNavigate }) => {
           <div className="relative w-full max-w-3xl bg-[#0B1120] border border-slate-800 rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col overflow-y-auto">
             <button onClick={() => setActiveForm(null)} className="absolute top-4 right-4 z-20 p-2 text-slate-400 hover:text-white"><X className="w-6 h-6" /></button>
             <MusicSingerForm onClose={() => setActiveForm(null)} />
+          </div>
+        </div>
+      )}
+
+      {/* LOCAL MODAL FOR JUDGE FORM */}
+      {activeForm === 'judge' && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="relative w-full max-w-3xl bg-[#0B1120] border border-slate-800 rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col overflow-y-auto">
+            <button onClick={() => setActiveForm(null)} className="absolute top-4 right-4 z-20 p-2 text-slate-400 hover:text-white"><X className="w-6 h-6" /></button>
+            <MusicJudgeForm onClose={() => setActiveForm(null)} />
           </div>
         </div>
       )}

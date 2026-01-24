@@ -34,7 +34,7 @@ try {
     $disability_path = handleUpload('disabilityFile', 'singer_disability', $upload_dir);
     $photo_path = handleUpload('photoFile', 'singer_photo', $upload_dir);
 
-    $sql = "INSERT INTO music_singers (full_name, father_name, address, phone_no, email_id, aadhaar_no, disability_certificate_no, music_category, goal, aadhaar_path, disability_certificate_path, photo_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO music_singers (full_name, father_name, full_address, phone_no, email_id, aadhaar_no, disability_certificate_no, music_category, goal, aadhaar_path, disability_certificate_path, photo_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     $stmt = $conn->prepare($sql);
     if (!$stmt) throw new Exception("Prepare failed: " . $conn->error);
