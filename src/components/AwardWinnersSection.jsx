@@ -3,12 +3,13 @@ import { Award, Calendar, Users, Star } from 'lucide-react';
 
 const AwardWinnersSection = () => {
     const [winners, setWinners] = useState([]);
-    const [activeType, setActiveType] = useState('Gatla Platinum Medal');
+    const [activeType, setActiveType] = useState('All Medals'); // Default to All
     const [activeCategory, setActiveCategory] = useState('All');
     const [years, setYears] = useState([]);
     const [activeYear, setActiveYear] = useState('All');
 
     const awardTypes = [
+        'All Medals',
         'Gatla Platinum Medal',
         'Gatla Gold Medal',
         'Gatla Silver Medal',
@@ -31,7 +32,7 @@ const AwardWinnersSection = () => {
 
     // Filter Logic
     const filteredWinners = winners.filter(w => {
-        const typeMatch = w.award_type === activeType;
+        const typeMatch = activeType === 'All Medals' || w.award_type === activeType;
         const catMatch = activeCategory === 'All' || w.category === activeCategory;
         const yearMatch = activeYear === 'All' || w.year == activeYear;
         return typeMatch && catMatch && yearMatch;
@@ -60,8 +61,8 @@ const AwardWinnersSection = () => {
                             key={type}
                             onClick={() => setActiveType(type)}
                             className={`px-6 py-2 rounded-full text-sm font-bold uppercase tracking-wider border transition-all ${activeType === type
-                                    ? 'bg-amber-500 text-[#0B1120] border-amber-500'
-                                    : 'text-slate-400 border-slate-700 hover:border-amber-500/50 hover:text-white'
+                                ? 'bg-amber-500 text-[#0B1120] border-amber-500'
+                                : 'text-slate-400 border-slate-700 hover:border-amber-500/50 hover:text-white'
                                 }`}
                         >
                             {type.replace('Gatla ', '')}
