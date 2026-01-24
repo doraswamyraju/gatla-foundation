@@ -90,11 +90,14 @@ export const FORM_SCHEMAS = {
     { name: 'photo_path', label: 'Photo', type: 'file' }
   ],
   'cricket-umpire': [
-    { name: 'fullName', label: 'Umpire Name', type: 'text', required: true },
-    { name: 'phone', label: 'Mobile Number', type: 'tel', required: true },
-    { name: 'matchesCount', label: 'Matches Officiated (Approx)', type: 'number' },
-    { name: 'experience', label: 'Years of Experience', type: 'text' },
-    { name: 'certification', label: 'Certification Level', type: 'text' }
+    { name: 'full_name', label: 'Umpire Name', type: 'text' },
+    { name: 'father_name', label: 'Father Name', type: 'text' },
+    { name: 'phone_no', label: 'Phone', type: 'text' },
+    { name: 'email_id', label: 'Email', type: 'email' },
+    { name: 'matches_count', label: 'Matches', type: 'number' },
+    { name: 'experience_years', label: 'Experience (Yrs)', type: 'text' },
+    { name: 'aadhaar_path', label: 'Aadhaar', type: 'file' },
+    { name: 'photo_path', label: 'Photo', type: 'file' }
   ],
 
   // --- 3. EDUCATION CLUB ---
