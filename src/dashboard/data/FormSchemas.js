@@ -208,11 +208,17 @@ export const FORM_SCHEMAS = {
 
   // --- 5. BUSINESS CLUB ---
   'business-entrepreneur': [
-    { name: 'fullName', label: 'Entrepreneur Name', type: 'text', required: true },
-    { name: 'businessName', label: 'Business Name', type: 'text' },
-    { name: 'phone', label: 'Contact Number', type: 'tel', required: true },
-    { name: 'industry', label: 'Industry Type', type: 'text' },
-    { name: 'description', label: 'Business Description', type: 'textarea' }
+    { name: 'full_name', label: 'Name', type: 'text' },
+    { name: 'father_name', label: 'Father Name', type: 'text' },
+    { name: 'phone_no', label: 'Phone', type: 'text' },
+    { name: 'email_id', label: 'Email', type: 'text' },
+    { name: 'aadhaar_no', label: 'Aadhaar', type: 'text' },
+    { name: 'pan_no', label: 'PAN', type: 'text' },
+    { name: 'company_name', label: 'Company', type: 'text' },
+    { name: 'occupation', label: 'Role', type: 'text' },
+    { name: 'experience_years', label: 'Exp (Yrs)', type: 'text' },
+    { name: 'aadhaar_path', label: 'Aadhaar', type: 'file' },
+    { name: 'photo_path', label: 'Photo', type: 'file' }
   ],
   'business-member': [
     { name: 'full_name', label: 'Member Name', type: 'text' },
