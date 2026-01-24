@@ -170,10 +170,16 @@ export const FORM_SCHEMAS = {
 
   // --- 4. MUSIC CLUB ---
   'music-singer': [
-    { name: 'fullName', label: 'Singer Name', type: 'text', required: true },
-    { name: 'phone', label: 'Phone Number', type: 'tel', required: true },
-    { name: 'category', label: 'Singing Category', type: 'select', options: ['Classical', 'Folk', 'Light Music', 'Cinematic'] },
-    { name: 'goal', label: 'Music Goal', type: 'textarea' }
+    { name: 'full_name', label: 'Singer Name', type: 'text' },
+    { name: 'father_name', label: 'Father Name', type: 'text' },
+    { name: 'phone_no', label: 'Phone', type: 'text' },
+    { name: 'email_id', label: 'Email', type: 'email' },
+    { name: 'aadhaar_no', label: 'Aadhaar', type: 'text' },
+    { name: 'disability_certificate_no', label: 'Disability ID', type: 'text' },
+    { name: 'music_category', label: 'Category', type: 'text' },
+    { name: 'aadhaar_path', label: 'Aadhaar', type: 'file' },
+    { name: 'disability_certificate_path', label: 'Certificate', type: 'file' },
+    { name: 'photo_path', label: 'Photo', type: 'file' }
   ],
   'music-judge': [
     { name: 'fullName', label: 'Judge Name', type: 'text', required: true },
