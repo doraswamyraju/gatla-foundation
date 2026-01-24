@@ -36,11 +36,15 @@ foreach ($tables as $t) {
             aadhaar_no as aadhar,          
             qualification, 
             occupation, 
-            '$t' as source_table, /* Useful for debugging or specific actions */
-            club_preference,      /* Ensure this column exists in all tables */
-            status, 
+            '$t' as source_table,
+            club_preference,
+            availability,
+            start_date,
+            end_date,
+            aadhaar_path,
+            photo_path,
             submission_date as date 
-        FROM $t"; // Removed some unused columns for brevity/errors, add if needed: area_of_interest, etc.
+        FROM $t";
     }
 }
 

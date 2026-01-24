@@ -58,7 +58,6 @@ export const FORM_SCHEMAS = {
     { name: 'aadhar', label: 'Aadhar Card No', type: 'text' },
     { name: 'qualification', label: 'Qualification', type: 'text' },
     { name: 'occupation', label: 'Occupation', type: 'text' },
-    { name: 'interest', label: 'Area of Interest', type: 'select', options: ['Education', 'Sports', 'Music', 'Business', 'General Help'] },
     // NEW: Requested Availability Options
     { name: 'availability', label: 'Availability', type: 'text' },
     // NEW: Dynamic Date/Time
