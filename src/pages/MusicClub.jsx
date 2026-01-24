@@ -74,7 +74,7 @@ const MusicClub = ({ onNavigate }) => {
                   // TARGETS: These IDs trigger the modal via App.jsx's onNavClick function
                   { name: "Member Form", icon: User, target: "music-member", isLocal: true },
                   { name: "Singer Form", icon: FileText, target: "music-singer", isLocal: true },
-                  { name: "Judge Form", icon: Award, target: "music-judge" },
+                  { name: "Judge Form", icon: Award, target: "music-judge", isLocal: true }, // Set to Local
                   { name: "Supporter Form", icon: User, target: "music-supporter" }, // Added
                   { name: "Donor Form", icon: Gift, target: "music-donor", isLocal: true },
                 ].map((form, index) => (
@@ -84,6 +84,7 @@ const MusicClub = ({ onNavigate }) => {
                       if (form.isLocal) {
                         if (form.target === 'music-member') setActiveForm('member');
                         else if (form.target === 'music-singer') setActiveForm('singer');
+                        else if (form.target === 'music-judge') setActiveForm('judge');
                         else setActiveForm('donor');
                       } else {
                         onNavigate(form.target);
