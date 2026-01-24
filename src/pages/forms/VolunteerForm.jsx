@@ -33,18 +33,11 @@ const VolunteerForm = ({ onClose, initialData }) => {
     e.preventDefault();
     setLoading(true);
 
-    // Combine Dates for Backend Compatibility
-    const combinedPreferredTime = `From ${formData.startDate} To ${formData.endDate}`;
-
     // switch to FormData for file upload
     const payload = new FormData();
-    Object.keys(formData).forEach(key => {
-      if (key !== 'startDate' && key !== 'endDate') {
-        payload.append(key, formData[key]);
-      }
-    });
-    // Append the combined field
-    payload.append('preferredTime', combinedPreferredTime);
+    Object.keys(formData).forEach(key => payload.append(key, formData[key]));
+
+    // Removed legacy preferredTime combination logic which filtered out dates
 
     if (files.aadhaarFile) payload.append('aadhaarFile', files.aadhaarFile);
     if (files.photoFile) payload.append('photoFile', files.photoFile);
