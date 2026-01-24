@@ -26,7 +26,8 @@ import CricketPlayerForm from '../pages/forms/CricketPlayerForm'; // Added
 // --- 1. BLOG MANAGER ---
 // import BlogManager from './components/BlogManager'; // Removed to avoid collision
 import GalleryManager from './components/GalleryManager';
-import AwardWinnersManager from './components/AwardWinnersManager'; // Added
+import AwardWinnersManager from './components/AwardWinnersManager';
+import EventsManager from './components/EventsManager'; // Added
 
 const BlogManager = ({ posts, onSave, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -616,7 +617,10 @@ const DashboardApp = () => {
                 : activeTab === 'award-winners-manager' ? (
                   <AwardWinnersManager />
                 )
-                  : (<DataTable type={activeTab} data={currentData} onRefresh={fetchData} onAdd={() => { setCurrentEditItem(null); setModalOpen(true); }} onEdit={(item) => { setCurrentEditItem(item); setModalOpen(true); }} onDelete={handleDelete} />)}
+                  : activeTab === 'events-manager' ? ( // Added
+                    <EventsManager />
+                  )
+                    : (<DataTable type={activeTab} data={currentData} onRefresh={fetchData} onAdd={() => { setCurrentEditItem(null); setModalOpen(true); }} onEdit={(item) => { setCurrentEditItem(item); setModalOpen(true); }} onDelete={handleDelete} />)}
         </main>
       </div>
       <FormModal isOpen={modalOpen} onClose={() => setModalOpen(false)} categoryId={activeTab} initialData={currentEditItem} onSaveSuccess={() => { fetchData(); setModalOpen(false); }} onGenericSave={handleGenericSave} isSaving={isSaving} />

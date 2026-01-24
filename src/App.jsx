@@ -9,7 +9,9 @@ import LatestNews from './components/LatestNews.jsx';
 import Home from './pages/Home.jsx';
 import About from './pages/About.jsx';
 import Projects from './pages/Projects.jsx';
+// Duplicate removed
 import Awards from './pages/Awards.jsx';
+import Events from './pages/Events.jsx'; // Added
 import EducationClub from './pages/EducationClub.jsx';
 import CricketClub from './pages/CricketClub.jsx';
 import MusicClub from './pages/MusicClub.jsx';
@@ -176,7 +178,7 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
                 content = <Projects onSelectWing={(id) => handleNavigate('Wing', id)} />;
                 break;
             case 'events':
-                content = <UpcomingEventsSection />;
+                content = <Events />;
                 break;
             case 'contact':
                 content = <CatchAllPage pageName={"Contact"} />;
