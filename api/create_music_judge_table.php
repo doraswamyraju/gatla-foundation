@@ -12,7 +12,7 @@ $sql = "CREATE TABLE IF NOT EXISTS music_judges (
     id INT AUTO_INCREMENT PRIMARY KEY,
     full_name VARCHAR(255) NOT NULL,
     father_name VARCHAR(255),
-    address TEXT,
+    full_address TEXT,
     phone_no VARCHAR(20),
     email_id VARCHAR(100),
     aadhaar_no VARCHAR(20),

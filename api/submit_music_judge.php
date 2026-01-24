@@ -32,8 +32,8 @@ try {
     $aadhaar_path = handleUpload('aadhaarFile', 'judge_aadhaar', $upload_dir);
     $photo_path = handleUpload('photoFile', 'judge_photo', $upload_dir);
 
-    // Note: Using 'address' as column name based on creation script
-    $sql = "INSERT INTO music_judges (full_name, father_name, address, phone_no, email_id, aadhaar_no, qualification, occupation, experience_years, aadhaar_path, photo_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    // Note: Using 'full_address' to match DB schema
+    $sql = "INSERT INTO music_judges (full_name, father_name, full_address, phone_no, email_id, aadhaar_no, qualification, occupation, experience_years, aadhaar_path, photo_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     $stmt = $conn->prepare($sql);
     if (!$stmt) throw new Exception("Prepare failed: " . $conn->error);
@@ -41,7 +41,7 @@ try {
     $stmt->bind_param("sssssssssss", 
         $data['fullName'], 
         $data['fatherName'], 
-        $data['address'], 
+        $data['address'], // Frontend sends 'address', backend maps to 'full_address' 
         $data['phone'], 
         $data['email'], 
         $data['aadhar'], 
