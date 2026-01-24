@@ -55,9 +55,11 @@ export const FORM_SCHEMAS = {
     { name: 'address', label: 'Full Address', type: 'textarea', required: true },
     { name: 'phone', label: 'Phone Number', type: 'tel', required: true },
     { name: 'email', label: 'Email ID', type: 'email' },
-    { name: 'aadhar', label: 'Aadhar Card No', type: 'text' },
+    { name: 'aadhar', label: 'Aadhaar No', type: 'text' },
+    { name: 'pan', label: 'PAN Card', type: 'text' },
     { name: 'qualification', label: 'Qualification', type: 'text' },
     { name: 'occupation', label: 'Occupation', type: 'text' },
+    { name: 'club_preference', label: 'Club Preference', type: 'text' },
     // NEW: Requested Availability Options
     { name: 'availability', label: 'Availability', type: 'text' },
     // NEW: Dynamic Date/Time
