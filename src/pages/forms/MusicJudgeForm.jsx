@@ -39,7 +39,7 @@ const MusicJudgeForm = ({ onClose }) => {
     };
 
     return (
-        <div className="w-full bg-[#0B1120] text-white">
+        <div className="w-full bg-[#050914] text-white">
             <div className="p-6 border-b border-slate-800 flex justify-between items-center">
                 <div>
                     <h2 className="text-xl font-bold text-white flex items-center gap-2">

@@ -76,7 +76,6 @@ const MusicClub = ({ onNavigate }) => {
                   { name: "Singer Form", icon: FileText, target: "music-singer", isLocal: true },
                   { name: "Judge Form", icon: Award, target: "music-judge" },
                   { name: "Supporter Form", icon: User, target: "music-supporter" }, // Added
-                  { name: "Stipend Form", icon: FileText, target: "music-stipend" }, // Added
                   { name: "Donor Form", icon: Gift, target: "music-donor", isLocal: true },
                 ].map((form, index) => (
                   <button
