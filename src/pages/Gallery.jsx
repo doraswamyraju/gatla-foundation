@@ -8,7 +8,7 @@ const Gallery = () => {
     const [loading, setLoading] = useState(true);
     const [category, setCategory] = useState('All');
 
-    const categories = ['All', 'Events', 'Education', 'Projects', 'Awards', 'General'];
+    const categories = ['All', 'Events', 'Education', 'Projects', 'Awards', 'Media', 'Press Clips', 'General'];
 
     useEffect(() => {
         const fetchImages = async () => {

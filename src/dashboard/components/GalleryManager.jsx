@@ -9,7 +9,7 @@ const GalleryManager = () => {
     const [category, setCategory] = useState('Events');
     const [file, setFile] = useState(null);
 
-    const categories = ['Events', 'Education', 'Projects', 'Awards', 'General'];
+    const categories = ['Events', 'Education', 'Projects', 'Awards', 'Media', 'Press Clips', 'General'];
 
     // Base API URL handling for local/production
     const getApiUrl = () => {
