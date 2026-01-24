@@ -62,7 +62,8 @@ export const FORM_SCHEMAS = {
     // NEW: Requested Availability Options
     { name: 'availability', label: 'Availability', type: 'text' },
     // NEW: Dynamic Date/Time
-    { name: 'preferred_time', label: 'Preferred Time', type: 'text' },
+    { name: 'start_date', label: 'Start Date', type: 'date' },
+    { name: 'end_date', label: 'End Date', type: 'date' },
     // NEW: File Upload
     { name: 'aadhaar_path', label: 'Aadhaar Card', type: 'file' },
     { name: 'photo_path', label: 'Photo', type: 'file' }

@@ -42,7 +42,9 @@ try {
     $qualification = $data['qualification'] ?? '';
     $occupation = $data['occupation'] ?? '';
     $availability = $data['availability'] ?? '';
-    $preferred_time = $data['preferredTime'] ?? '';
+    // $preferred_time = $data['preferredTime'] ?? ''; // DEPRECATED
+    $start_date = $data['startDate'] ?? null;
+    $end_date = $data['endDate'] ?? null;
     $club_preference = $data['clubPreference'] ?? 'Education Club';
 
     // 6a. File Upload Handling
@@ -83,8 +85,9 @@ try {
     $table = $tableMap[$club_preference] ?? 'general_volunteers';
 
     // 8. Prepare Query
-    // Updated to include availability, preferred_time, aadhaar_path, photo_path
-    $sql = "INSERT INTO $table (full_name, father_name, address, phone_no, email_id, aadhaar_no, pan_card_no, qualification, occupation, availability, preferred_time, aadhaar_path, photo_path, club_preference, status, submission_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
+    // Updated to include availability, start_date, end_date, aadhaar_path, photo_path
+    // Note: removed preferred_time
+    $sql = "INSERT INTO $table (full_name, father_name, address, phone_no, email_id, aadhaar_no, pan_card_no, qualification, occupation, availability, start_date, end_date, aadhaar_path, photo_path, club_preference, status, submission_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending', NOW())";
 
     $stmt = $conn->prepare($sql);
 
@@ -93,8 +96,8 @@ try {
         throw new Exception("Prepare failed: " . $conn->error);
     }
 
-    // Bind 14 parameters (ssssssssssssss)
-    $stmt->bind_param("ssssssssssssss", $full_name, $father_name, $address, $phone_no, $email_id, $aadhaar_no, $pan_card_no, $qualification, $occupation, $availability, $preferred_time, $aadhaar_path, $photo_path, $club_preference);
+    // Bind 15 parameters (sssssssssssssss)
+    $stmt->bind_param("sssssssssssssss", $full_name, $father_name, $address, $phone_no, $email_id, $aadhaar_no, $pan_card_no, $qualification, $occupation, $availability, $start_date, $end_date, $aadhaar_path, $photo_path, $club_preference);
 
     if ($stmt->execute()) {
         $response = ["status" => "success", "message" => "Application submitted successfully for $club_preference"];

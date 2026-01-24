@@ -5,10 +5,10 @@ const VolunteerForm = ({ onClose, initialData }) => {
   const [formData, setFormData] = useState({
     fullName: '', fatherName: '', address: '', phone: '', email: '',
     aadhar: '', pan: '', qualification: '', occupation: '',
-    availability: '', preferredTime: '', // NEW FIELDS
+    availability: '', startDate: '', endDate: '', // CHANGED: startDate/endDate instead of preferredTime
     clubPreference: 'Education Club'
   });
-  const [files, setFiles] = useState({ aadhaarFile: null, photoFile: null }); // NEW STATE FOR FILES
+  const [files, setFiles] = useState({ aadhaarFile: null, photoFile: null });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -33,9 +33,19 @@ const VolunteerForm = ({ onClose, initialData }) => {
     e.preventDefault();
     setLoading(true);
 
+    // Combine Dates for Backend Compatibility
+    const combinedPreferredTime = `From ${formData.startDate} To ${formData.endDate}`;
+
     // switch to FormData for file upload
     const payload = new FormData();
-    Object.keys(formData).forEach(key => payload.append(key, formData[key]));
+    Object.keys(formData).forEach(key => {
+      if (key !== 'startDate' && key !== 'endDate') {
+        payload.append(key, formData[key]);
+      }
+    });
+    // Append the combined field
+    payload.append('preferredTime', combinedPreferredTime);
+
     if (files.aadhaarFile) payload.append('aadhaarFile', files.aadhaarFile);
     if (files.photoFile) payload.append('photoFile', files.photoFile);
 
@@ -120,14 +130,18 @@ const VolunteerForm = ({ onClose, initialData }) => {
           </div>
 
           {/* NEW FIELDS: Availability & Files */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-xs text-slate-400 mb-1">Availability (Days/Hours)</label>
-              <input required name="availability" value={formData.availability} placeholder="e.g. Weekends, 10am-5pm" onChange={handleChange} className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-amber-500 outline-none" />
+              <input required name="availability" value={formData.availability} placeholder="e.g. Weekends" onChange={handleChange} className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-amber-500 outline-none" />
             </div>
             <div>
-              <label className="block text-xs text-slate-400 mb-1">Preferred Date/Time</label>
-              <input type="datetime-local" name="preferredTime" value={formData.preferredTime} onChange={handleChange} className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-amber-500 outline-none" />
+              <label className="block text-xs text-slate-400 mb-1">Starting Date</label>
+              <input required type="date" name="startDate" value={formData.startDate} onChange={handleChange} className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-amber-500 outline-none" />
+            </div>
+            <div>
+              <label className="block text-xs text-slate-400 mb-1">Ending Date</label>
+              <input required type="date" name="endDate" value={formData.endDate} onChange={handleChange} className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-amber-500 outline-none" />
             </div>
           </div>
 
