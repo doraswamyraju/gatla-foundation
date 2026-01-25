@@ -26,10 +26,10 @@ const EducationClub = () => {
       <div className="relative pt-32 pb-20 px-6 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-green-500/20 rounded-full blur-[120px] opacity-30 pointer-events-none" />
         <div className="max-w-7xl mx-auto text-center relative z-10">
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 tracking-tight flex items-center justify-center gap-4">
-            <img src={`${process.env.PUBLIC_URL}/assets/images/2.png`} alt="Education Club Logo" className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-[0_0_15px_rgba(34,197,94,0.5)]" />
-            Gatla Education Club
-          </h1>
+          <div className="flex flex-col items-center justify-center gap-6 mb-4">
+            <img src={`${process.env.PUBLIC_URL}/assets/images/2.png`} alt="Education Club Logo" className="w-24 h-24 md:w-32 md:h-32 object-contain drop-shadow-[0_0_15px_rgba(34,197,94,0.5)]" />
+            <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-center">Gatla Education Club</h1>
+          </div>
           <p className="text-xl text-green-500 font-medium uppercase tracking-widest mb-8">Empowering Knowledge</p>
         </div>
       </div>

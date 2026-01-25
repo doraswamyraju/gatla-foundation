@@ -18,10 +18,10 @@ const MusicClub = ({ onNavigate }) => {
 
         {/* Header and Title */}
         <div className="text-center mb-12 border-b border-slate-700/50 pb-6">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-2 flex items-center justify-center gap-3">
-            <img src={`${process.env.PUBLIC_URL}/assets/images/4.png`} alt="Music Club Logo" className="w-14 h-14 md:w-16 md:h-16 object-contain drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
-            Gatla Music Club
-          </h1>
+          <div className="flex flex-col items-center justify-center gap-6 mb-4">
+            <img src={`${process.env.PUBLIC_URL}/assets/images/4.png`} alt="Music Club Logo" className="w-24 h-24 md:w-32 md:h-32 object-contain drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
+            <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-2 text-center">Gatla Music Club</h1>
+          </div>
           <p className="text-lg font-bold text-purple-500 uppercase tracking-widest">For the Blind</p>
         </div>
 
