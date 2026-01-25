@@ -91,7 +91,7 @@ const EducationDonorForm = ({ onClose }) => {
           <input type="text" placeholder="Full Name *" required className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3" onChange={e => setDonor({ ...donor, full_name: e.target.value })} />
           <input type="email" placeholder="Email *" required className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3" onChange={e => setDonor({ ...donor, email_id: e.target.value })} />
           <input type="tel" placeholder="Phone *" required className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3" onChange={e => setDonor({ ...donor, phone_no: e.target.value })} />
-          <input type="text" placeholder="PAN Number *" required className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3 uppercase" maxLength={10} onChange={e => setDonor({ ...donor, pan_no: e.target.value })} />
+          <input type="text" placeholder="PAN Number (Optional)" className="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3 uppercase" maxLength={10} onChange={e => setDonor({ ...donor, pan_no: e.target.value })} />
         </div>
 
         <button type="submit" disabled={loading} className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2">

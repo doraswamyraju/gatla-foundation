@@ -174,11 +174,10 @@ const DonateForm = ({ onNavigate, club }) => {
               <input required type="tel" placeholder="Phone Number" className="w-full border rounded-lg p-3" value={donor.phone} onChange={e => setDonor({ ...donor, phone: e.target.value })} />
             </div>
 
-            {/* Added PAN Input */}
+            {/* Added PAN Input - Made Optional */}
             <input
-              required
               type="text"
-              placeholder="PAN Card Number"
+              placeholder="PAN Card Number (Optional)"
               className="w-full border rounded-lg p-3 uppercase"
               maxLength={10}
               value={donor.pan}
