@@ -16,7 +16,7 @@ const CricketClub = ({ onNavigate }) => {
         {/* Header and Title */}
         <div className="text-center mb-12 border-b border-slate-700/50 pb-6">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-2 flex items-center justify-center gap-3">
-            <Trophy className="w-10 h-10 md:w-12 md:h-12 text-blue-500" />
+            <img src={`${process.env.PUBLIC_URL}/assets/images/3.png`} alt="Cricket Club Logo" className="w-14 h-14 md:w-16 md:h-16 object-contain drop-shadow-[0_0_15px_rgba(59,130,246,0.5)]" />
             Gatla Cricket Club
           </h1>
           <p className="text-lg font-bold text-blue-500 uppercase tracking-widest">Sports & Recreation</p>

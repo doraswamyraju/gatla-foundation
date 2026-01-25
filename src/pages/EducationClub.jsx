@@ -27,7 +27,7 @@ const EducationClub = () => {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-green-500/20 rounded-full blur-[120px] opacity-30 pointer-events-none" />
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <h1 className="text-5xl md:text-6xl font-bold mb-4 tracking-tight flex items-center justify-center gap-4">
-            <BookOpen className="w-12 h-12 md:w-16 md:h-16 text-green-500" />
+            <img src={`${process.env.PUBLIC_URL}/assets/images/2.png`} alt="Education Club Logo" className="w-16 h-16 md:w-20 md:h-20 object-contain drop-shadow-[0_0_15px_rgba(34,197,94,0.5)]" />
             Gatla Education Club
           </h1>
           <p className="text-xl text-green-500 font-medium uppercase tracking-widest mb-8">Empowering Knowledge</p>
