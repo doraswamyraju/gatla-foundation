@@ -16,9 +16,7 @@ const AwardWinnersSection = () => {
         'Gatla Bronze Medal'
     ];
 
-    const categories = activeType === 'Gatla Platinum Medal'
-        ? ['General']
-        : ['All', 'Blind', 'Deaf & Dumb', 'Physically Handicapped', 'Wheel Chair'];
+    const categories = ['All', 'General', 'Blind', 'Deaf & Dumb', 'Physically Handicapped', 'Wheel Chair'];
 
     // State for Image Modal
     const [selectedImage, setSelectedImage] = useState(null);
@@ -35,22 +33,17 @@ const AwardWinnersSection = () => {
             .catch(err => console.error(err));
     }, []);
 
-    // Reset category when type changes
+    // Reset logic if needed or just keep empty if no specific side effects needed
     useEffect(() => {
-        if (activeType === 'Gatla Platinum Medal') {
-            setActiveCategory('General');
-        } else if (activeCategory === 'General') {
-            setActiveCategory('All');
-        }
+        // Optional: Reset to All when switching types if helpful
+        // setActiveCategory('All'); 
     }, [activeType]);
 
     // Filter Logic
     const filteredWinners = winners.filter(w => {
         const typeMatch = activeType === 'All Medals' || w.award_type === activeType;
         // For Platinum, category is General. For others, All or Specific.
-        const catMatch = activeType === 'Gatla Platinum Medal'
-            ? true // Always show (since we auto-set to General or user inputs General)
-            : (activeCategory === 'All' || w.category === activeCategory);
+        const catMatch = activeCategory === 'All' || w.category === activeCategory;
 
         const yearMatch = activeYear === 'All' || w.year == activeYear;
         return typeMatch && catMatch && yearMatch;
