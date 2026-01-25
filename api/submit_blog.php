@@ -15,7 +15,7 @@ if (!$conn) {
 // 1. Handle File Upload (if any)
 $imagePath = null;
 if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-    $target_dir = __DIR__ . "/uploads/"; // Ensure this directory exists
+    $target_dir = __DIR__ . "/../uploads/"; // Ensure this directory exists
     if (!file_exists($target_dir)) {
         mkdir($target_dir, 0777, true);
     }

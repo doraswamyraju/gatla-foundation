@@ -10,7 +10,7 @@ $conn = connectDB();
 // 1. Handle File Upload (Certificate)
 $file_path = null;
 if (!empty($_FILES['disability_certificate']['name'])) {
-    $target_dir = "uploads/";
+    $target_dir = __DIR__ . "/../uploads/";
     if (!is_dir($target_dir)) mkdir($target_dir, 0755, true);
     $filename = time() . "_edu_" . basename($_FILES["disability_certificate"]["name"]);
     if (move_uploaded_file($_FILES["disability_certificate"]["tmp_name"], $target_dir . $filename)) {

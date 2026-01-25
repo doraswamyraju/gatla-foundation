@@ -38,7 +38,8 @@ if (!empty($_POST['formType'])) {
 
     // B. Handle File Upload Logic
     if (!empty($_FILES['document']['name'])) {
-        $target_dir = "uploads/";
+        // Fix Path to Root Uploads
+        $target_dir = __DIR__ . '/../uploads/';
         
         // Create directory if it doesn't exist
         if (!is_dir($target_dir)) {

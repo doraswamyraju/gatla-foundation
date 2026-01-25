@@ -34,7 +34,7 @@ $title = isset($_POST['title']) ? $conn->real_escape_string($_POST['title']) : '
 $category = isset($_POST['category']) ? $conn->real_escape_string($_POST['category']) : 'General';
 
 // Upload
-$target_dir = __DIR__ . "/uploads/";
+$target_dir = __DIR__ . "/../uploads/";
 if (!file_exists($target_dir)) {
     mkdir($target_dir, 0777, true);
 }

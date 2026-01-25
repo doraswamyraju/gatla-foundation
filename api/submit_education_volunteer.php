@@ -6,8 +6,8 @@ require_once 'config.php';
 $conn = connectDB();
 
 // File Uploads
-$aadhaar_path = uploadFile('aadhaar_file', 'uploads/');
-$photo_path = uploadFile('photo_file', 'uploads/');
+$aadhaar_path = uploadFile('aadhaar_file', __DIR__ . '/../uploads/');
+$photo_path = uploadFile('photo_file', __DIR__ . '/../uploads/');
 
 function uploadFile($key, $target_dir) {
     if (!empty($_FILES[$key]['name'])) {

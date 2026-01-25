@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, Loader2 } from 'lucide-react';
+import { Save, Loader2, UploadCloud } from 'lucide-react';
 
 const EducationVolunteerForm = ({ onClose, initialData, onSaveSuccess }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -8,21 +8,25 @@ const EducationVolunteerForm = ({ onClose, initialData, onSaveSuccess }) => {
     aadhaar_no: '', qualification: '', occupation: '', area_of_interest: 'Education', availability: '',
     ...initialData
   });
+  const [files, setFiles] = useState({ aadhaar_file: null, photo_file: null });
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleFileChange = (e) => setFiles({ ...files, [e.target.name]: e.target.files[0] });
 
   const handleSubmit = async (e) => {
     e.preventDefault(); setIsSubmitting(true);
     const data = new FormData();
     Object.keys(formData).forEach(k => data.append(k, formData[k]));
-    
+    if (files.aadhaar_file) data.append('aadhaar_file', files.aadhaar_file);
+    if (files.photo_file) data.append('photo_file', files.photo_file);
+
     try {
       const isLocal = window.location.hostname === 'localhost';
       const apiUrl = isLocal ? 'http://localhost/gatla-foundation/api/submit_education_volunteer.php' : 'https://gatlafoundation.org/api/submit_education_volunteer.php';
       const res = await fetch(apiUrl, { method: 'POST', body: data });
       const result = await res.json();
-      if(result.status === 'success') { onSaveSuccess(); onClose(); } else alert(result.message);
-    } catch(err) { alert(err.message); } finally { setIsSubmitting(false); }
+      if (result.status === 'success') { onSaveSuccess(); onClose(); } else alert(result.message);
+    } catch (err) { alert(err.message); } finally { setIsSubmitting(false); }
   };
 
   return (
@@ -36,10 +40,20 @@ const EducationVolunteerForm = ({ onClose, initialData, onSaveSuccess }) => {
         <input name="qualification" value={formData.qualification} onChange={handleChange} placeholder="Qualification" className="border p-2 rounded" />
         <input name="occupation" value={formData.occupation} onChange={handleChange} placeholder="Occupation" className="border p-2 rounded" />
         <select name="area_of_interest" value={formData.area_of_interest} onChange={handleChange} className="border p-2 rounded">
-           <option>Education</option><option>Sports</option><option>Music</option><option>Business</option><option>Awards</option>
+          <option>Education</option><option>Sports</option><option>Music</option><option>Business</option><option>Awards</option>
         </select>
         <input name="availability" value={formData.availability} onChange={handleChange} placeholder="Availability" className="border p-2 rounded" />
         <textarea name="address" value={formData.address} onChange={handleChange} placeholder="Address" className="col-span-2 border p-2 rounded" />
+
+        {/* File Uploads */}
+        <div className="border border-dashed p-4 rounded text-center">
+          <p className="text-xs text-slate-500 mb-2">Upload Aadhaar</p>
+          <input type="file" name="aadhaar_file" onChange={handleFileChange} className="text-sm" />
+        </div>
+        <div className="border border-dashed p-4 rounded text-center">
+          <p className="text-xs text-slate-500 mb-2">Upload Photo</p>
+          <input type="file" name="photo_file" onChange={handleFileChange} className="text-sm" />
+        </div>
       </div>
       <button type="submit" disabled={isSubmitting} className="w-full bg-amber-500 text-white py-2 rounded flex justify-center gap-2">
         {isSubmitting ? <Loader2 className="animate-spin" /> : <Save />} Save

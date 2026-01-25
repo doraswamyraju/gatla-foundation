@@ -41,7 +41,7 @@ try {
     $end_date = (!empty($data['endDate'])) ? $data['endDate'] : null;
 
     // File Upload Handling
-    $upload_dir = '../uploads/';
+    $upload_dir = __DIR__ . '/../uploads/';
     if (!file_exists($upload_dir)) {
         mkdir($upload_dir, 0777, true);
     }
