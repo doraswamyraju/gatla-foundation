@@ -6,6 +6,7 @@ import EducationStudentForm from '../components/pillars/EducationStudentForm';
 import EducationScriberForm from '../components/pillars/EducationScriberForm';
 import EducationVolunteerForm from '../components/pillars/EducationVolunteerForm'; // Ensure this exists
 import EducationDonorForm from '../components/pillars/EducationDonorForm'; // Ensure this exists
+import EducationMemberForm from '../components/pillars/EducationMemberForm';
 import SupporterForm from './forms/SupporterForm'; // Import Supporter Form
 
 
@@ -127,6 +128,23 @@ const EducationClub = () => {
                   <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-purple-500 group-hover:translate-x-1 transition-all" />
                 </button>
 
+                {/* Member Form Button (NEW) */}
+                <button
+                  onClick={() => setActiveForm('member')}
+                  className="w-full group flex items-center justify-between p-4 bg-[#0B1120] border border-slate-800 hover:border-green-500/50 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-green-900/10"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center text-green-500 group-hover:bg-green-500 group-hover:text-white transition-colors">
+                      <Users className="w-5 h-5" />
+                    </div>
+                    <div className="text-left">
+                      <span className="block text-white font-bold group-hover:text-green-400 transition-colors">Member Reg.</span>
+                      <span className="text-xs text-slate-500">Join the Club</span>
+                    </div>
+                  </div>
+                  <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-green-500 group-hover:translate-x-1 transition-all" />
+                </button>
+
                 {/* Supporter Form Button (NEW) */}
                 <button
                   onClick={() => setActiveForm('supporter')}
@@ -192,6 +210,7 @@ const EducationClub = () => {
               {activeForm === 'scribe' && <EducationScriberForm onClose={() => setActiveForm(null)} />}
               {activeForm === 'volunteer' && <EducationVolunteerForm onClose={() => setActiveForm(null)} />}
               {activeForm === 'donor' && <EducationDonorForm onClose={() => setActiveForm(null)} />}
+              {activeForm === 'member' && <EducationMemberForm onClose={() => setActiveForm(null)} />}
               {activeForm === 'supporter' && <SupporterForm onClose={() => setActiveForm(null)} />}
             </div>
 

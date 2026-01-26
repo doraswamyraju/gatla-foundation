@@ -78,7 +78,7 @@ const AwardsDonorForm = ({ onClose }) => {
                 </div>
 
                 <div className="bg-red-500/10 border border-red-500/20 p-3 rounded text-red-400 text-sm font-bold text-center">
-                    ♥ Supporting Gatla Awards Club
+                    ♥ Supporting Gatla Awards
                 </div>
 
                 <div className="space-y-4">

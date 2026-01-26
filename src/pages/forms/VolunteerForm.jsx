@@ -91,7 +91,7 @@ const VolunteerForm = ({ onClose, initialData }) => {
           <div className="bg-slate-900/50 p-4 rounded-lg border border-amber-500/30">
             <label className="block text-sm font-bold text-amber-500 mb-2">I want to volunteer for:</label>
             <div className="flex flex-wrap gap-4">
-              {['Education Club', 'Cricket Club', 'Music Club', 'Business Club', 'Awards Club', 'General'].map(club => (
+              {['Education Club', 'Cricket Club', 'Music Club', 'Business Club', 'Gatla Awards', 'General'].map(club => (
                 <label key={club} className="flex items-center gap-2 text-white cursor-pointer">
                   <input type="radio" name="clubPreference" value={club} checked={formData.clubPreference === club} onChange={handleChange} className="accent-amber-500 w-4 h-4" /> {club}
                 </label>

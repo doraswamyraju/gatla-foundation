@@ -20,8 +20,8 @@ const AwardsClub = ({ onNavigate }) => {
         {/* Header and Title */}
         <div className="text-center mb-12 border-b border-slate-700/50 pb-6">
           <div className="flex flex-col items-center justify-center gap-6 mb-4">
-            <img src={`${process.env.PUBLIC_URL}/assets/images/6.png`} alt="Awards Club Logo" className="w-24 h-24 md:w-32 md:h-32 object-contain drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]" />
-            <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-2 text-center">Gatla Awards Club</h1>
+            <img src={`${process.env.PUBLIC_URL}/assets/images/6.png`} alt="Awards Logo" className="w-24 h-24 md:w-32 md:h-32 object-contain drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]" />
+            <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-2 text-center">Gatla Awards</h1>
           </div>
           <p className="text-lg font-bold text-amber-500 uppercase tracking-widest">For Unsung Heroes</p>
         </div>
@@ -38,7 +38,7 @@ const AwardsClub = ({ onNavigate }) => {
               </h2>
               <h3 className="text-2xl font-serif font-bold text-white mb-4">Honoring Exceptional Achievements by the Differently-Abled.</h3>
               <p className="text-slate-400 leading-relaxed text-sm">
-                The Awards Club is dedicated to identifying and honoring truly deserving individuals—both visually impaired individuals who overcome great challenges, and the unsung heroes and organizations who tirelessly support them. We believe recognition is a powerful tool for inspiration and social change.
+                The Gatla Awards is dedicated to identifying and honoring truly deserving individuals—both visually impaired individuals who overcome great challenges, and the unsung heroes and organizations who tirelessly support them. We believe recognition is a powerful tool for inspiration and social change.
               </p>
             </div>
 

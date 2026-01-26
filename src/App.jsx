@@ -42,7 +42,7 @@ const MOCK_WINGS_DATA = {
         { id: 'cricket', title: 'Cricket Club' },
         { id: 'music', title: 'Music Club' },
         { id: 'business', title: 'Business Club' },
-        { id: 'awards', title: 'Awards Club' }
+        { id: 'awards', title: 'Gatla Awards' }
     ]
 };
 

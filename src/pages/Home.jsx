@@ -23,7 +23,7 @@ const ImageWheel = ({ onNavigate }) => {
 
   return (
     // UPDATED: Increased container size to fit new radius
-    <div className="relative w-[26rem] h-[26rem] flex items-center justify-center animate-spin-slow-reverse"> {/* Added slow spin container if desired, or keep static */}
+    <div className="relative w-[26rem] h-[26rem] flex items-center justify-center animate-spin-slow-reverse scale-[0.85] md:scale-100 origin-center"> {/* Added slow spin container if desired, or keep static */}
       {/* Central Logo (1.png) */}
       <div
         onClick={() => onNavigate('about')}
