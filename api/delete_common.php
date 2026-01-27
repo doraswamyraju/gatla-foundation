@@ -21,17 +21,44 @@ $tableMap = [
     // Dashboard Tab ID       =>  Database Table Name
     'volunteer-form'          => 'general_volunteers',
     'donations-list'          => 'donations',
+    
+    // Education
     'education-student'       => 'education_students',
     'education-scriber'       => 'education_scribers',
     'education-volunteer'     => 'education_volunteers',
     'education-donor'         => 'education_donors',
     
-    // Future Clubs (Add them here when you build them)
+    // Cricket
     'cricket-player'          => 'cricket_players',
-    'cricket-club-member'     => 'cricket_members', // Fixed Mapping
+    'cricket-club-member'     => 'cricket_members',
+    'cricket-umpire'          => 'cricket_umpires',
+    'cricket-donor'           => 'cricket_donors',
+
+    // Music
+    'music-member'            => 'music_members',
     'music-singer'            => 'music_singers',
+    'music-judge'             => 'music_judges',
+    'music-volunteer'         => 'general_volunteers',
+    'music-donor'             => 'music_donors',
+
+    // Business
     'business-member'         => 'business_members',
-    'blog-post'               => 'blog_posts' // Added for Blog Post deletion
+    'business-entrepreneur'   => 'business_entrepreneurs',
+    'business-donor'          => 'business_donors',
+
+    // Awards
+    'awards-application'      => 'awards_applications',
+
+    // Supporters (All Clubs)
+    'supporter-form'          => 'supporters',
+    'education-supporter'     => 'supporters',
+    'cricket-supporter'       => 'supporters',
+    'music-supporter'         => 'supporters',
+    'business-supporter'      => 'supporters',
+    'awards-supporter'        => 'supporters',
+
+    // Others
+    'blog-post'               => 'blog_posts'
 ];
 
 if (!array_key_exists($type, $tableMap)) {
