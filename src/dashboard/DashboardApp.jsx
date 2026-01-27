@@ -545,17 +545,18 @@ const DashboardApp = () => {
   useEffect(() => { if (isAuthenticated) fetchData(); }, [isAuthenticated, activeTab]);
 
   // DELETE FUNCTION
-  const handleDelete = async (id) => {
+  const handleDelete = async (id, typeOverride) => {
     if (!window.confirm("Are you sure you want to delete this record? This cannot be undone.")) {
       return;
     }
+    const deleteType = typeOverride || activeTab;
     try {
       const response = await fetch(`${apiUrl}/delete_common.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           id: id,
-          type: activeTab
+          type: deleteType
         })
       });
       const result = await response.json();
