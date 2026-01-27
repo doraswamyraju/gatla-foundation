@@ -66,7 +66,7 @@ const AwardsApplicationForm = ({ onClose }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <input required name="aadhar" placeholder="Aadhaar No" onChange={handleChange} className="bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-amber-500 outline-none" />
                         <select name="disabilityCategory" onChange={handleChange} className="bg-slate-900 border border-slate-700 text-slate-300 p-3 rounded-lg focus:border-amber-500 outline-none">
-                            <option value="">Select Disability Category</option>
+                            <option value="">Select Category</option>
                             <option value="General">General</option>
                             <option value="Blind">Blind</option>
                             <option value="Deaf & Dumb">Deaf & Dumb</option>
