@@ -4,7 +4,7 @@ import { UserPlus, Save, Music } from 'lucide-react';
 const MusicMemberForm = ({ onClose }) => {
     const [formData, setFormData] = useState({
         fullName: '', fatherName: '', address: '', phone: '', email: '',
-        aadhar: '', disabilityCertNo: '', musicCategory: 'Classic', goal: ''
+        aadhar: '', disabilityCertNo: '', musicCategory: 'Singer\'s Choice', goal: ''
     });
     const [files, setFiles] = useState({ aadhaarFile: null, disabilityFile: null, photoFile: null });
     const [loading, setLoading] = useState(false);
@@ -68,12 +68,13 @@ const MusicMemberForm = ({ onClose }) => {
 
                     <div>
                         <label className="block text-xs text-slate-400 mb-1">Music Category</label>
-                        <select name="musicCategory" onChange={handleChange} className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-purple-500 outline-none">
+                        <select name="musicCategory" value={formData.musicCategory} onChange={handleChange} className="w-full bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-purple-500 outline-none">
                             <option value="Singer's Choice">Singer's Choice</option>
                             <option value="Classical">Classical</option>
                             <option value="Folk">Folk</option>
                             <option value="Light Music">Light Music (Lalitha Sangeetham)</option>
                             <option value="Melody">Melody</option>
+                            <option value="All Songs">All Songs</option>
                         </select>
                     </div>
 
