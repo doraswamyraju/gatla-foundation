@@ -33,6 +33,8 @@ import ContactSection from './components/ContactSection.jsx';
 import FormModal from './dashboard/components/FormModal.jsx';
 import AdminDashboard from './dashboard/DashboardApp.jsx'; // Pointing to your DashboardApp
 import AdminLoginPage from './pages/AdminLoginPage.jsx';
+import AdminForgotPasswordPage from './pages/AdminForgotPasswordPage.jsx';
+import AdminResetPasswordPage from './pages/AdminResetPasswordPage.jsx';
 import FadeInSection from './components/FadeInSection.jsx';
 
 // --- 2. MOCK DATA ---
@@ -213,6 +215,8 @@ const App = () => {
 
     const getInitialPage = () => {
         const path = window.location.pathname.toLowerCase();
+        if (path.includes('/forgot-password')) return 'ForgotPassword';
+        if (path.includes('/reset-password')) return 'ResetPassword';
         if (path.includes('/login') || path.includes('/dashboard')) return 'Login';
         if (path.includes('/donate')) return 'Donate';
         if (path.includes('/gallery')) return 'Gallery';
@@ -246,6 +250,12 @@ const App = () => {
         if (lowerId === 'login' || lowerId === 'dashboard') {
             setCurrentPage('Login');
             path = '/login';
+        } else if (lowerId === 'forgotpassword') {
+            setCurrentPage('ForgotPassword');
+            path = '/forgot-password';
+        } else if (lowerId === 'resetpassword') {
+            setCurrentPage('ResetPassword');
+            path = '/reset-password';
         } else if (lowerId === 'wing' && param) {
             setCurrentPage(param);
             path = `/${param}`;
@@ -297,6 +307,14 @@ const App = () => {
 
     if (currentPage.toLowerCase() === 'login') {
         return <AdminLoginPage onLogin={handleLogin} onNavigate={handleNavigate} />;
+    }
+
+    if (currentPage.toLowerCase() === 'forgotpassword') {
+        return <AdminForgotPasswordPage onNavigate={handleNavigate} />;
+    }
+
+    if (currentPage.toLowerCase() === 'resetpassword') {
+        return <AdminResetPasswordPage onNavigate={handleNavigate} />;
     }
 
     return (
