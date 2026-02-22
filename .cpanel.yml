@@ -2,7 +2,7 @@
 deployment:
   tasks:
     # 1. Export the 'build' folder (Frontend) to the document root
-    - export DEPLOYPATH=/home/skillsak/public_html
+    - export DEPLOYPATH=/home/skillsak/gatlafoundation.org
     - /bin/cp -R build/* $DEPLOYPATH
     
     # 2. Export the 'api' folder (Backend) to the document root
