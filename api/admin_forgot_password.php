@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 // api/admin_forgot_password.php
 require_once 'config.php';
 require('libs/PHPMailer/Exception.php');
