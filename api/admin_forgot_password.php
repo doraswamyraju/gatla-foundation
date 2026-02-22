@@ -1,9 +1,9 @@
 <?php
 // api/admin_forgot_password.php
 require_once 'config.php';
-require('libs/phpmailer/Exception.php');
-require('libs/phpmailer/PHPMailer.php');
-require('libs/phpmailer/SMTP.php');
+require('libs/PHPMailer/Exception.php');
+require('libs/PHPMailer/PHPMailer.php');
+require('libs/PHPMailer/SMTP.php');
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;

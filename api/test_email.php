@@ -7,14 +7,14 @@ error_reporting(E_ALL);
 
 echo "<h3>1. Checking Library Files...</h3>";
 
-if (!file_exists('libs/phpmailer/PHPMailer.php')) {
+if (!file_exists('libs/PHPMailer/PHPMailer.php')) {
     die("<span style='color:red'>ERROR: Library files missing. Please upload the 'libs' folder to 'gatlafoundation.org/api/libs'.</span>");
 }
 echo "<span style='color:green'>Library files found.</span><br>";
 
-require('libs/phpmailer/Exception.php');
-require('libs/phpmailer/PHPMailer.php');
-require('libs/phpmailer/SMTP.php');
+require('libs/PHPMailer/Exception.php');
+require('libs/PHPMailer/PHPMailer.php');
+require('libs/PHPMailer/SMTP.php');
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
