@@ -55,7 +55,7 @@ const GallerySection = ({ onNavigate }) => {
                         >
                             <div className={`${idx === 0 || idx === 7 ? 'aspect-[4/3] md:aspect-[16/9]' : 'aspect-square'} w-full bg-slate-900`}>
                                 <img
-                                    src={img.image_path.startsWith('http') ? img.image_path : `https://gatlafoundation.org/api/uploads/${img.image_path}`}
+                                    src={img.image_path.startsWith('http') ? img.image_path : `https://gatlafoundation.org/uploads/${img.image_path}`}
                                     alt={img.title || "Gallery Image"}
                                     className="w-full h-full object-contain bg-black/50 transition-transform duration-700 group-hover:scale-105"
                                 />
