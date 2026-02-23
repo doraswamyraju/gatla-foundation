@@ -16,7 +16,7 @@ const AwardWinnersSection = () => {
         'Gatla Bronze Medal'
     ];
 
-    const categories = ['All', 'General', 'Blind', 'Deaf & Dumb', 'Physically Handicapped', 'Wheel Chair'];
+    const categories = ['All', 'General Category', 'Visually Impaired Category', 'Deaf & Dumb Category', 'Physically Handicapped Category', 'Wheel Chair Category'];
 
     // State for Image Modal
     const [selectedImage, setSelectedImage] = useState(null);
@@ -187,11 +187,15 @@ const AwardWinnersSection = () => {
                                     <div className={`inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#050914] border border-slate-700 mb-3 group-hover:border-amber-500 transition-colors`}>
                                         <Star className={`w-5 h-5 ${getMedalColor(winner.award_type)}`} />
                                     </div>
-                                    <h3 className="text-xl font-bold text-white mb-1 leading-tight">{winner.winner_name}</h3>
-                                    <p className="text-xs text-amber-500 uppercase tracking-widest font-bold mb-3">{winner.category}</p>
+                                    <h3 className="text-xl font-bold text-amber-500 mb-1 leading-tight">{winner.winner_name}</h3>
+
                                     {winner.description && (
-                                        <p className="text-slate-400 text-sm line-clamp-2">{winner.description}</p>
+                                        <p className="text-slate-400 text-sm line-clamp-2 mb-3">{winner.description}</p>
                                     )}
+
+                                    <p className="inline-block text-[10px] bg-amber-500 text-black px-2 py-0.5 rounded font-bold uppercase tracking-widest leading-none">
+                                        {winner.category}
+                                    </p>
                                 </div>
                             </div>
                         ))}

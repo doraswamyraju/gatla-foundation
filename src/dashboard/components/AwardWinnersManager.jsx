@@ -5,7 +5,7 @@ const AwardWinnersManager = () => {
     const [winners, setWinners] = useState([]);
     const [formData, setFormData] = useState({
         awardType: 'Gatla Platinum Medal',
-        category: 'Blind',
+        category: 'General Category',
         year: new Date().getFullYear(),
         winnerName: '',
         description: ''
@@ -34,10 +34,10 @@ const AwardWinnersManager = () => {
 
         if (name === 'awardType') {
             if (value === 'Gatla Platinum Medal') {
-                setFormData(prev => ({ ...prev, [name]: value, category: 'General' }));
+                setFormData(prev => ({ ...prev, [name]: value, category: 'General Category' }));
             } else {
                 // Reset to first normal category if switching away from Platinum
-                setFormData(prev => ({ ...prev, [name]: value, category: 'Blind' }));
+                setFormData(prev => ({ ...prev, [name]: value, category: 'Visually Impaired Category' }));
             }
         } else {
             setFormData(prev => ({ ...prev, [name]: value }));
@@ -48,8 +48,8 @@ const AwardWinnersManager = () => {
 
     // Helper to determine available categories
     const getCategories = () => {
-        if (formData.awardType === 'Gatla Platinum Medal') return ['General'];
-        return ['Blind', 'Deaf & Dumb', 'Physically Handicapped', 'Wheel Chair'];
+        if (formData.awardType === 'Gatla Platinum Medal') return ['General Category'];
+        return ['Visually Impaired Category', 'Deaf & Dumb Category', 'Physically Handicapped Category', 'Wheel Chair Category'];
     };
 
     const handleSubmit = async (e) => {
