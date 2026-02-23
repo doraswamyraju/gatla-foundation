@@ -401,8 +401,7 @@ const DashboardStats = ({ stats }) => {
 };
 
 // --- 6. MAIN APP --- (Updated)
-const DashboardApp = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+const DashboardApp = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -420,8 +419,8 @@ const DashboardApp = () => {
   const apiUrl = getApiUrl();
 
   const currentData = appData[activeTab] || [];
-  const handleLogin = () => setIsAuthenticated(true);
-  const handleLogout = () => { setIsAuthenticated(false); setActiveTab('dashboard'); };
+  const handleLogin = () => { }; // Redundant but kept for structure if needed elsewhere
+  const handleLogout = onLogout;
 
   const fetchData = async () => {
     try {
@@ -542,7 +541,7 @@ const DashboardApp = () => {
     } catch (err) { console.error("Fetch error:", err); }
   };
 
-  useEffect(() => { if (isAuthenticated) fetchData(); }, [isAuthenticated, activeTab]);
+  useEffect(() => { fetchData(); }, [activeTab]);
 
   // DELETE FUNCTION
   const handleDelete = async (id, typeOverride) => {
