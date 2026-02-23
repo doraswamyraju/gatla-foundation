@@ -85,7 +85,7 @@ const Gallery = () => {
                             <FadeInSection key={img.id}>
                                 <div className="break-inside-avoid relative group rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-amber-500/50 transition-all">
                                     <img
-                                        src={img.image_path.startsWith('http') ? img.image_path : `https://gatlafoundation.org/api/uploads/${img.image_path}`}
+                                        src={img.image_path.startsWith('http') ? img.image_path : `https://gatlafoundation.org/uploads/${img.image_path}`}
                                         alt={img.title}
                                         className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
                                     />

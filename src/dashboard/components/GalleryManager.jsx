@@ -169,7 +169,7 @@ const GalleryManager = () => {
                             <div key={img.id} className="group relative bg-slate-900 rounded-lg overflow-hidden border border-slate-800 hover:border-amber-500/50 transition-all">
                                 <div className="aspect-square overflow-hidden">
                                     <img
-                                        src={img.image_path.startsWith('http') ? img.image_path : `${apiUrl}/uploads/${img.image_path}`}
+                                        src={img.image_path.startsWith('http') ? img.image_path : `${apiUrl.replace('/api', '')}/uploads/${img.image_path}`}
                                         alt={img.title}
                                         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                     />

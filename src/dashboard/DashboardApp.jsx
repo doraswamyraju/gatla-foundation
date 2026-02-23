@@ -402,7 +402,7 @@ const DashboardStats = ({ stats }) => {
 
 // --- 6. MAIN APP --- (Updated)
 const DashboardApp = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
@@ -589,7 +589,7 @@ const DashboardApp = () => {
     finally { setIsSaving(false); }
   };
 
-  if (!isAuthenticated) return <LoginPage onLogin={handleLogin} />;
+  // No local login check needed as App.jsx handles it
 
   return (
     <div className="min-h-screen bg-slate-100 font-sans flex">
@@ -613,7 +613,7 @@ const DashboardApp = () => {
               />
             )
               : activeTab === 'gallery-manager' ? (
-                <GalleryManager />
+                <GalleryManager apiUrl={apiUrl} />
               )
                 : activeTab === 'award-winners-manager' ? (
                   <AwardWinnersManager />
