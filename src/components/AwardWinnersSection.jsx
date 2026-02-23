@@ -190,10 +190,10 @@ const AwardWinnersSection = () => {
                                     <h3 className="text-xl font-bold text-amber-500 mb-1 leading-tight">{winner.winner_name}</h3>
 
                                     {winner.description && (
-                                        <p className="text-slate-400 text-sm line-clamp-2 mb-3">{winner.description}</p>
+                                        <p className="text-white text-sm line-clamp-2 mb-2">{winner.description}</p>
                                     )}
 
-                                    <p className="inline-block text-[10px] bg-amber-500 text-black px-2 py-0.5 rounded font-bold uppercase tracking-widest leading-none">
+                                    <p className="text-[10px] text-white uppercase tracking-widest font-bold">
                                         {winner.category}
                                     </p>
                                 </div>
