@@ -1,12 +1,12 @@
 ---
 deployment:
   tasks:
-    # 1. Export the 'build' folder (Frontend) to the document root
-    - export DEPLOYPATH=/home/skillsak/gatlafoundation.org
-    - /bin/cp -R build/* $DEPLOYPATH
+    # 1. Copy Frontend Build
+    - /bin/cp -R build/* /home/skillsak/gatlafoundation.org/
     
-    # 2. Export the 'api' folder (Backend) to the document root
-    - /bin/cp -R api $DEPLOYPATH
+    # 2. Copy Backend API
+    - /bin/cp -R api /home/skillsak/gatlafoundation.org/
     
-    # 3. Ensure permissions are correct (optional but good practice)
-    - /bin/chmod -R 755 $DEPLOYPATH/api
+    # 3. Set Permissions
+    - /bin/chmod -R 755 /home/skillsak/gatlafoundation.org/api
+    - /bin/chmod -R 755 /home/skillsak/gatlafoundation.org/uploads
