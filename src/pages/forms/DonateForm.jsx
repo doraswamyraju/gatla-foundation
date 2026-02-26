@@ -51,8 +51,14 @@ const DonateForm = ({ onNavigate, club }) => {
               alt="Donation QR Code"
               className="w-full h-auto rounded-lg"
               onError={(e) => {
-                e.target.src = "https://via.placeholder.com/300?text=Please+Upload+QR+Code";
-                e.target.onerror = null;
+                e.target.style.display = 'none'; // Hide broken image
+                const parent = e.target.parentElement;
+                if (parent && !parent.querySelector('.qr-placeholder')) {
+                  const div = document.createElement('div');
+                  div.className = 'qr-placeholder p-8 bg-slate-100 rounded-lg text-slate-400 text-xs flex flex-col items-center';
+                  div.innerHTML = '<svg class="w-8 h-8 mb-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><rect x="7" y="7" width="3" height="3"></rect><rect x="14" y="7" width="3" height="3"></rect><rect x="7" y="14" width="3" height="3"></rect><rect x="14" y="14" width="3" height="3"></rect></svg><span>Please save QR code as:</span><span class="font-mono mt-1 text-slate-600">public/assets/images/donate_qr.jpg</span>';
+                  parent.appendChild(div);
+                }
               }}
             />
           </div>

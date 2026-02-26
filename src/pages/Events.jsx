@@ -69,8 +69,11 @@ const Events = () => {
                                 <div className="p-6">
                                     <div className="flex items-center gap-4 text-xs text-slate-400 mb-3">
                                         <span className="flex items-center gap-1">
-                                            <Calendar className="w-3 h-3 text-amber-500" />
-                                            {evt.event_date} {evt.end_date && evt.end_date !== evt.event_date ? ` - ${evt.end_date}` : ''}
+                                            {evt.event_date}
+                                            {(evt.end_date &&
+                                                evt.end_date !== '0000-00-00' &&
+                                                evt.end_date !== evt.event_date)
+                                                ? ` - ${evt.end_date}` : ''}
                                         </span>
                                         <span className="flex items-center gap-1"><Clock className="w-3 h-3 text-amber-500" /> {evt.event_time}</span>
                                     </div>
@@ -117,7 +120,11 @@ const Events = () => {
                                     <div className="space-y-3 mb-6">
                                         <p className="flex items-center gap-3 text-slate-300">
                                             <Calendar className="w-5 h-5 text-amber-500 shrink-0" />
-                                            {selectedEvent.event_date} {selectedEvent.end_date && selectedEvent.end_date !== selectedEvent.event_date ? ` - ${selectedEvent.end_date}` : ''}
+                                            {selectedEvent.event_date}
+                                            {(selectedEvent.end_date &&
+                                                selectedEvent.end_date !== '0000-00-00' &&
+                                                selectedEvent.end_date !== selectedEvent.event_date)
+                                                ? ` - ${selectedEvent.end_date}` : ''}
                                         </p>
                                         <p className="flex items-center gap-3 text-slate-300"><Clock className="w-5 h-5 text-amber-500 shrink-0" /> {selectedEvent.event_time}</p>
                                         <p className="flex items-center gap-3 text-slate-300"><MapPin className="w-5 h-5 text-amber-500 shrink-0" /> {selectedEvent.location}</p>

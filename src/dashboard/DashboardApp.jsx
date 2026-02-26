@@ -173,6 +173,21 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
 
   // --- Specific Form Checks ---
 
+  if (categoryId.endsWith('-donor') || categoryId === 'awards-sponsor' || categoryId === 'donations-list') {
+    return (
+      <ModalWrapper title={categoryId.replace(/-/g, ' ').toUpperCase()}>
+        <div className="p-10 text-center flex flex-col items-center justify-center">
+          <Gift className="w-12 h-12 text-amber-500 mb-4" />
+          <h3 className="text-xl font-bold text-slate-800 mb-2">Donation Module Offline</h3>
+          <p className="text-slate-500 max-w-sm mb-6">
+            This donation form is temporarily offline while the new payment system is being integrated. Please use the QR code on the main website.
+          </p>
+          <button onClick={onClose} className="px-6 py-2 bg-slate-900 text-white rounded-lg font-bold">Close</button>
+        </div>
+      </ModalWrapper>
+    );
+  }
+
   if (categoryId === 'volunteer-form') {
     return <ModalWrapper title="Volunteer"><GeneralVolunteerForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></ModalWrapper>;
   }
@@ -184,9 +199,6 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
   }
   if (categoryId === 'education-volunteer') {
     return <ModalWrapper title="Edu Volunteer"><EducationVolunteerForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></ModalWrapper>;
-  }
-  if (categoryId === 'education-donor') {
-    return <ModalWrapper title="Edu Donor"><EducationDonorForm onClose={onClose} initialData={initialData} onSaveSuccess={onSaveSuccess} /></ModalWrapper>;
   }
   // Added Cricket Forms
   if (categoryId === 'cricket-club-member') {
