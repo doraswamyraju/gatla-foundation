@@ -4,6 +4,8 @@ import { Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin, Heart } fr
 const Footer = ({ onNavigate }) => {
    // Use PUBLIC_URL for the logo path ensures it works in subdirectories
    const logoPath = process.env.PUBLIC_URL + "/assets/images/1.jpg";
+   const qrPath = process.env.PUBLIC_URL + "/assets/images/donate_qr.jpg";
+
 
    // Social Media Configuration
    // Update the 'href' values with your actual profile URLs
@@ -19,10 +21,10 @@ const Footer = ({ onNavigate }) => {
          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             {/* TOP SECTION */}
-            <div className="grid md:grid-cols-4 gap-12 text-sm mb-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-sm mb-16">
 
                {/* Brand Column */}
-               <div className="col-span-1 md:col-span-2">
+               <div className="col-span-1">
                   <div className="flex items-center gap-3 mb-6">
                      <img src={logoPath} alt="Gatla Foundation" className="w-12 h-12 rounded-full object-cover border border-slate-800" />
                      <div>
@@ -48,6 +50,25 @@ const Footer = ({ onNavigate }) => {
                            <social.icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
                         </a>
                      ))}
+                  </div>
+               </div>
+
+               {/* Support & Bank Details Column */}
+               <div>
+                  <h5 className="text-white font-bold uppercase tracking-widest text-xs mb-6 border-b border-slate-900 pb-2 inline-block">Support Us</h5>
+                  <div className="bg-[#0B1120] p-4 rounded-xl border border-slate-800 text-center shadow-lg">
+                     <img
+                        src={qrPath}
+                        alt="Donate QR Code"
+                        className="w-full max-w-[150px] mx-auto rounded-lg mb-4 border-2 border-amber-500/50"
+                     />
+                     <div className="text-left text-xs text-slate-400 space-y-1 bg-[#050914] p-3 rounded border border-slate-800">
+                        <p className="text-amber-500 font-bold mb-1">Bank Transfer</p>
+                        <p><span className="text-white">A/C Name:</span> Gatla Foundation</p>
+                        <p><span className="text-white">A/C No:</span> 0436102000015491</p>
+                        <p><span className="text-white">IFSC:</span> IBKL0000436</p>
+                        <p><span className="text-white">Bank:</span> IDBI Bank, Tirupati</p>
+                     </div>
                   </div>
                </div>
 

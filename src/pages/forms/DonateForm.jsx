@@ -89,9 +89,17 @@ const DonateForm = ({ onNavigate, club }) => {
             />
           </div>
 
-          <p className="text-[#0B1120] text-xs leading-relaxed px-4 opacity-80">
-            Scan using any UPI App (GPay, PhonePe, Paytm, etc.) to contribute directly to the Gatla Foundation.
+          <p className="text-[#0B1120] text-[11px] leading-relaxed px-4 opacity-90 font-medium mb-4">
+            Scan using any UPI App (GPay, PhonePe, Paytm, etc.) to contribute directly.
           </p>
+
+          <div className="bg-[#0B1120] text-slate-300 p-4 rounded-xl w-full max-w-[240px] text-[11px] space-y-1 shadow-2xl border border-amber-900/50 text-left">
+            <p className="text-amber-500 font-bold mb-2 uppercase tracking-widest text-[9px]">Or Bank Transfer</p>
+            <p><span className="text-white font-medium">A/C Name:</span> Gatla Foundation</p>
+            <p><span className="text-white font-medium">A/C No:</span> 0436102000015491</p>
+            <p><span className="text-white font-medium">IFSC:</span> IBKL0000436</p>
+            <p><span className="text-white font-medium">Bank:</span> IDBI Bank, Tirupati</p>
+          </div>
         </div>
 
         {/* Info Form */}

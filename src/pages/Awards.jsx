@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'; 
+import React, { useEffect, useRef, useState } from 'react';
 import { Trophy, Star, CheckCircle2, Medal, Globe, X } from 'lucide-react';
 
 // --- AWARDS DESCRIPTIONS DATA & FILE MAPPING ---
@@ -39,7 +39,7 @@ const fallbackImage = process.env.PUBLIC_URL + "/assets/images/1.png";
 const SLIDER_IMAGES = AWARD_DATA_MAP.flatMap(([description, fileIds]) => {
     return fileIds.map((fileId) => ({
         id: fileId,
-        src: imageBasePath + `${fileId}.jpeg`, 
+        src: imageBasePath + `${fileId}.jpeg`,
         description: description,
     }));
 });
@@ -48,7 +48,7 @@ const ACHIEVEMENTS = [
     {
         type: 'International',
         title: 'World Record Achievement',
-        description: 'Secured the maximum number of volunteer-provided scribes for blind students in a single academic year, setting a global benchmark for service.',
+        description: 'Created the record for volunterily social service given to more than 30000 blind persons and also he written exams for more than 500 blind students as a scriber',
         date: 'August 2024',
         icon: <Globe className="w-6 h-6 text-white" />,
         color: 'bg-blue-600',
@@ -82,23 +82,23 @@ const ImageModal = ({ isOpen, src, alt, description, onClose }) => {
     if (!isOpen) return null;
 
     return (
-        <div 
+        <div
             className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-[100] p-4 cursor-pointer"
-            onClick={onClose} 
+            onClick={onClose}
         >
-            <div 
+            <div
                 className="relative max-w-5xl max-h-[95vh] bg-[#050914] p-2 md:p-6 rounded-lg shadow-2xl flex flex-col items-center justify-center"
-                onClick={(e) => e.stopPropagation()} 
+                onClick={(e) => e.stopPropagation()}
             >
-                <button 
-                    onClick={onClose} 
+                <button
+                    onClick={onClose}
                     className="absolute top-2 right-2 md:top-4 md:right-4 text-white bg-red-600 rounded-full p-2 hover:bg-red-700 transition z-50"
                 >
                     <X className="w-6 h-6" />
                 </button>
-                <img 
-                    src={src} 
-                    alt={alt} 
+                <img
+                    src={src}
+                    alt={alt}
                     // ADDED: Error handling for modal image
                     onError={(e) => { e.target.src = fallbackImage; }}
                     className="w-full h-auto max-h-[75vh] object-contain mx-auto rounded-md bg-black/50"
@@ -150,11 +150,11 @@ const AwardsSlider = ({ openModal }) => {
                 }
             }
         });
-        
-        if (minDistance < 200) { 
+
+        if (minDistance < 200) {
             setCenterItemId(closestItem);
         } else {
-            setCenterItemId(null); 
+            setCenterItemId(null);
         }
     };
 
@@ -162,17 +162,17 @@ const AwardsSlider = ({ openModal }) => {
         const slider = sliderRef.current;
         if (!slider) return;
 
-        checkCenterItem(); 
+        checkCenterItem();
 
         const handleScroll = () => {
-            requestAnimationFrame(checkCenterItem); 
+            requestAnimationFrame(checkCenterItem);
         };
-        
+
         slider.addEventListener('scroll', handleScroll);
 
         const scrollInterval = setInterval(() => {
-            const itemWidth = 320; 
-            const gap = 24; 
+            const itemWidth = 320;
+            const gap = 24;
             const scrollAmount = itemWidth + gap;
 
             if (slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 10) {
@@ -180,7 +180,7 @@ const AwardsSlider = ({ openModal }) => {
             } else {
                 slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
             }
-        }, 3000); 
+        }, 3000);
 
         return () => {
             clearInterval(scrollInterval);
@@ -190,53 +190,52 @@ const AwardsSlider = ({ openModal }) => {
 
     return (
         <section className="py-12 -mt-6">
-            <div 
+            <div
                 ref={sliderRef}
-                onScroll={checkCenterItem} 
-                className="overflow-x-scroll whitespace-nowrap snap-x-mandatory" 
-                style={{ 
+                onScroll={checkCenterItem}
+                className="overflow-x-scroll whitespace-nowrap snap-x-mandatory"
+                style={{
                     WebkitOverflowScrolling: 'touch',
                     scrollSnapType: 'x mandatory',
-                    msOverflowStyle: 'none', 
-                    scrollbarWidth: 'none', 
+                    msOverflowStyle: 'none',
+                    scrollbarWidth: 'none',
                 }}
             >
                 <div className="inline-flex gap-6 px-4 sm:px-6 lg:px-8 pb-4 py-2">
-                    <div className="inline-block flex-shrink-0 w-64 opacity-0 pointer-events-none"></div> 
+                    <div className="inline-block flex-shrink-0 w-64 opacity-0 pointer-events-none"></div>
 
                     {SLIDER_IMAGES.map((photo, index) => {
                         const isCentered = photo.id === centerItemId;
-                        
+
                         return (
-                            <div 
-                                key={photo.id} 
-                                ref={el => itemRefs.current[index] = el} 
+                            <div
+                                key={photo.id}
+                                ref={el => itemRefs.current[index] = el}
                                 className={`inline-block flex-shrink-0 relative transition-all duration-300 cursor-pointer`}
-                                onClick={() => openModal(photo)} 
-                                style={{ 
-                                    scrollSnapAlign: 'center', 
-                                    width: '320px', 
+                                onClick={() => openModal(photo)}
+                                style={{
+                                    scrollSnapAlign: 'center',
+                                    width: '320px',
                                     transform: isCentered ? 'scale(1.1) z-10' : 'scale(1)',
-                                    opacity: isCentered ? 1 : 0.7, 
-                                    margin: isCentered ? '0 10px' : '0 0', 
-                                }} 
+                                    opacity: isCentered ? 1 : 0.7,
+                                    margin: isCentered ? '0 10px' : '0 0',
+                                }}
                             >
                                 <div className={`relative rounded-lg overflow-hidden border border-slate-700 bg-[#0F172A] shadow-xl group transition-all duration-300 w-full h-80 hover:border-amber-500 mb-3`}>
-                                    <img 
-                                        src={photo.src} 
-                                        alt={`Award ${photo.id}`} 
+                                    <img
+                                        src={photo.src}
+                                        alt={`Award ${photo.id}`}
                                         // CRITICAL: Shows Logo if image fails to load
-                                        onError={(e) => { 
+                                        onError={(e) => {
                                             e.target.onerror = null; // prevents looping
-                                            e.target.src = fallbackImage; 
+                                            e.target.src = fallbackImage;
                                         }}
-                                        className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105" 
+                                        className="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105"
                                     />
                                 </div>
-                                
-                                <p className={`text-center whitespace-normal text-xs md:text-sm font-semibold transition-colors duration-300 px-2 line-clamp-3 ${
-                                    isCentered ? 'text-amber-400' : 'text-slate-500'
-                                }`}>
+
+                                <p className={`text-center whitespace-normal text-xs md:text-sm font-semibold transition-colors duration-300 px-2 line-clamp-3 ${isCentered ? 'text-amber-400' : 'text-slate-500'
+                                    }`}>
                                     {photo.description}
                                 </p>
                             </div>
@@ -279,9 +278,9 @@ const Awards = () => {
                 <AwardsSlider openModal={openModal} />
 
                 <div className="grid md:grid-cols-3 gap-8 pt-10 pb-20">
-                {ACHIEVEMENTS.map((ach, index) => (
-                    <AchievementCard key={index} achievement={ach} />
-                ))}
+                    {ACHIEVEMENTS.map((ach, index) => (
+                        <AchievementCard key={index} achievement={ach} />
+                    ))}
                 </div>
 
                 <div className="bg-[#0B1120] p-8 md:p-12 border border-slate-800 rounded-lg shadow-2xl mb-20">
@@ -292,7 +291,7 @@ const Awards = () => {
                             <p className="text-slate-400 text-sm">Recognizing the personal commitment of our Founder and the Foundation's impact.</p>
                         </div>
                     </div>
-                    
+
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {HONORS.map((honor, index) => (
                             <div key={index} className="flex items-start gap-4 p-4 border border-slate-700 rounded-md bg-[#0F172A]">
@@ -307,7 +306,7 @@ const Awards = () => {
                 </div>
             </div>
 
-            <ImageModal 
+            <ImageModal
                 isOpen={modalState.isOpen}
                 src={modalState.src}
                 alt={modalState.alt}
