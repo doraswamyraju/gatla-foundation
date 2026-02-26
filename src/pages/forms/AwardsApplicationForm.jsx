@@ -67,11 +67,11 @@ const AwardsApplicationForm = ({ onClose }) => {
                         <input required name="aadhar" placeholder="Aadhaar No" onChange={handleChange} className="bg-slate-900 border border-slate-700 text-white p-3 rounded-lg focus:border-amber-500 outline-none" />
                         <select name="disabilityCategory" onChange={handleChange} className="bg-slate-900 border border-slate-700 text-slate-300 p-3 rounded-lg focus:border-amber-500 outline-none">
                             <option value="">Select Category</option>
-                            <option value="General">General</option>
-                            <option value="Blind">Blind</option>
-                            <option value="Deaf & Dumb">Deaf & Dumb</option>
-                            <option value="Physical Handicap">Physical Handicap</option>
-                            <option value="Wheel Chair">Wheel Chair</option>
+                            <option value="Normal Category">Normal Category</option>
+                            <option value="Visually Impaired Category">Visually Impaired Category</option>
+                            <option value="Deaf & Dumb Category">Deaf & Dumb Category</option>
+                            <option value="Physically Handicapped Category">Physically Handicapped Category</option>
+                            <option value="Wheel Chair Category">Wheel Chair Category</option>
                         </select>
                     </div>
 

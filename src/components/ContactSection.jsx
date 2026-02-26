@@ -41,7 +41,8 @@ const ContactSection = () => {
                                 </div>
                                 <div>
                                     <h5 className="text-white font-bold text-lg mb-1">Email Address</h5>
-                                    <p className="text-slate-400 font-mono">gatlafoundation@gmail.com</p>
+                                    <p className="text-slate-400 font-mono">office@gatlafoundation.org</p>
+                                    <p className="text-slate-400 font-mono">president@gatlafoundation.org</p>
                                 </div>
                             </div>
                         </div>

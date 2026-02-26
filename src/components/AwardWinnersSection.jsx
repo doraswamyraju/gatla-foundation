@@ -16,7 +16,7 @@ const AwardWinnersSection = () => {
         'Gatla Bronze Medal'
     ];
 
-    const categories = ['All', 'General Category', 'Visually Impaired Category', 'Deaf & Dumb Category', 'Physically Handicapped Category', 'Wheel Chair Category'];
+    const categories = ['All', 'Normal Category', 'Visually Impaired Category', 'Deaf & Dumb Category', 'Physically Handicapped Category', 'Wheel Chair Category'];
 
     // State for Image Modal
     const [selectedImage, setSelectedImage] = useState(null);
