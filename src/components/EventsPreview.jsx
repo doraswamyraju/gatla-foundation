@@ -19,6 +19,7 @@ const EventsPreview = ({ onNavigate }) => {
     }).sort((a, b) => new Date(a.event_date) - new Date(b.event_date))
         .slice(0, 3); // Top 3 only
 
+    if (events.length === 0) return <div className="h-0 opacity-0"></div>; // prevents IntersectionObserver issues
     if (upcomingEvents.length === 0) return null; // Don't show section if no upcoming events
 
     return (
