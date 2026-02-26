@@ -18,18 +18,23 @@ const ImageWheel = ({ onNavigate }) => {
     { id: 'awards', src: imageBasePath + "6.png", size: "w-24 h-24", angle: 288 },
   ];
 
-  // UPDATED: Radius increased to 175 to accommodate larger spokes
-  const radius = 175;
+  // Responsive radius logic
+  const [radius, setRadius] = useState(window.innerWidth < 768 ? 130 : 175);
+
+  React.useEffect(() => {
+    const handleResize = () => setRadius(window.innerWidth < 768 ? 130 : 175);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
-    // UPDATED: Increased container size to fit new radius
-    <div className="relative w-[26rem] h-[26rem] flex items-center justify-center animate-spin-slow-reverse scale-[0.85] md:scale-100 origin-center"> {/* Added slow spin container if desired, or keep static */}
+    <div className="relative w-[20rem] h-[20rem] md:w-[26rem] md:h-[26rem] flex items-center justify-center animate-spin-slow-reverse scale-90 md:scale-100 origin-center">
       {/* Central Logo (1.png) */}
       <div
         onClick={() => onNavigate('about')}
-        className={`absolute ${images[0].size} border-2 border-amber-500 rounded-full flex items-center justify-center z-10 p-2 bg-[#0B1120] 
+        className="absolute w-32 h-32 md:w-40 md:h-40 border-2 border-amber-500 rounded-full flex items-center justify-center z-10 p-2 bg-[#0B1120] 
                    shadow-2xl shadow-amber-500/50 
-                   hover:shadow-amber-500/80 hover:scale-105 transition-all duration-500 cursor-pointer`}
+                   hover:shadow-amber-500/80 hover:scale-105 transition-all duration-500 cursor-pointer"
       >
         <img src={images[0].src} alt="Gatla Foundation Logo" className="w-full h-full object-contain" />
       </div>
@@ -44,9 +49,8 @@ const ImageWheel = ({ onNavigate }) => {
           <div
             key={img.id}
             onClick={() => onNavigate(img.id)}
-            // UPDATED: Added hover:border-amber-500 and hover:shadow-amber-500/50
-            className={`absolute ${img.size} rounded-full border-2 border-slate-700 p-2 bg-[#050914] shadow-lg flex items-center justify-center 
-                       transition-all duration-300 hover:scale-110 hover:border-amber-500 hover:shadow-[0_0_15px_rgba(245,158,11,0.5)] cursor-pointer group`}
+            className="absolute w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-slate-700 p-2 bg-[#050914] shadow-lg flex items-center justify-center 
+                       transition-all duration-300 hover:scale-110 hover:border-amber-500 hover:shadow-[0_0_15px_rgba(245,158,11,0.5)] cursor-pointer group"
             style={{
               transform: `translate(${x}px, ${y}px)`,
             }}

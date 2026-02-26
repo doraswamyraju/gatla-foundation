@@ -29,11 +29,12 @@ try {
     $title = $_POST['title'];
     $description = $_POST['description'] ?? '';
     $event_date = $_POST['eventDate'];
+    $end_date = $_POST['endDate'] ?: $event_date; // Default to event_date if empty
     $event_time = $_POST['eventTime'];
     $location = $_POST['location'];
 
-    $stmt = $conn->prepare("INSERT INTO events (title, description, event_date, event_time, location, image_path) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $title, $description, $event_date, $event_time, $location, $db_path);
+    $stmt = $conn->prepare("INSERT INTO events (title, description, event_date, end_date, event_time, location, image_path) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssssss", $title, $description, $event_date, $end_date, $event_time, $location, $db_path);
 
     if ($stmt->execute()) {
         echo json_encode(["status" => "success", "message" => "Event added successfully"]);

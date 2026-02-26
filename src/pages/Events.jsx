@@ -15,8 +15,15 @@ const Events = () => {
 
     // Filter Logic
     const today = new Date().toISOString().split('T')[0];
-    const upcomingEvents = events.filter(e => e.event_date >= today).sort((a, b) => new Date(a.event_date) - new Date(b.event_date));
-    const pastEvents = events.filter(e => e.event_date < today).sort((a, b) => new Date(b.event_date) - new Date(a.event_date));
+    const upcomingEvents = events.filter(e => {
+        const endDate = e.end_date || e.event_date;
+        return endDate >= today;
+    }).sort((a, b) => new Date(a.event_date) - new Date(b.event_date));
+
+    const pastEvents = events.filter(e => {
+        const endDate = e.end_date || e.event_date;
+        return endDate < today;
+    }).sort((a, b) => new Date(b.event_date) - new Date(a.event_date));
 
     const displayEvents = activeTab === 'upcoming' ? upcomingEvents : pastEvents;
 
@@ -61,7 +68,10 @@ const Events = () => {
                                 </div>
                                 <div className="p-6">
                                     <div className="flex items-center gap-4 text-xs text-slate-400 mb-3">
-                                        <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-amber-500" /> {evt.event_date}</span>
+                                        <span className="flex items-center gap-1">
+                                            <Calendar className="w-3 h-3 text-amber-500" />
+                                            {evt.event_date} {evt.end_date && evt.end_date !== evt.event_date ? ` - ${evt.end_date}` : ''}
+                                        </span>
                                         <span className="flex items-center gap-1"><Clock className="w-3 h-3 text-amber-500" /> {evt.event_time}</span>
                                     </div>
                                     <h3 className="text-xl font-bold text-white mb-2 group-hover:text-amber-500 transition-colors">{evt.title}</h3>
@@ -105,7 +115,10 @@ const Events = () => {
                                     <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 leading-tight">{selectedEvent.title}</h2>
 
                                     <div className="space-y-3 mb-6">
-                                        <p className="flex items-center gap-3 text-slate-300"><Calendar className="w-5 h-5 text-amber-500 shrink-0" /> {selectedEvent.event_date}</p>
+                                        <p className="flex items-center gap-3 text-slate-300">
+                                            <Calendar className="w-5 h-5 text-amber-500 shrink-0" />
+                                            {selectedEvent.event_date} {selectedEvent.end_date && selectedEvent.end_date !== selectedEvent.event_date ? ` - ${selectedEvent.end_date}` : ''}
+                                        </p>
                                         <p className="flex items-center gap-3 text-slate-300"><Clock className="w-5 h-5 text-amber-500 shrink-0" /> {selectedEvent.event_time}</p>
                                         <p className="flex items-center gap-3 text-slate-300"><MapPin className="w-5 h-5 text-amber-500 shrink-0" /> {selectedEvent.location}</p>
                                     </div>

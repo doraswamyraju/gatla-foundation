@@ -4,7 +4,7 @@ import { Calendar, Plus, Trash2, MapPin, Clock } from 'lucide-react';
 const EventsManager = () => {
     const [events, setEvents] = useState([]);
     const [formData, setFormData] = useState({
-        title: '', description: '', eventDate: '', eventTime: '', location: ''
+        title: '', description: '', eventDate: '', endDate: '', eventTime: '', location: ''
     });
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -34,7 +34,7 @@ const EventsManager = () => {
             const result = await res.json();
             if (result.status === 'success') {
                 alert("Event Added!");
-                setFormData({ title: '', description: '', eventDate: '', eventTime: '', location: '' });
+                setFormData({ title: '', description: '', eventDate: '', endDate: '', eventTime: '', location: '' });
                 setFile(null);
                 fetchEvents();
             } else { alert("Error: " + result.message); }
@@ -57,8 +57,20 @@ const EventsManager = () => {
                 <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <input required name="title" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} placeholder="Event Title" className="border p-2 rounded" />
                     <input required name="location" value={formData.location} onChange={e => setFormData({ ...formData, location: e.target.value })} placeholder="Location" className="border p-2 rounded" />
-                    <input required type="date" name="eventDate" value={formData.eventDate} onChange={e => setFormData({ ...formData, eventDate: e.target.value })} className="border p-2 rounded" />
-                    <input required type="time" name="eventTime" value={formData.eventTime} onChange={e => setFormData({ ...formData, eventTime: e.target.value })} className="border p-2 rounded" />
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-xs text-slate-500 mb-1">From Date</label>
+                            <input required type="date" name="eventDate" value={formData.eventDate} onChange={e => setFormData({ ...formData, eventDate: e.target.value })} className="w-full border p-2 rounded" />
+                        </div>
+                        <div>
+                            <label className="block text-xs text-slate-500 mb-1">To Date (Optional)</label>
+                            <input type="date" name="endDate" value={formData.endDate} onChange={e => setFormData({ ...formData, endDate: e.target.value })} className="w-full border p-2 rounded" />
+                        </div>
+                    </div>
+                    <div>
+                        <label className="block text-xs text-slate-500 mb-1">Event Time</label>
+                        <input required type="time" name="eventTime" value={formData.eventTime} onChange={e => setFormData({ ...formData, eventTime: e.target.value })} className="w-full border p-2 rounded" />
+                    </div>
                     <textarea required name="description" value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} placeholder="Event Description/Details" className="md:col-span-2 border p-2 rounded h-24" />
                     <div className="md:col-span-2">
                         <label className="block text-sm text-slate-500 mb-1">Event Banner Image</label>
@@ -77,7 +89,9 @@ const EventsManager = () => {
                             <img src={`${process.env.PUBLIC_URL}/${evt.image_path}`} alt={evt.title} className="w-16 h-16 object-cover rounded" />
                             <div>
                                 <h4 className="font-bold">{evt.title}</h4>
-                                <p className="text-sm text-slate-500">{evt.event_date} @ {evt.event_time} | {evt.location}</p>
+                                <p className="text-sm text-slate-500">
+                                    {evt.event_date} {evt.end_date && evt.end_date !== evt.event_date ? ` - ${evt.end_date}` : ''} @ {evt.event_time} | {evt.location}
+                                </p>
                             </div>
                         </div>
                         <button onClick={() => handleDelete(evt.id)} className="text-red-500 hover:bg-red-50 p-2 rounded"><Trash2 className="w-5 h-5" /></button>
