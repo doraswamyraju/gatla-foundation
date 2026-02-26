@@ -41,15 +41,15 @@ const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, on
     </div>
   );
 
-  // --- 0. DONATION PLACEHOLDER (GLOBAL) ---
-  if (categoryId.endsWith('-donor') || categoryId === 'awards-sponsor' || categoryId === 'donations-list') {
+  // --- 0. SPONSORSHIP PLACEHOLDER (GLOBAL) ---
+  if (categoryId === 'awards-sponsor') {
     return (
-      <ModalWrapper title={categoryId.replace(/-/g, ' ').toUpperCase()}>
+      <ModalWrapper title="AWARDS SPONSOR">
         <div className="p-10 text-center flex flex-col items-center justify-center bg-white rounded-b-xl">
           <Gift className="w-12 h-12 text-amber-500 mb-4" />
-          <h3 className="text-xl font-bold text-slate-800 mb-2">Donation Module Offline</h3>
+          <h3 className="text-xl font-bold text-slate-800 mb-2">Sponsorship Module Offline</h3>
           <p className="text-slate-500 max-w-sm mb-6">
-            This donation form is temporarily offline while the new payment system is being integrated. Please use the QR code on the main website.
+            This module is temporarily offline.
           </p>
           <button onClick={onClose} className="px-6 py-2 bg-slate-900 text-white rounded-lg font-bold hover:bg-slate-800 transition-colors">Close</button>
         </div>

@@ -2,14 +2,34 @@ import React, { useState } from 'react';
 import { Heart, ShieldCheck, Home, QrCode } from 'lucide-react';
 
 const DonateForm = ({ onNavigate, club }) => {
-  const [donor, setDonor] = useState({ name: '', email: '', phone: '', pan: '' });
+  const [donor, setDonor] = useState({ name: '', email: '', phone: '', pan: '', amount: '', payment_id: '' });
+  const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // In this offline/QR mode, we just show a thank you message 
-    // after they confirm they've scanned and sent the amount.
-    setSubmitted(true);
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await fetch('/api/process_donation.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...donor, club: club || 'general' })
+      });
+
+      const result = await response.json();
+      if (result.status === 'success') {
+        setSubmitted(true);
+      } else {
+        setError(result.message || 'Failed to record donation. Please try again.');
+      }
+    } catch (err) {
+      setError('Connection error. Please check your internet and try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
@@ -22,7 +42,8 @@ const DonateForm = ({ onNavigate, club }) => {
 
           <h2 className="text-2xl font-bold text-slate-800 mb-2">Thank You for Your Support!</h2>
           <p className="text-slate-600 mb-6 leading-relaxed">
-            Your contribution makes a world of difference. Once we verify the transaction, you will receive an official receipt at <span className="text-amber-600 font-medium">{donor.email}</span>.
+            Your generous contribution of <span className="text-green-600 font-bold">Rs. {donor.amount}</span> makes a world of difference.
+            An official receipt has been sent to <span className="text-amber-600 font-medium">{donor.email}</span>.
           </p>
 
           <button
@@ -38,9 +59,9 @@ const DonateForm = ({ onNavigate, club }) => {
 
   return (
     <div className="min-h-screen bg-[#0B1120] py-24 px-4 flex justify-center items-center">
-      <div className="bg-white max-w-2xl w-full rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+      <div className="bg-white max-w-4xl w-full rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
         {/* QR Section */}
-        <div className="md:w-1/2 bg-amber-500 p-8 flex flex-col items-center justify-center text-center">
+        <div className="md:w-5/12 bg-amber-500 p-8 flex flex-col items-center justify-center text-center">
           <QrCode className="w-12 h-12 text-[#0B1120] mb-4" />
           <h2 className="text-2xl font-bold text-[#0B1120] mb-2">Scan to Donate</h2>
           <p className="text-[#0B1120] font-medium mb-1 uppercase tracking-wider text-[10px]">Secure UPI Payment</p>
@@ -68,40 +89,62 @@ const DonateForm = ({ onNavigate, club }) => {
             />
           </div>
 
-          <p className="text-[#0B1120] text-sm leading-relaxed px-4">
+          <p className="text-[#0B1120] text-xs leading-relaxed px-4 opacity-80">
             Scan using any UPI App (GPay, PhonePe, Paytm, etc.) to contribute directly to the Gatla Foundation.
           </p>
         </div>
 
         {/* Info Form */}
-        <div className="md:w-1/2 p-8">
-          <div className="mb-6 text-center md:text-left">
-            <h3 className="text-xl font-bold text-slate-800">Donor Information</h3>
-            <p className="text-slate-500 text-sm">Please provide your details below to receive a donation receipt.</p>
+        <div className="md:w-7/12 p-8">
+          <div className="mb-6">
+            <h3 className="text-xl font-bold text-slate-800">Donor & Payment Details</h3>
+            <p className="text-slate-500 text-xs">Please provide your details and the transaction ID after scanning the QR code.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <input required type="text" placeholder="Full Name" className="w-full border border-slate-200 rounded-lg p-3 text-sm focus:border-amber-500 outline-none" value={donor.name} onChange={e => setDonor({ ...donor, name: e.target.value })} />
-            <input required type="email" placeholder="Email Address" className="w-full border border-slate-200 rounded-lg p-3 text-sm focus:border-amber-500 outline-none" value={donor.email} onChange={e => setDonor({ ...donor, email: e.target.value })} />
-            <input required type="tel" placeholder="Phone Number" className="w-full border border-slate-200 rounded-lg p-3 text-sm focus:border-amber-500 outline-none" value={donor.phone} onChange={e => setDonor({ ...donor, phone: e.target.value })} />
-            <input
-              type="text"
-              placeholder="PAN Number (Optional)"
-              className="w-full border border-slate-200 rounded-lg p-3 text-sm focus:border-amber-500 outline-none uppercase"
-              maxLength={10}
-              value={donor.pan}
-              onChange={e => setDonor({ ...donor, pan: e.target.value.toUpperCase() })}
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Full Name</label>
+                <input required type="text" placeholder="John Doe" className="w-full border border-slate-200 rounded-lg p-3 text-sm focus:border-amber-500 outline-none" value={donor.name} onChange={e => setDonor({ ...donor, name: e.target.value })} />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Email Address</label>
+                <input required type="email" placeholder="john@example.com" className="w-full border border-slate-200 rounded-lg p-3 text-sm focus:border-amber-500 outline-none" value={donor.email} onChange={e => setDonor({ ...donor, email: e.target.value })} />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">Phone Number</label>
+                <input required type="tel" placeholder="9876543210" className="w-full border border-slate-200 rounded-lg p-3 text-sm focus:border-amber-500 outline-none" value={donor.phone} onChange={e => setDonor({ ...donor, phone: e.target.value })} />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-slate-400 uppercase ml-1">PAN Number (Optional)</label>
+                <input type="text" placeholder="ABCDE1234F" className="w-full border border-slate-200 rounded-lg p-3 text-sm focus:border-amber-500 outline-none uppercase" maxLength={10} value={donor.pan} onChange={e => setDonor({ ...donor, pan: e.target.value.toUpperCase() })} />
+              </div>
+            </div>
 
-            <div className="pt-4">
-              <button type="submit" className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2 shadow-lg">
-                I have completed the payment
+            <div className="h-px bg-slate-100 my-2"></div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-amber-600 uppercase ml-1">Amount Contributed (Rs.)</label>
+                <input required type="number" placeholder="500" className="w-full border-2 border-amber-200 rounded-lg p-3 text-sm font-bold focus:border-amber-500 outline-none" value={donor.amount} onChange={e => setDonor({ ...donor, amount: e.target.value })} />
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-amber-600 uppercase ml-1">UPI Transaction / Ref No</label>
+                <input required type="text" placeholder="TXN12345678" className="w-full border-2 border-amber-200 rounded-lg p-3 text-sm font-bold focus:border-amber-500 outline-none" value={donor.payment_id} onChange={e => setDonor({ ...donor, payment_id: e.target.value })} />
+              </div>
+            </div>
+
+            {error && <p className="text-red-500 text-xs bg-red-50 p-2 rounded border border-red-100">{error}</p>}
+
+            <div className="pt-2">
+              <button disabled={loading} type="submit" className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2 shadow-lg disabled:opacity-50">
+                {loading ? 'Recording Donation...' : 'Submit Donation Details'}
               </button>
             </div>
 
-            <div className="text-center flex items-center justify-center gap-2 text-[10px] text-slate-400 uppercase tracking-widest pt-4">
+            <div className="text-center flex items-center justify-center gap-2 text-[10px] text-slate-400 uppercase tracking-widest pt-2">
               <ShieldCheck className="w-4 h-4 text-green-600" />
-              Direct Foundation Support
+              Secure Donation Recording
             </div>
           </form>
         </div>
