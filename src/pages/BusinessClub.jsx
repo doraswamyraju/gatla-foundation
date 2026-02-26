@@ -113,7 +113,7 @@ const BusinessClub = ({ onNavigate }) => {
             >
               <X className="w-6 h-6" />
             </button>
-            <BusinessDonorForm onClose={() => setActiveForm(null)} />
+            {(() => { onNavigate('donate'); setActiveForm(null); return null; })()}
           </div>
         </div>
       )}

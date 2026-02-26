@@ -10,7 +10,7 @@ import EducationMemberForm from '../components/pillars/EducationMemberForm';
 import SupporterForm from './forms/SupporterForm'; // Import Supporter Form
 
 
-const EducationClub = () => {
+const EducationClub = ({ onNavigate }) => {
   const [activeForm, setActiveForm] = useState(null);
 
   const activities = [
@@ -209,7 +209,7 @@ const EducationClub = () => {
               {activeForm === 'student' && <EducationStudentForm onClose={() => setActiveForm(null)} />}
               {activeForm === 'scribe' && <EducationScriberForm onClose={() => setActiveForm(null)} />}
               {activeForm === 'volunteer' && <EducationVolunteerForm onClose={() => setActiveForm(null)} />}
-              {activeForm === 'donor' && <EducationDonorForm onClose={() => setActiveForm(null)} />}
+              {activeForm === 'donor' && (() => { onNavigate('donate'); setActiveForm(null); return null; })()}
               {activeForm === 'member' && <EducationMemberForm onClose={() => setActiveForm(null)} />}
               {activeForm === 'supporter' && <SupporterForm onClose={() => setActiveForm(null)} />}
             </div>

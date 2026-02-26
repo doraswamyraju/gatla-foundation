@@ -43,7 +43,12 @@ const DonateForm = ({ onNavigate, club }) => {
         <div className="md:w-1/2 bg-amber-500 p-8 flex flex-col items-center justify-center text-center">
           <QrCode className="w-12 h-12 text-[#0B1120] mb-4" />
           <h2 className="text-2xl font-bold text-[#0B1120] mb-2">Scan to Donate</h2>
-          <p className="text-[#0B1120] font-medium mb-6 uppercase tracking-wider text-xs">Secure UPI Payment</p>
+          <p className="text-[#0B1120] font-medium mb-1 uppercase tracking-wider text-[10px]">Secure UPI Payment</p>
+          {club && club !== 'general' && (
+            <p className="bg-[#0B1120] text-amber-500 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mt-2 mb-4">
+              Supporting {club.charAt(0).toUpperCase() + club.slice(1)} Club
+            </p>
+          )}
 
           <div className="bg-white p-4 rounded-xl shadow-inner mb-6 w-full max-w-[240px]">
             <img

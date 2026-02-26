@@ -100,7 +100,7 @@ const CricketClub = ({ onNavigate }) => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
           <div className="relative w-full max-w-lg bg-[#0B1120] border border-slate-800 rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
             <button onClick={() => setActiveForm(null)} className="absolute top-4 right-4 z-20 p-2 text-slate-400 hover:text-white"><X className="w-6 h-6" /></button>
-            <CricketDonorForm onClose={() => setActiveForm(null)} />
+            {(() => { onNavigate('donate'); setActiveForm(null); return null; })()}
           </div>
         </div>
       )}

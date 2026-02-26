@@ -591,11 +591,11 @@ const DashboardApp = ({ onLogout }) => {
                   : activeTab === 'events-manager' ? ( // Added
                     <EventsManager />
                   )
-                    : activeTab === 'donations-list' ? (
+                    : (activeTab.endsWith('-donor') || activeTab === 'awards-sponsor' || activeTab.startsWith('donations')) ? (
                       <div className="flex flex-col items-center justify-center p-20 bg-white rounded-xl border border-slate-200 shadow-sm grow">
                         <Gift className="w-12 h-12 text-slate-300 mb-4" />
-                        <h3 className="text-xl font-bold text-slate-800">Donation List Temporarily Offline</h3>
-                        <p className="text-slate-500">This module will be reactivated soon.</p>
+                        <h3 className="text-xl font-bold text-slate-800">Donation Module Offline</h3>
+                        <p className="text-slate-500">This module is temporarily offline while the new payment system is being integrated. Please use the QR code on the main website.</p>
                       </div>
                     )
                       : (<DataTable type={activeTab} data={currentData} onRefresh={fetchData} onAdd={() => { setCurrentEditItem(null); setModalOpen(true); }} onEdit={(item) => { setCurrentEditItem(item); setModalOpen(true); }} onDelete={handleDelete} />)}

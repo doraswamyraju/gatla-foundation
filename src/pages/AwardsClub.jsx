@@ -108,7 +108,7 @@ const AwardsClub = ({ onNavigate }) => {
             >
               <X className="w-6 h-6" />
             </button>
-            <AwardsDonorForm onClose={() => setActiveForm(null)} />
+            {(() => { onNavigate('donate'); setActiveForm(null); return null; })()}
           </div>
         </div>
       )}
