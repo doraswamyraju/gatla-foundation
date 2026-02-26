@@ -1,199 +1,99 @@
-import React, { useState, useEffect } from 'react';
-import { Heart, CreditCard, ShieldCheck, CheckCircle, Home } from 'lucide-react';
+import React, { useState } from 'react';
+import { Heart, ShieldCheck, Home, QrCode } from 'lucide-react';
 
 const DonateForm = ({ onNavigate, club }) => {
-  const [amount, setAmount] = useState(1000);
-  const [customAmount, setCustomAmount] = useState('');
   const [donor, setDonor] = useState({ name: '', email: '', phone: '', pan: '' });
-  const [loading, setLoading] = useState(false);
-  const [paymentSuccess, setPaymentSuccess] = useState(false); // New State for Success Screen
+  const [submitted, setSubmitted] = useState(false);
 
-  // Auto-redirect effect
-  useEffect(() => {
-    if (paymentSuccess) {
-      const timer = setTimeout(() => {
-        if (onNavigate) {
-          onNavigate('home');
-        } else {
-          window.location.href = '/'; // Fallback if prop is missing
-        }
-      }, 5000); // Redirect after 5 seconds
-      return () => clearTimeout(timer);
-    }
-  }, [paymentSuccess, onNavigate]);
-
-  // Load Razorpay Script
-  const loadRazorpay = () => {
-    return new Promise((resolve) => {
-      const script = document.createElement('script');
-      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-      script.onload = () => resolve(true);
-      script.onerror = () => resolve(false);
-      document.body.appendChild(script);
-    });
-  };
-
-  const handlePayment = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    const finalAmount = customAmount || amount;
-
-    const res = await loadRazorpay();
-    if (!res) {
-      alert('Razorpay SDK failed to load.');
-      setLoading(false);
-      return;
-    }
-
-    const options = {
-      key: "rzp_test_RuKdTFadwm3UGT", // Replace with Live Key
-      amount: finalAmount * 100,
-      currency: "INR",
-      name: "Gatla Foundation",
-      description: "Donation",
-      image: process.env.PUBLIC_URL + "/assets/images/1.jpg",
-      handler: async function (response) {
-        try {
-          // Send to Backend
-          const apiRes = await fetch(`${process.env.REACT_APP_API_URL}/process_donation.php`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              payment_id: response.razorpay_payment_id,
-              amount: finalAmount,
-              name: donor.name,
-              email: donor.email,
-              phone: donor.phone,
-              pan: donor.pan,
-              club: club || 'general' // Send Club
-            })
-          });
-
-          const result = await apiRes.json();
-          if (result.status === 'success') {
-            // SHOW SUCCESS SCREEN INSTEAD OF ALERT
-            setPaymentSuccess(true);
-          } else {
-            alert("Payment success, but server error: " + result.message);
-          }
-        } catch (error) {
-          console.error(error);
-          alert("Error connecting to server.");
-        }
-        setLoading(false);
-      },
-      prefill: {
-        name: donor.name,
-        email: donor.email,
-        contact: donor.phone
-      },
-      theme: { color: "#F59E0B" }
-    };
-
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.open();
-    // Don't set loading false here, wait for handler
+    // In this offline/QR mode, we just show a thank you message 
+    // after they confirm they've scanned and sent the amount.
+    setSubmitted(true);
   };
 
-  // --- SUCCESS SCREEN VIEW ---
-  if (paymentSuccess) {
+  if (submitted) {
     return (
       <div className="min-h-screen bg-[#0B1120] py-20 px-4 flex justify-center items-center animate-in fade-in duration-500">
         <div className="bg-white max-w-md w-full rounded-2xl shadow-2xl p-8 text-center">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircle className="w-10 h-10 text-green-600" />
+            <Heart className="w-10 h-10 text-green-600 fill-current" />
           </div>
 
-          <h2 className="text-2xl font-bold text-slate-800 mb-2">Donation Successful!</h2>
+          <h2 className="text-2xl font-bold text-slate-800 mb-2">Thank You for Your Support!</h2>
           <p className="text-slate-600 mb-6 leading-relaxed">
-            Thank you, <strong>{donor.name}</strong>.<br />
-            Your receipt has been sent to <span className="text-amber-600 font-medium">{donor.email}</span>.
+            Your contribution makes a world of difference. Once we verify the transaction, you will receive an official receipt at <span className="text-amber-600 font-medium">{donor.email}</span>.
           </p>
 
-          <div className="bg-slate-50 p-4 rounded-lg border border-slate-100 mb-6 text-sm text-slate-500">
-            <p>Redirecting you to Home in 5 seconds...</p>
-          </div>
-
           <button
-            onClick={() => onNavigate('home')}
+            onClick={() => onNavigate ? onNavigate('home') : window.location.href = '/'}
             className="w-full bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
           >
-            <Home className="w-4 h-4" /> Return to Home Now
+            <Home className="w-4 h-4" /> Return to Home
           </button>
         </div>
       </div>
     );
   }
 
-  // --- FORM VIEW ---
   return (
     <div className="min-h-screen bg-[#0B1120] py-24 px-4 flex justify-center items-center">
-      <div className="bg-white max-w-lg w-full rounded-2xl shadow-2xl overflow-hidden">
-        <div className="bg-amber-500 p-6 text-center">
-          <Heart className="w-12 h-12 text-[#0B1120] mx-auto mb-2 fill-current" />
-          <h2 className="text-2xl font-bold text-[#0B1120]">Make a Donation</h2>
-          <p className="text-amber-900 font-medium">Support the visually impaired</p>
-        </div>
+      <div className="bg-white max-w-2xl w-full rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row">
+        {/* QR Section */}
+        <div className="md:w-1/2 bg-amber-500 p-8 flex flex-col items-center justify-center text-center">
+          <QrCode className="w-12 h-12 text-[#0B1120] mb-4" />
+          <h2 className="text-2xl font-bold text-[#0B1120] mb-2">Scan to Donate</h2>
+          <p className="text-[#0B1120] font-medium mb-6 uppercase tracking-wider text-xs">Secure UPI Payment</p>
 
-        <form onSubmit={handlePayment} className="p-8 space-y-6">
-          {/* Amount Selection */}
-          <div>
-            <label className="block text-sm font-bold text-slate-700 mb-3">Select Amount</label>
-            <div className="grid grid-cols-3 gap-3 mb-3">
-              {[500, 1000, 2000, 5000, 10000].map((amt) => (
-                <button
-                  key={amt}
-                  type="button"
-                  onClick={() => { setAmount(amt); setCustomAmount(''); }}
-                  className={`py-2 px-4 rounded-lg font-bold border transition-colors ${amount === amt && !customAmount
-                    ? 'bg-slate-900 text-white border-slate-900'
-                    : 'border-slate-300 text-slate-600 hover:border-amber-500'
-                    }`}
-                >
-                  ₹{amt}
-                </button>
-              ))}
-              <input
-                type="number"
-                placeholder="Custom"
-                value={customAmount}
-                onChange={(e) => { setCustomAmount(e.target.value); setAmount(0); }}
-                className={`py-2 px-4 rounded-lg font-bold border outline-none ${customAmount ? 'border-amber-500 ring-1 ring-amber-500' : 'border-slate-300'
-                  }`}
-              />
-            </div>
+          <div className="bg-white p-4 rounded-xl shadow-inner mb-6 w-full max-w-[240px]">
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/donate_qr.jpg"}
+              alt="Donation QR Code"
+              className="w-full h-auto rounded-lg"
+              onError={(e) => {
+                e.target.src = "https://via.placeholder.com/300?text=Please+Upload+QR+Code";
+                e.target.onerror = null;
+              }}
+            />
           </div>
 
-          {/* User Details */}
-          <div className="space-y-4">
-            <input required type="text" placeholder="Full Name" className="w-full border rounded-lg p-3" value={donor.name} onChange={e => setDonor({ ...donor, name: e.target.value })} />
+          <p className="text-[#0B1120] text-sm leading-relaxed px-4">
+            Scan using any UPI App (GPay, PhonePe, Paytm, etc.) to contribute directly to the Gatla Foundation.
+          </p>
+        </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <input required type="email" placeholder="Email Address" className="w-full border rounded-lg p-3" value={donor.email} onChange={e => setDonor({ ...donor, email: e.target.value })} />
-              <input required type="tel" placeholder="Phone Number" className="w-full border rounded-lg p-3" value={donor.phone} onChange={e => setDonor({ ...donor, phone: e.target.value })} />
-            </div>
+        {/* Info Form */}
+        <div className="md:w-1/2 p-8">
+          <div className="mb-6 text-center md:text-left">
+            <h3 className="text-xl font-bold text-slate-800">Donor Information</h3>
+            <p className="text-slate-500 text-sm">Please provide your details below to receive a donation receipt.</p>
+          </div>
 
-            {/* Added PAN Input - Made Optional */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input required type="text" placeholder="Full Name" className="w-full border border-slate-200 rounded-lg p-3 text-sm focus:border-amber-500 outline-none" value={donor.name} onChange={e => setDonor({ ...donor, name: e.target.value })} />
+            <input required type="email" placeholder="Email Address" className="w-full border border-slate-200 rounded-lg p-3 text-sm focus:border-amber-500 outline-none" value={donor.email} onChange={e => setDonor({ ...donor, email: e.target.value })} />
+            <input required type="tel" placeholder="Phone Number" className="w-full border border-slate-200 rounded-lg p-3 text-sm focus:border-amber-500 outline-none" value={donor.phone} onChange={e => setDonor({ ...donor, phone: e.target.value })} />
             <input
               type="text"
-              placeholder="PAN Card Number (Optional)"
-              className="w-full border rounded-lg p-3 uppercase"
+              placeholder="PAN Number (Optional)"
+              className="w-full border border-slate-200 rounded-lg p-3 text-sm focus:border-amber-500 outline-none uppercase"
               maxLength={10}
               value={donor.pan}
               onChange={e => setDonor({ ...donor, pan: e.target.value.toUpperCase() })}
             />
-          </div>
 
-          <button type="submit" disabled={loading} className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition-all">
-            {loading ? 'Processing...' : `Donate ₹${customAmount || amount}`}
-          </button>
+            <div className="pt-4">
+              <button type="submit" className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2 shadow-lg">
+                I have completed the payment
+              </button>
+            </div>
 
-          <div className="text-center flex items-center justify-center gap-2 text-xs text-slate-500">
-            <ShieldCheck className="w-4 h-4 text-green-600" />
-            Secured by Razorpay
-          </div>
-        </form>
+            <div className="text-center flex items-center justify-center gap-2 text-[10px] text-slate-400 uppercase tracking-widest pt-4">
+              <ShieldCheck className="w-4 h-4 text-green-600" />
+              Direct Foundation Support
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

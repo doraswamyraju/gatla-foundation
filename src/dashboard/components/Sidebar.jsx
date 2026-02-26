@@ -60,7 +60,7 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout 
       id: 'finance',
       title: 'Donations',
       icon: <DollarSign className="w-5 h-5 text-emerald-400" />,
-      forms: [{ id: 'donations-list', label: 'All Donations' }]
+      forms: [{ id: 'donations-list', label: 'All Donations (Offline)' }]
     },
     {
       id: 'general',
@@ -147,7 +147,7 @@ const Sidebar = ({ activeTab, setActiveTab, mobileOpen, setMobileOpen, onLogout 
           <div><h1 className="text-white font-bold font-serif leading-none">GATLA</h1><p className="text-slate-500 text-[10px] uppercase tracking-wider">Admin Panel</p></div>
         </div>
         <nav className="flex-1 overflow-y-auto py-4 custom-scrollbar">
-          <button onClick={() => setActiveTab('dashboard')} className={`w-full flex items-center gap-3 px-4 py-3 mb-4 text-sm font-medium transition-colors ${activeTab === 'dashboard' ? 'bg-amber-500 text-[#0B1120]' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}><LayoutDashboard className="w-5 h-5" />Dashboard Overview</button>
+          <button onClick={() => setActiveTab('dashboard')} className={`w-full flex items-center gap-3 px-4 py-3 mb-4 text-sm font-medium transition-colors ${activeTab === 'dashboard' ? 'bg-amber-500 text-[#0B1120]' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}><LayoutDashboard className="w-5 h-5" />Dashboard (Offline)</button>
           <button onClick={() => setActiveTab('blog-manager')} className={`w-full flex items-center gap-3 px-4 py-3 mb-4 text-sm font-medium transition-colors ${activeTab === 'blog-manager' ? 'bg-amber-500 text-[#0B1120]' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}><PenTool className="w-5 h-5" />Blog Manager</button>
           <button onClick={() => setActiveTab('events-manager')} className={`w-full flex items-center gap-3 px-4 py-3 mb-4 text-sm font-medium transition-colors ${activeTab === 'events-manager' ? 'bg-amber-500 text-[#0B1120]' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}><Calendar className="w-5 h-5" />Events Manager</button>
           <button onClick={() => setActiveTab('gallery-manager')} className={`w-full flex items-center gap-3 px-4 py-3 mb-4 text-sm font-medium transition-colors ${activeTab === 'gallery-manager' ? 'bg-amber-500 text-[#0B1120]' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}><ImageIcon className="w-5 h-5" />Gallery Manager</button>

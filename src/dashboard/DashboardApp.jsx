@@ -342,59 +342,18 @@ const ProfileSection = ({ onLogout }) => {
 const LoginPage = ({ onLogin }) => (<div className="min-h-screen bg-[#0B1120] flex items-center justify-center p-4"><div className="bg-white w-full max-w-md rounded-2xl shadow-2xl p-8 space-y-6 text-center"><h2 className="text-2xl font-bold text-slate-900">Admin Login</h2><button onClick={onLogin} className="w-full bg-amber-500 text-slate-900 font-bold py-3 rounded-lg">Access Dashboard</button></div></div>);
 
 // --- 7. DASHBOARD STATS COMPONENT ---
-const DashboardStats = ({ stats }) => {
-  if (!stats) return <div className="p-10 text-center"><Loader2 className="w-8 h-8 animate-spin mx-auto text-amber-500" /></div>;
-
-  const { total_amount, total_donors, breakdown } = stats;
-
-  const cards = [
-    { title: 'Total Donations', value: `₹${total_amount?.toLocaleString()}`, icon: Gift, color: 'bg-green-500' },
-    { title: 'Total Donors', value: total_donors, icon: User, color: 'bg-blue-500' },
-  ];
-
-  const clubs = [
-    { key: 'general', name: 'General', color: 'text-slate-600', bg: 'bg-slate-100' },
-    { key: 'education', name: 'Education', color: 'text-green-600', bg: 'bg-green-100' },
-    { key: 'cricket', name: 'Cricket', color: 'text-blue-600', bg: 'bg-blue-100' },
-    { key: 'music', name: 'Music', color: 'text-purple-600', bg: 'bg-purple-100' },
-    { key: 'business', name: 'Business', color: 'text-red-600', bg: 'bg-red-100' },
-    { key: 'awards', name: 'Awards', color: 'text-amber-600', bg: 'bg-amber-100' },
-  ];
-
+const DashboardStats = () => {
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {cards.map((card, idx) => (
-          <div key={idx} className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex items-center gap-4">
-            <div className={`p-4 rounded-full ${card.color} text-white`}>
-              <card.icon className="w-8 h-8" />
-            </div>
-            <div>
-              <p className="text-slate-500 font-medium">{card.title}</p>
-              <h3 className="text-3xl font-bold text-slate-800">{card.value}</h3>
-            </div>
-          </div>
-        ))}
+    <div className="flex flex-col items-center justify-center p-20 bg-white rounded-xl border border-slate-200 shadow-sm animate-in fade-in duration-500">
+      <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mb-6">
+        <Gift className="w-10 h-10 text-amber-500" />
       </div>
-
-      {/* Club Breakdown */}
-      <div>
-        <h3 className="text-lg font-bold text-slate-800 mb-4">Donations by Club</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {clubs.map((club) => {
-            const data = breakdown?.[club.key] || { count: 0, amount: 0 };
-            return (
-              <div key={club.key} className="bg-white p-5 rounded-lg shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
-                <div className="flex justify-between items-start mb-2">
-                  <h4 className={`font-bold ${club.color}`}>{club.name}</h4>
-                  <span className={`text-xs px-2 py-1 rounded-full font-bold ${club.bg} ${club.color}`}>{data.count} Donors</span>
-                </div>
-                <p className="text-2xl font-bold text-slate-800">₹{data.amount.toLocaleString()}</p>
-              </div>
-            );
-          })}
-        </div>
+      <h3 className="text-2xl font-bold text-slate-800 mb-2">Donation Stats Offline</h3>
+      <p className="text-slate-500 text-center max-w-md">
+        The donation management and statistics modules are temporarily offline while the Gatla Foundation payment gateway is being activated.
+      </p>
+      <div className="mt-8 flex gap-4">
+        <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-bold uppercase tracking-wider">Coming Soon</span>
       </div>
     </div>
   );
@@ -620,7 +579,14 @@ const DashboardApp = ({ onLogout }) => {
                   : activeTab === 'events-manager' ? ( // Added
                     <EventsManager />
                   )
-                    : (<DataTable type={activeTab} data={currentData} onRefresh={fetchData} onAdd={() => { setCurrentEditItem(null); setModalOpen(true); }} onEdit={(item) => { setCurrentEditItem(item); setModalOpen(true); }} onDelete={handleDelete} />)}
+                    : activeTab === 'donations-list' ? (
+                      <div className="flex flex-col items-center justify-center p-20 bg-white rounded-xl border border-slate-200 shadow-sm grow">
+                        <Gift className="w-12 h-12 text-slate-300 mb-4" />
+                        <h3 className="text-xl font-bold text-slate-800">Donation List Temporarily Offline</h3>
+                        <p className="text-slate-500">This module will be reactivated soon.</p>
+                      </div>
+                    )
+                      : (<DataTable type={activeTab} data={currentData} onRefresh={fetchData} onAdd={() => { setCurrentEditItem(null); setModalOpen(true); }} onEdit={(item) => { setCurrentEditItem(item); setModalOpen(true); }} onDelete={handleDelete} />)}
         </main>
       </div>
       <FormModal isOpen={modalOpen} onClose={() => setModalOpen(false)} categoryId={activeTab} initialData={currentEditItem} onSaveSuccess={() => { fetchData(); setModalOpen(false); }} onGenericSave={handleGenericSave} isSaving={isSaving} />
