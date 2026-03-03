@@ -465,7 +465,7 @@ const DashboardApp = ({ onLogout }) => {
                   const result = await res.json();
                   if (result.status === 'success') { alert('Saved!'); fetchData(); } else { alert('Error: ' + result.message); }
                 }}
-                onDelete={(type, id) => handleDelete(id, 'blog-posts')}
+                onDelete={(type, id) => handleDelete(id, 'blog-post')}
               />
             )
               : activeTab === 'gallery-manager' ? (

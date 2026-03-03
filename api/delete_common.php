@@ -58,7 +58,9 @@ $tableMap = [
     'awards-supporter'        => 'supporters',
 
     // Others
-    'blog-post'               => 'blog_posts'
+    'blog-posts' => 'blog_posts',
+    'blog-post' => 'blog_posts',
+    'education-member' => 'education_members'
 ];
 
 if (!array_key_exists($type, $tableMap)) {

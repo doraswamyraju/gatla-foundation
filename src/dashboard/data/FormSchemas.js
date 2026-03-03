@@ -101,6 +101,20 @@ export const FORM_SCHEMAS = {
   ],
 
   // --- 3. EDUCATION CLUB ---
+  'education-member': [
+    { name: 'full_name', label: 'Full Name', type: 'text' },
+    { name: 'father_name', label: 'Father Name', type: 'text' },
+    { name: 'address', label: 'Full Address', type: 'textarea' },
+    { name: 'phone_no', label: 'Phone Number', type: 'tel' },
+    { name: 'email_id', label: 'Email ID', type: 'email' },
+    { name: 'aadhaar_no', label: 'Aadhaar No', type: 'text' },
+    { name: 'disability_cert_no', label: 'Disability Certificate', type: 'text' },
+    { name: 'category', label: 'Club Preference', type: 'text' },
+    { name: 'aadhaar_path', label: 'Aadhaar Card', type: 'file' },
+    { name: 'photo_path', label: 'Photo', type: 'file' },
+    { name: 'status', label: 'Status', type: 'text' }
+  ],
+
   'education-student': [
     { name: 'full_name', label: 'Student Name', type: 'text' },       // Matches DB 'full_name'
     { name: 'father_name', label: 'Father Name', type: 'text' },
