@@ -56,60 +56,78 @@ const BlogManager = ({ posts, onSave, onDelete }) => {
           <button onClick={handleCancel} className="px-3 py-1 border rounded-lg text-slate-600 hover:bg-slate-50">Cancel</button>
         </div>
         
-        <form onSubmit={handleSavePost} className="space-y-6">
-          {/* Title */}
-          <div>
-            <label className="block text-sm font-bold text-slate-700 mb-2">Title</label>
-            <input 
-              type="text" 
-              className="w-full border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-amber-500 outline-none"
-              value={currentPost.title || ''}
-              onChange={(e) => setCurrentPost({...currentPost, title: e.target.value})}
-              required
-            />
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-             {/* Category */}
-             <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">Category</label>
-                <select 
-                  className="w-full border border-slate-300 rounded-lg p-3 outline-none"
-                  value={currentPost.category || 'General'}
-                  onChange={(e) => setCurrentPost({...currentPost, category: e.target.value})}
-                >
-                   <option>General</option>
-                   <option>Cricket</option>
-                   <option>Education</option>
-                   <option>Music</option>
-                </select>
-             </div>
-             {/* Featured Image */}
-             <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">Featured Image</label>
-                <div className="border-2 border-dashed border-slate-300 rounded-lg p-3 text-center text-slate-400 cursor-pointer hover:bg-slate-50 flex items-center justify-center gap-2">
-                   <ImageIcon className="w-4 h-4" /> Upload Image
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <form onSubmit={handleSavePost} className="space-y-6">
+            {/* Title */}
+            <div>
+              <label className="block text-sm font-bold text-slate-700 mb-2">Title</label>
+              <input 
+                type="text" 
+                className="w-full border border-slate-300 rounded-lg p-3 focus:ring-2 focus:ring-amber-500 outline-none"
+                value={currentPost.title || ''}
+                onChange={(e) => setCurrentPost({...currentPost, title: e.target.value})}
+                required
+              />
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+               {/* Category */}
+               <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2">Category</label>
+                  <select 
+                    className="w-full border border-slate-300 rounded-lg p-3 outline-none"
+                    value={currentPost.category || 'General'}
+                    onChange={(e) => setCurrentPost({...currentPost, category: e.target.value})}
+                  >
+                     <option>General</option>
+                     <option>Cricket</option>
+                     <option>Education</option>
+                     <option>Music</option>
+                  </select>
+               </div>
+               {/* Featured Image */}
+               <div>
+                  <label className="block text-sm font-bold text-slate-700 mb-2">Featured Image</label>
+                  <div className="border-2 border-dashed border-slate-300 rounded-lg p-3 text-center text-slate-400 cursor-pointer hover:bg-slate-50 flex items-center justify-center gap-2">
+                     <ImageIcon className="w-4 h-4" /> Upload Image
+                  </div>
+               </div>
+            </div>
+
+            {/* Content */}
+            <div>
+              <label className="block text-sm font-bold text-slate-700 mb-2">Content</label>
+              <textarea 
+                className="w-full border border-slate-300 rounded-lg p-3 h-64 focus:ring-2 focus:ring-amber-500 outline-none font-mono text-sm"
+                value={currentPost.content || ''}
+                onChange={(e) => setCurrentPost({...currentPost, content: e.target.value})}
+                placeholder="Write your article here..."
+                required
+              />
+            </div>
+
+            <div className="flex justify-end gap-3">
+               <button type="button" onClick={handleSaveDraft} className="px-6 py-2 border rounded-lg text-slate-600 hover:bg-slate-50">Save Draft</button>
+               <button type="submit" className="px-6 py-2 bg-amber-500 text-white font-bold rounded-lg hover:bg-amber-600">Publish</button>
+            </div>
+          </form>
+
+          {/* PREVIEW PANEL */}
+          <div className="border border-slate-200 rounded-xl p-6 bg-slate-50 overflow-y-auto max-h-[800px]">
+            <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Live Preview</h3>
+            <div className="bg-white p-8 rounded-lg shadow-sm">
+                <span className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                  {currentPost.category || 'General'}
+                </span>
+                <h1 className="text-2xl font-serif font-bold text-slate-900 mt-4 mb-6">
+                  {currentPost.title || 'Your Title Here'}
+                </h1>
+                <div className="prose prose-sm max-w-none text-slate-600 whitespace-pre-wrap leading-relaxed">
+                  {currentPost.content || 'Start typing to see the preview...'}
                 </div>
-             </div>
+            </div>
           </div>
-
-          {/* Content */}
-          <div>
-            <label className="block text-sm font-bold text-slate-700 mb-2">Content</label>
-            <textarea 
-              className="w-full border border-slate-300 rounded-lg p-3 h-64 focus:ring-2 focus:ring-amber-500 outline-none font-mono text-sm"
-              value={currentPost.content || ''}
-              onChange={(e) => setCurrentPost({...currentPost, content: e.target.value})}
-              placeholder="Write your article here..."
-              required
-            />
-          </div>
-
-          <div className="flex justify-end gap-3">
-             <button type="button" onClick={handleSaveDraft} className="px-6 py-2 border rounded-lg text-slate-600 hover:bg-slate-50">Save Draft</button>
-             <button type="submit" className="px-6 py-2 bg-amber-500 text-white font-bold rounded-lg hover:bg-amber-600">Publish</button>
-          </div>
-        </form>
+        </div>
       </div>
     );
   }

@@ -127,9 +127,11 @@ try {
             // Header
             $pdf->SetFont('Arial', 'B', 16);
             $pdf->Cell(0, 10, 'GATLA FOUNDATION', 0, 1, 'C');
-            $pdf->SetFont('Arial', '', 10);
-            $pdf->Cell(0, 5, 'Excellence in Service - Tirupati', 0, 1, 'C');
-            $pdf->Cell(0, 5, 'Email: drgatlasrinivasareddy@gmail.com', 0, 1, 'C');
+            $pdf->SetTextColor(71, 85, 105);
+            $pdf->Cell(0, 5, 'Contact: donation@gatlafoundation.org', 0, 1, 'C');
+            $pdf->Cell(0, 5, '#22-10-192, Near NGM Swimming Pool,', 0, 1, 'C');
+            $pdf->Cell(0, 5, 'Koramenugunta, Tirupati (Urban), Andhra Pradesh, India-517501', 0, 1, 'C');
+            $pdf->Ln(10);
             $pdf->Line(10, 30, 200, 30);
             
             // Receipt Details
@@ -169,12 +171,13 @@ try {
             $mail->isSMTP();
             $mail->Host       = 'smtp.gmail.com'; 
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'rajugariventures@gmail.com'; 
-            $mail->Password   = 'znejpufbvcwqcast'; // App Password
-            $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
-            $mail->Port       = 465;
+            $mail->Username   = 'gatlafoundation@gmail.com';
+            $mail->Password   = 'qzzxfxfgnsdvfbgu';
+            $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Port       = 587;
         
-            $mail->setFrom('rajugariventures@gmail.com', 'Gatla Foundation');
+            // Recipients
+            $mail->setFrom('gatlafoundation@gmail.com', 'Gatla Foundation');
             $mail->addAddress($email, $name);
         
             $mail->addStringAttachment($pdfContent, "Receipt_$receiptString.pdf");

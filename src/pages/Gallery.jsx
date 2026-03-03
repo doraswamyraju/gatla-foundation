@@ -2,13 +2,62 @@ import React, { useState, useEffect } from 'react';
 import { Filter, Image as ImageIcon } from 'lucide-react';
 import FadeInSection from '../components/FadeInSection';
 
+const ImageModal = ({ isOpen, src, alt, category, onClose }) => {
+    if (!isOpen) return null;
+
+    return (
+        <div
+            className="fixed inset-0 bg-black/90 flex items-center justify-center z-[100] p-4 cursor-pointer backdrop-blur-sm animate-in fade-in duration-300"
+            onClick={onClose}
+        >
+            <div
+                className="relative max-w-5xl w-full bg-[#0B1120] rounded-2xl overflow-hidden shadow-2xl border border-slate-800 animate-in zoom-in-95 duration-300"
+                onClick={(e) => e.stopPropagation()}
+            >
+                <div className="absolute top-4 right-4 z-10">
+                    <button
+                        onClick={onClose}
+                        className="p-2 bg-black/50 hover:bg-red-600 text-white rounded-full transition-all group"
+                    >
+                        <Filter className="w-6 h-6 rotate-45 group-hover:rotate-90 transition-transform" />
+                    </button>
+                </div>
+
+                <div className="flex flex-col">
+                    <img
+                        src={src}
+                        alt={alt}
+                        className="w-full h-auto max-h-[80vh] object-contain bg-black/20"
+                    />
+                    <div className="p-6 bg-[#0B1120] border-t border-slate-800">
+                        <span className="text-amber-500 text-xs font-bold uppercase tracking-widest mb-1 block">{category}</span>
+                        <h3 className="text-white font-serif font-bold text-2xl">{alt}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 const Gallery = () => {
     const [images, setImages] = useState([]);
     const [filteredImages, setFilteredImages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [category, setCategory] = useState('All');
+    const [modalState, setModalState] = useState({ isOpen: false, src: '', alt: '', category: '' });
 
     const categories = ['All', 'Events', 'Education', 'Projects', 'Awards', 'Media', 'Press Clips', 'General'];
+
+    const openModal = (img) => {
+        setModalState({
+            isOpen: true,
+            src: img.image_path.startsWith('http') ? img.image_path : `https://gatlafoundation.org/uploads/${img.image_path}`,
+            alt: img.title,
+            category: img.category
+        });
+    };
+
+    const closeModal = () => setModalState({ ...modalState, isOpen: false });
 
     useEffect(() => {
         const fetchImages = async () => {
@@ -83,7 +132,10 @@ const Gallery = () => {
                     <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
                         {filteredImages.map((img) => (
                             <FadeInSection key={img.id}>
-                                <div className="break-inside-avoid relative group rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-amber-500/50 transition-all">
+                                <div
+                                    onClick={() => openModal(img)}
+                                    className="break-inside-avoid relative group rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-amber-500/50 transition-all cursor-pointer"
+                                >
                                     <img
                                         src={img.image_path.startsWith('http') ? img.image_path : `https://gatlafoundation.org/uploads/${img.image_path}`}
                                         alt={img.title}
@@ -100,6 +152,14 @@ const Gallery = () => {
                 )}
 
             </div>
+
+            <ImageModal
+                isOpen={modalState.isOpen}
+                src={modalState.src}
+                alt={modalState.alt}
+                category={modalState.category}
+                onClose={closeModal}
+            />
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'; 
+import React, { useState, useMemo, useEffect } from 'react';
 import { LayoutDashboard, User, LogOut, Search } from 'lucide-react';
 
 import Sidebar from '../dashboard/components/Sidebar.jsx';
@@ -21,9 +21,10 @@ const AdminDashboard = () => {
     if (categoryId === 'overview' || categoryId === 'blog-manager') return;
 
     setLoading(true);
-    
+
     // MAP: React Tab ID -> PHP File Name
     const endpointMap = {
+      'education-member': 'get_education_members.php',
       'education-student': 'get_education_students.php',
       'education-scriber': 'get_education_scribers.php',
       'education-volunteer': 'get_education_volunteers.php',
@@ -33,17 +34,17 @@ const AdminDashboard = () => {
     };
 
     const endpoint = endpointMap[categoryId];
-    
+
     if (!endpoint) {
-        console.warn(`No endpoint mapped for category: ${categoryId}`);
-        setLoading(false);
-        return;
+      console.warn(`No endpoint mapped for category: ${categoryId}`);
+      setLoading(false);
+      return;
     }
 
     try {
       // FIX: Matches your XAMPP folder name "gatla-foundation - Copy"
       const API_BASE = 'http://localhost/gatla-foundation - Copy/api/';
-      
+
       const response = await fetch(`${API_BASE}${endpoint}`);
 
       if (!response.ok) {
@@ -58,13 +59,13 @@ const AdminDashboard = () => {
       try {
         result = JSON.parse(text);
       } catch (jsonError) {
-        console.error("CRITICAL PHP ERROR:", text); 
+        console.error("CRITICAL PHP ERROR:", text);
         throw new Error("Server returned HTML instead of JSON. Check Console.");
       }
 
       // 3. Handle data wrapper if present
       const cleanData = result.data || result || [];
-      
+
       setAppData(prev => ({ ...prev, [categoryId]: cleanData }));
 
     } catch (error) {
@@ -82,13 +83,13 @@ const AdminDashboard = () => {
 
   // --- Handlers ---
   const handleAdd = () => {
-    setCurrentEditItem(null); 
-    setModalOpen(true);       
+    setCurrentEditItem(null);
+    setModalOpen(true);
   };
 
   const handleEdit = (item) => {
-    setCurrentEditItem(item); 
-    setModalOpen(true);       
+    setCurrentEditItem(item);
+    setModalOpen(true);
   };
 
   const handleSaveWrapper = () => {
@@ -98,12 +99,12 @@ const AdminDashboard = () => {
 
   return (
     <div className="flex h-screen w-full bg-[#f8fafc] overflow-hidden font-sans antialiased">
-      
+
       {/* SIDEBAR */}
       <aside className="w-72 h-full flex-shrink-0 z-30 shadow-2xl">
         <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
       </aside>
-      
+
       {/* MAIN CONTENT */}
       <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden relative">
         <header className="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-10 shrink-0 z-20">
@@ -112,7 +113,7 @@ const AdminDashboard = () => {
               {activeTab === 'overview' ? 'System Overview' : activeTab.replace('-', ' ')}
             </h1>
           </div>
-          
+
           <div className="flex items-center gap-8">
             <div className="relative hidden lg:block">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -135,8 +136,8 @@ const AdminDashboard = () => {
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {[
-                  { label: 'Student Apps', val: appData['education-student']?.length || 0, color: 'text-blue-600', bg: 'bg-blue-50' },
-                  { label: 'Scribe Requests', val: appData['education-scriber']?.length || 0, color: 'text-purple-600', bg: 'bg-purple-50' },
+                  { label: 'Club Members', val: appData['education-member']?.length || 0, color: 'text-blue-600', bg: 'bg-blue-50' },
+                  { label: 'Student Apps', val: appData['education-student']?.length || 0, color: 'text-purple-600', bg: 'bg-indigo-50' },
                   { label: 'Volunteers', val: appData['education-volunteer']?.length || 0, color: 'text-green-600', bg: 'bg-green-50' },
                   { label: 'Donors List', val: appData['education-donor']?.length || 0, color: 'text-amber-600', bg: 'bg-amber-50' }
                 ].map((s, i) => (
@@ -153,21 +154,21 @@ const AdminDashboard = () => {
           ) : activeTab === 'blog-manager' ? (
             <BlogManager posts={[]} />
           ) : (
-            <DataTable 
-              type={activeTab} 
-              data={currentData} 
-              onRefresh={() => fetchCategoryData(activeTab)} 
-              onAdd={handleAdd} 
+            <DataTable
+              type={activeTab}
+              data={currentData}
+              onRefresh={() => fetchCategoryData(activeTab)}
+              onAdd={handleAdd}
               onEdit={handleEdit}
             />
           )}
         </main>
       </div>
 
-      <FormModal 
-        isOpen={modalOpen} 
-        onClose={() => setModalOpen(false)} 
-        categoryId={activeTab} 
+      <FormModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        categoryId={activeTab}
         initialData={currentEditItem}
         onSave={handleSaveWrapper}
       />
