@@ -22,7 +22,7 @@ if ($conn->connect_error) {
 
 function uploadFile($key) {
     if (!empty($_FILES[$key]['name']) && $_FILES[$key]['error'] === UPLOAD_ERR_OK) {
-        $target_dir = "uploads/";
+        $target_dir = "../uploads/";
         if (!is_dir($target_dir)) mkdir($target_dir, 0755, true);
         
         $original_name = basename($_FILES[$key]["name"]);

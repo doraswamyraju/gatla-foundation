@@ -6,7 +6,7 @@ header("Content-Type: application/json");
 require_once 'config.php';
 $conn = connectDB();
 
-$sql = "SELECT * FROM education_members ORDER BY submission_date DESC";
+$sql = "SELECT * FROM education_members ORDER BY id DESC";
 $result = $conn->query($sql);
 
 $members = [];

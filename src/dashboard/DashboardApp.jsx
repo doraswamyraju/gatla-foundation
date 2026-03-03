@@ -287,6 +287,10 @@ const DashboardApp = ({ onLogout }) => {
         const res = await fetch(`${apiUrl}/get_supporters.php`); // FETCH ALL SUPPORTERS
         const data = await res.json();
         setAppData(prev => ({ ...prev, 'supporter-form': data }));
+      } else if (activeTab === 'education-member') {
+        const res = await fetch(`${apiUrl}/get_education_members.php`);
+        const data = await res.json();
+        setAppData(prev => ({ ...prev, 'education-member': data }));
       } else if (activeTab === 'education-supporter') {
         const res = await fetch(`${apiUrl}/get_supporters.php?club=Education`);
         const data = await res.json();
