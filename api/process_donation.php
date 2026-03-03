@@ -1,6 +1,6 @@
 <?php
 // api/process_donation.php
-// UPDATED: Handles PAN Number + Email Receipt
+// UPDATED: Handles PAN Number + Email Receipt + PDF Layout Fix
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
@@ -124,15 +124,17 @@ try {
             $pdf = new FPDF();
             $pdf->AddPage();
             
-            // Header
-            $pdf->SetFont('Arial', 'B', 16);
-            $pdf->Cell(0, 10, 'GATLA FOUNDATION', 0, 1, 'C');
+            // Header - FIXED SPACING & ALIGNMENT
+            $pdf->SetFont('Arial', 'B', 18);
+            $pdf->Cell(0, 12, 'GATLA FOUNDATION', 0, 1, 'C');
             $pdf->SetTextColor(71, 85, 105);
-            $pdf->Cell(0, 5, 'Contact: donation@gatlafoundation.org', 0, 1, 'C');
+            $pdf->SetFont('Arial', 'B', 10);
+            $pdf->Cell(0, 6, 'Contact: donation@gatlafoundation.org', 0, 1, 'C');
+            $pdf->SetFont('Arial', '', 9);
             $pdf->Cell(0, 5, '#22-10-192, Near NGM Swimming Pool,', 0, 1, 'C');
             $pdf->Cell(0, 5, 'Koramenugunta, Tirupati (Urban), Andhra Pradesh, India-517501', 0, 1, 'C');
-            $pdf->Ln(10);
-            $pdf->Line(10, 30, 200, 30);
+            $pdf->Ln(5);
+            $pdf->Line(10, 48, 200, 48);
             
             // Receipt Details
             $pdf->Ln(20);
