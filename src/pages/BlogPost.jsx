@@ -72,7 +72,7 @@ const BlogPost = ({ id, onNavigate }) => {
                 {post.image_path && (
                     <div className="w-full relative group bg-slate-50 flex justify-center py-4">
                         <img
-                            src={post.image_path.startsWith('http') ? post.image_path : (window.location.hostname === 'localhost' ? `http://localhost/gatla-foundation/api/uploads/${post.image_path}` : `https://gatlafoundation.org/api/uploads/${post.image_path}`)}
+                            src={post.image_path.startsWith('http') ? post.image_path : `https://gatlafoundation.org/uploads/${post.image_path}`}
                             alt={post.title}
                             className="w-full h-auto max-h-[800px] object-contain shadow-sm"
                         />

@@ -45,7 +45,7 @@ const EventsPreview = ({ onNavigate }) => {
                             className="group bg-[#0B1120] border border-slate-800 rounded-xl overflow-hidden shadow-lg hover:border-amber-500/50 hover:shadow-2xl hover:-translate-y-1 transition-all"
                         >
                             <div className="h-48 overflow-hidden relative">
-                                <img src={`${process.env.PUBLIC_URL}/${evt.image_path}`} alt={evt.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                <img src={evt.image_path.startsWith('http') ? evt.image_path : `https://gatlafoundation.org/${evt.image_path}`} alt={evt.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                 <div className="absolute top-4 right-4 bg-amber-500 text-[#0B1120] px-3 py-1 rounded font-bold text-xs uppercase tracking-wider">
                                     Upcoming
                                 </div>

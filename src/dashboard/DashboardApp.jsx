@@ -24,138 +24,12 @@ import CricketPlayerForm from '../pages/forms/CricketPlayerForm'; // Added
 
 
 // --- 1. BLOG MANAGER ---
-// import BlogManager from './components/BlogManager'; // Removed to avoid collision
+import BlogManager from './components/BlogManager';
 import GalleryManager from './components/GalleryManager';
 import AwardWinnersManager from './components/AwardWinnersManager';
 import EventsManager from './components/EventsManager'; // Added
 
-const BlogManager = ({ posts, onSave, onDelete }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [currentPost, setCurrentPost] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
-  const [loading, setLoading] = useState(false);
 
-  const handleEdit = (post) => {
-    setCurrentPost(post);
-    setImageFile(null);
-    setIsEditing(true);
-  };
-
-  const handleNew = () => {
-    setCurrentPost({ title: '', content: '', category: 'General', status: 'Draft' });
-    setImageFile(null);
-    setIsEditing(true);
-  };
-
-  const handleSavePost = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    const formData = new FormData();
-    if (currentPost.id) formData.append('id', currentPost.id);
-    formData.append('title', currentPost.title);
-    formData.append('content', currentPost.content);
-    formData.append('category', currentPost.category);
-    formData.append('status', currentPost.status);
-    if (imageFile) {
-      formData.append('image', imageFile);
-    }
-
-    await onSave(formData);
-    setLoading(false);
-    setIsEditing(false);
-  };
-
-  if (isEditing) {
-    return (
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-bold">{currentPost.id ? 'Edit Post' : 'New Post'}</h3>
-          <button onClick={() => setIsEditing(false)} className="text-gray-500 hover:text-gray-700">Cancel</button>
-        </div>
-        <form onSubmit={handleSavePost} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Title</label>
-            <input type="text" className="w-full p-2 border rounded" value={currentPost.title} onChange={e => setCurrentPost({ ...currentPost, title: e.target.value })} required />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Category</label>
-            <select className="w-full p-2 border rounded" value={currentPost.category} onChange={e => setCurrentPost({ ...currentPost, category: e.target.value })}>
-              <option>General</option>
-              <option>Education</option>
-              <option>Health</option>
-              <option>Events</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Status</label>
-            <select className="w-full p-2 border rounded" value={currentPost.status} onChange={e => setCurrentPost({ ...currentPost, status: e.target.value })}>
-              <option>Draft</option>
-              <option>Published</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Featured Image</label>
-            <input type="file" onChange={e => setImageFile(e.target.files[0])} className="w-full p-2 border" accept="image/*" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Content</label>
-            <textarea className="w-full p-2 border rounded h-32" value={currentPost.content} onChange={e => setCurrentPost({ ...currentPost, content: e.target.value })} required></textarea>
-          </div>
-          <div className="flex justify-end gap-3">
-            <button type="button" onClick={() => setIsEditing(false)} className="px-4 py-2 border rounded">Cancel</button>
-            <button type="submit" disabled={loading} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-              {loading ? 'Saving...' : 'Save Post'}
-            </button>
-          </div>
-        </form>
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-slate-800">All Posts</h2>
-        <button onClick={handleNew} className="flex items-center space-x-2 px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors">
-          <Plus className="w-5 h-5" /> <span>New Post</span>
-        </button>
-      </div>
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-slate-50">
-            <tr>
-              <th className="text-left py-4 px-6 font-bold text-slate-500">Title</th>
-              <th className="text-left py-4 px-6 font-bold text-slate-500">Category</th>
-              <th className="text-left py-4 px-6 font-bold text-slate-500">Status</th>
-              <th className="text-left py-4 px-6 font-bold text-slate-500">Date</th>
-              <th className="text-right py-4 px-6 font-bold text-slate-500">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
-            {posts.length === 0 ? (
-              <tr><td colSpan="5" className="text-center py-8 text-slate-500">No posts found.</td></tr>
-            ) : (
-              posts.map(post => (
-                <tr key={post.id} className="hover:bg-slate-50 transition-colors">
-                  <td className="py-4 px-6 font-medium text-slate-900">{post.title}</td>
-                  <td className="py-4 px-6 text-slate-600">{post.category}</td>
-                  <td className="py-4 px-6"><span className={`px-2 py-1 rounded-full text-xs font-bold ${post.status === 'Published' ? 'bg-green-100 text-green-800' : 'bg-slate-100 text-slate-800'}`}>{post.status}</span></td>
-                  <td className="py-4 px-6 text-slate-600">{new Date(post.created_at).toLocaleDateString()}</td>
-                  <td className="py-4 px-6">
-                    <div className="flex justify-end space-x-3">
-                      <button onClick={() => handleEdit(post)} className="text-blue-600 hover:text-blue-800"><Edit className="w-5 h-5" /></button>
-                      <button onClick={() => onDelete(post.id, 'blog-post')} className="text-red-600 hover:text-red-800"><Trash2 className="w-5 h-5" /></button>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-};
 
 // --- 2. FORM MODAL ---
 const FormModal = ({ isOpen, onClose, categoryId, initialData, onSaveSuccess, onGenericSave, isSaving }) => {
@@ -404,7 +278,7 @@ const DashboardApp = ({ onLogout }) => {
       } else if (activeTab === 'blog-manager') {
         const res = await fetch(`${apiUrl}/get_blogs.php`);
         const data = await res.json();
-        setAppData(prev => ({ ...prev, 'blog-posts': data }));
+        setAppData(prev => ({ ...prev, 'blog-manager': data }));
       } else if (activeTab === 'volunteer-form') {
         const res = await fetch(`${apiUrl}/get_general_volunteers.php`);
         const data = await res.json();
@@ -573,13 +447,21 @@ const DashboardApp = ({ onLogout }) => {
           {activeTab === 'dashboard' ? (<DashboardStats stats={dashboardStats} />)
             : activeTab === 'blog-manager' ? (
               <BlogManager
-                posts={appData['blog-posts'] || []}
-                onSave={async (formData) => {
+                posts={appData['blog-manager'] || []}
+                onSave={async (postData) => {
+                  const formData = new FormData();
+                  if (postData.id) formData.append('id', postData.id);
+                  formData.append('title', postData.title);
+                  formData.append('content', postData.content);
+                  formData.append('category', postData.category);
+                  formData.append('status', postData.status);
+                  if (postData.imageFile) formData.append('image', postData.imageFile);
+
                   const res = await fetch(`${apiUrl}/submit_blog.php`, { method: 'POST', body: formData });
                   const result = await res.json();
                   if (result.status === 'success') { alert('Saved!'); fetchData(); } else { alert('Error: ' + result.message); }
                 }}
-                onDelete={handleDelete}
+                onDelete={(type, id) => handleDelete(id, 'blog-posts')}
               />
             )
               : activeTab === 'gallery-manager' ? (

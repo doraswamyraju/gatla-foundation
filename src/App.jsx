@@ -25,7 +25,7 @@ import DonateForm from './pages/forms/DonateForm.jsx';
 import BlogPost from './pages/BlogPost.jsx'; // NEW: Import BlogPost
 import CricketPlayerForm from './components/pillars/CricketPlayerForm.jsx';
 import CricketMemberForm from './components/pillars/CricketMemberForm.jsx';
-import GallerySection from './components/GallerySection.jsx';
+import GalleryHighlights from './components/GalleryHighlights.jsx';
 import Gallery from './pages/Gallery.jsx';
 import ContactSection from './components/ContactSection.jsx';
 
@@ -159,7 +159,7 @@ const PublicSiteContainer = ({ appData, currentPage, handleNavigate, handleOpenF
                         <Awards />
 
                         <FadeInSection delay={300}>
-                            <GallerySection onNavigate={handleNavigate} />
+                            <GalleryHighlights onNavigate={handleNavigate} />
                         </FadeInSection>
 
                         {/* Pass onNavigate to LatestNews to enable linking to 'News' page */}

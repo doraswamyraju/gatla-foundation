@@ -146,71 +146,6 @@ const ImpactSection = () => (
 
 
 
-const GalleryPreview = ({ onNavigate }) => {
-  const [images, setImages] = React.useState([]);
-
-  React.useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const hostname = window.location.hostname;
-        const apiUrl = (hostname === 'localhost' || hostname === '127.0.0.1')
-          ? 'http://localhost/gatla-foundation/api'
-          : 'https://gatlafoundation.org/api';
-
-        const res = await fetch(`${apiUrl}/get_gallery.php`);
-        const data = await res.json();
-        const imgs = Array.isArray(data) ? data.slice(0, 6) : []; // Show only 6
-        setImages(imgs);
-      } catch (err) {
-        console.error("Failed to load gallery preview", err);
-      }
-    };
-    fetchImages();
-  }, []);
-
-  if (images.length === 0) return null;
-
-  return (
-    <section className="bg-[#050914] py-24 border-t border-slate-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
-          <div className="max-w-2xl px-2">
-            <h4 className="text-amber-500 font-bold uppercase tracking-[0.2em] text-xs mb-3">Visual Journey</h4>
-            <h2 className="text-3xl md:text-5xl font-serif font-bold text-white mb-4">Gallery Highlights</h2>
-            <p className="text-slate-400 text-sm md:text-base leading-relaxed">
-              Moments from our events, education initiatives, and community service captured through the lens.
-            </p>
-          </div>
-          <button
-            onClick={() => onNavigate('Gallery')}
-            className="flex items-center gap-2 text-amber-500 font-bold uppercase tracking-widest text-xs hover:text-amber-400 transition-colors group px-2"
-          >
-            View Full Gallery <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-          {images.map((img, idx) => (
-            <div key={img.id} className={`group relative rounded-xl overflow-hidden bg-slate-900 border border-slate-800 ${idx >= 2 ? 'hidden md:block' : ''}`}>
-              <img
-                src={img.image_path.startsWith('http') ? img.image_path : `https://gatlafoundation.org/uploads/${img.image_path}`}
-                alt={img.title}
-                className="w-full h-48 md:h-64 object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-                <span className="text-amber-500 text-[10px] font-bold uppercase tracking-widest mb-1">{img.category}</span>
-                <h3 className="text-white font-bold text-sm truncate">{img.title}</h3>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-
-
 const Home = ({ onNavigate, onSelectWing }) => {
   return (
     <>
@@ -222,9 +157,6 @@ const Home = ({ onNavigate, onSelectWing }) => {
       </FadeInSection>
       <FadeInSection delay={300}>
         <EventsPreview onNavigate={onNavigate} />
-      </FadeInSection>
-      <FadeInSection delay={400}>
-        <GalleryPreview onNavigate={onNavigate} />
       </FadeInSection>
     </>
   );

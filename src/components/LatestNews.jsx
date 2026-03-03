@@ -60,7 +60,7 @@ const LatestNews = ({ onNavigate }) => { // Accept onNavigate prop
                                 <div className="h-48 overflow-hidden relative">
                                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
                                     <img
-                                        src={item.image_path.startsWith('http') ? item.image_path : `https://gatlafoundation.org/api/uploads/${item.image_path}`}
+                                        src={item.image_path.startsWith('http') ? item.image_path : `https://gatlafoundation.org/uploads/${item.image_path}`}
                                         alt={item.title}
                                         className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
                                         onError={(e) => { e.target.style.display = 'none'; }}

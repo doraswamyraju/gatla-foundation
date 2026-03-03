@@ -183,7 +183,7 @@ const EducationClub = ({ onNavigate }) => {
               {/* Contact Info */}
               <div className="mt-8 pt-8 border-t border-slate-800 text-center">
                 <p className="text-xs text-slate-500 uppercase tracking-wider mb-2">Need Help?</p>
-                <p className="text-white font-bold">education@gatlafoundation.org</p>
+                <p className="text-white font-bold">office@gatlafoundation.org</p>
               </div>
             </div>
           </div>

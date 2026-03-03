@@ -61,7 +61,7 @@ const Events = () => {
                                 className="group bg-[#0B1120] border border-slate-800 rounded-xl overflow-hidden cursor-pointer hover:border-amber-500/50 hover:-translate-y-1 transition-all shadow-lg hover:shadow-2xl"
                             >
                                 <div className="h-48 overflow-hidden relative">
-                                    <img src={`${process.env.PUBLIC_URL}/${evt.image_path}`} alt={evt.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                    <img src={evt.image_path.startsWith('http') ? evt.image_path : `https://gatlafoundation.org/${evt.image_path}`} alt={evt.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                     <div className="absolute top-4 right-4 bg-amber-500 text-[#0B1120] px-3 py-1 rounded font-bold text-xs uppercase tracking-wider">
                                         {activeTab === 'upcoming' ? 'Upcoming' : 'Completed'}
                                     </div>
@@ -101,7 +101,7 @@ const Events = () => {
 
                             {/* Image Side */}
                             <div className="md:w-1/2 h-64 md:h-auto relative shrink-0">
-                                <img src={`${process.env.PUBLIC_URL}/${selectedEvent.image_path}`} alt={selectedEvent.title} className="w-full h-full object-cover" />
+                                <img src={selectedEvent.image_path.startsWith('http') ? selectedEvent.image_path : `https://gatlafoundation.org/${selectedEvent.image_path}`} alt={selectedEvent.title} className="w-full h-full object-cover" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#0B1120] via-transparent to-transparent md:bg-gradient-to-r" />
                             </div>
 
