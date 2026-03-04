@@ -150,14 +150,14 @@ try {
             $mail->Body    = "Dear $name,<br><br>Thank you for your generous donation of <b>Rs. $amount</b>.<br>Your PAN ($pan) has been recorded.<br>Please find your official receipt attached.<br><br>Regards,<br>Gatla Foundation";
 
             try {
-                logDebug("Attempting SMTP (Port 465)...");
+                logDebug("Attempting SMTP (Port 587)...");
                 $mail->isSMTP();
                 $mail->Host       = 'smtp.gmail.com'; 
                 $mail->SMTPAuth   = true;
                 $mail->Username   = 'rajugariventures@gmail.com';
                 $mail->Password   = 'orbtmslxrzjmibxw';
-                $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
-                $mail->Port       = 465;
+                $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port       = 587;
                 $mail->SMTPOptions = array(
                     'ssl' => array(
                         'verify_peer' => false,
