@@ -1,31 +1,26 @@
 <?php
 // api/process_donation.php
-// UPDATED: Handles PAN Number + Email Receipt + PDF Layout Fix
+// UPDATED: Handles PAN Number + Email Receipt + PDF Layout Fix + SMTP Debug
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
 // Disable error display to client, enable logging
-// Enable Error Display for Debugging
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 error_reporting(E_ALL);
 
-// Define logDebug globally first
+// Define logDebug globally
 function logDebug($msg) {
-    // Try-catch logging to prevent crash if permission denied
     try {
         @file_put_contents('debug_log.txt', date('Y-m-d H:i:s') . " - " . $msg . "\n", FILE_APPEND);
-    } catch (Exception $e) {
-        // limit permissions error
-    }
+    } catch (Exception $e) {}
 }
 
 try {
     logDebug("Script Started");
 
-    // Check Config
     if (!file_exists('config.php')) {
         throw new Exception("Configuration file missing (config.php)");
     }
@@ -33,11 +28,9 @@ try {
     logDebug("Config Loaded");
 
     // Check for Libraries
-    $libs_missing = false;
-    // Updated to match Case Sensitivity
     if (!file_exists('libs/fpdf/fpdf.php') || !file_exists('libs/PHPMailer/PHPMailer.php')) {
-        logDebug("Libs Missing Checks Failed");
-        $libs_missing = true;
+        logDebug("Libs Missing");
+        throw new Exception("Required libraries (FPDF or PHPMailer) are missing in api/libs/");
     } else {
         require('libs/fpdf/fpdf.php');
         require('libs/PHPMailer/Exception.php'); 
@@ -45,8 +38,6 @@ try {
         require('libs/PHPMailer/SMTP.php');       
         logDebug("Libs Loaded");
     }
-
-    // Removed specific Namespace usage here if not needed globally, relying on require
 
     // 1. Get Data
     $raw_input = file_get_contents("php://input");
@@ -63,7 +54,7 @@ try {
     $pan = $data['pan'] ?? 'N/A';
     $amount = $data['amount'];
     $payment_id = $data['payment_id'];
-    $club = $data['club'] ?? 'general'; // Default to general
+    $club = $data['club'] ?? 'general';
 
     // Determine Table
     $tableMap = [
@@ -75,48 +66,27 @@ try {
         'general' => 'donations'
     ];
     $tableName = $tableMap[$club] ?? 'donations';
-    logDebug("Table Selected: $tableName");
 
     // 2. Save to Database
-    if (!function_exists('connectDB')) {
-         throw new Exception("connectDB function missing (check config.php)");
-    }
     $conn = connectDB();
     if (!$conn) {
-        logDebug("DB Connect Failed");
         throw new Exception("Database Connection Failed");
     }
 
-    // Prepare Column Names based on table
     if ($tableName === 'donations') {
-        $col_email = 'email';
-        $col_phone = 'phone';
-        $col_pan   = 'pan_number';
+        $col_email = 'email'; $col_phone = 'phone'; $col_pan = 'pan_number';
     } else {
-        $col_email = 'email_id';
-        $col_phone = 'phone_no';
-        $col_pan   = 'pan_card_no';
+        $col_email = 'email_id'; $col_phone = 'phone_no'; $col_pan = 'pan_card_no';
     }
 
-    // Insert with PAN and Payment ID
-    // Note: support_purpose column is NOT included here, so if DB has it, it must be default/null.
     $stmt = $conn->prepare("INSERT INTO $tableName (donor_name, $col_email, $col_phone, $col_pan, amount, payment_id) VALUES (?, ?, ?, ?, ?, ?)");
-
-    if (!$stmt) {
-         logDebug("Prepare Failed: " . $conn->error);
-         throw new Exception("SQL Prepare Failed: " . $conn->error);
-    }
+    if (!$stmt) throw new Exception("SQL Prepare Failed: " . $conn->error);
 
     $stmt->bind_param("ssssds", $name, $email, $phone, $pan, $amount, $payment_id);
 
     if ($stmt->execute()) {
         $receiptNo = $stmt->insert_id;
         logDebug("Insert Success. ID: " . $receiptNo);
-        
-        if ($libs_missing) {
-             echo json_encode(["status" => "success", "message" => "Donation saved (Email skipped: Libs missing)"]);
-             exit;
-        }
 
         try {
             // --- 3. GENERATE PDF ---
@@ -124,7 +94,6 @@ try {
             $pdf = new FPDF();
             $pdf->AddPage();
             
-            // Header - FIXED SPACING & ALIGNMENT
             $pdf->SetFont('Arial', 'B', 18);
             $pdf->Cell(0, 12, 'GATLA FOUNDATION', 0, 1, 'C');
             $pdf->SetTextColor(71, 85, 105);
@@ -136,17 +105,13 @@ try {
             $pdf->Ln(5);
             $pdf->Line(10, 48, 200, 48);
             
-            // Receipt Details
             $pdf->Ln(20);
             $pdf->SetFont('Arial', 'B', 14);
             $pdf->Cell(0, 10, 'DONATION RECEIPT', 0, 1, 'C');
             
-            $pdf->SetFont('Arial', '', 12);
-            $pdf->Ln(10);
-            
+            $pdf->SetFont('Arial', '', 12); $pdf->Ln(10);
             $receiptString = 'GF-' . date('Y') . '-' . str_pad($receiptNo, 4, '0', STR_PAD_LEFT);
             
-            // Receipt Data
             $pdf->Cell(50, 10, 'Receipt No:', 0, 0); $pdf->Cell(0, 10, $receiptString, 0, 1);
             $pdf->Cell(50, 10, 'Date:', 0, 0); $pdf->Cell(0, 10, date('d-m-Y'), 0, 1);
             $pdf->Cell(50, 10, 'Donor Name:', 0, 0); $pdf->Cell(0, 10, $name, 0, 1);
@@ -177,11 +142,16 @@ try {
             $mail->Password   = 'qzzxfxfgnsdvfbgu';
             $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port       = 587;
+            
+            // SMTP VERBOSE DEBUG
+            $mail->SMTPDebug = 2;
+            $mail->Debugoutput = function($str, $level) {
+                logDebug("SMTP ($level): $str");
+            };
         
             // Recipients
             $mail->setFrom('gatlafoundation@gmail.com', 'Gatla Foundation');
             $mail->addAddress($email, $name);
-        
             $mail->addStringAttachment($pdfContent, "Receipt_$receiptString.pdf");
         
             $mail->isHTML(true);
@@ -199,18 +169,12 @@ try {
         }
 
     } else {
-        logDebug("Execute Failed: " . $stmt->error);
         throw new Exception("Database Execute Failed: " . $stmt->error);
     }
-
     $conn->close();
 
 } catch (Throwable $e) {
-    // Top Level Catch to prevent 500 White Screen
-    $errMsg = "Fatal Error: " . $e->getMessage();
-    if (function_exists('logDebug')) { 
-        logDebug($errMsg); 
-    }
-    echo json_encode(["status" => "error", "message" => $errMsg]);
+    logDebug("Fatal Error: " . $e->getMessage());
+    echo json_encode(["status" => "error", "message" => $e->getMessage()]);
 }
 ?>
