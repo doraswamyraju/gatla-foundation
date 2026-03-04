@@ -1,6 +1,6 @@
 <?php
 // api/process_donation.php
-// UPDATED: Handles PAN Number + Email Receipt + PDF Layout Fix + SMTP Debug
+// UPDATED: Handles PAN Number + Email Receipt + PDF Layout Fix + SMTP Debug + SSL Fix
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
@@ -140,8 +140,18 @@ try {
             $mail->SMTPAuth   = true;
             $mail->Username   = 'gatlafoundation@gmail.com';
             $mail->Password   = 'qzzxfxfgnsdvfbgu';
-            $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = 587;
+            
+            // UPDATED FOR SSL AND CERTIFICATE BYPASS
+            $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port       = 465;
+            
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
             
             // SMTP VERBOSE DEBUG
             $mail->SMTPDebug = 2;
