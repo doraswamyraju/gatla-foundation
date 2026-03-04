@@ -1,6 +1,6 @@
 <?php
 // api/process_donation.php
-// UPDATED: Handles PAN Number + Email Receipt + PDF Layout Fix + SMTP Debug + SSL Fix
+// UPDATED: Handles PAN Number + Email Receipt + PDF Layout Fix + SMTP Debug + SSL Fix + Local Mail Fallback
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
@@ -135,46 +135,49 @@ try {
             logDebug("Sending Email...");
             $mail = new PHPMailer\PHPMailer\PHPMailer(true);
             
-            $mail->isSMTP();
-            $mail->Host       = 'smtp.gmail.com'; 
-            $mail->SMTPAuth   = true;
-            $mail->Username   = 'gatlafoundation@gmail.com';
-            $mail->Password   = 'qzzxfxfgnsdvfbgu';
-            
-            // UPDATED FOR SSL AND CERTIFICATE BYPASS
-            $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
-            $mail->Port       = 465;
-            
-            $mail->SMTPOptions = array(
-                'ssl' => array(
-                    'verify_peer' => false,
-                    'verify_peer_name' => false,
-                    'allow_self_signed' => true
-                )
-            );
-            
             // SMTP VERBOSE DEBUG
             $mail->SMTPDebug = 2;
             $mail->Debugoutput = function($str, $level) {
                 logDebug("SMTP ($level): $str");
             };
-        
+
             // Recipients
             $mail->setFrom('gatlafoundation@gmail.com', 'Gatla Foundation');
             $mail->addAddress($email, $name);
             $mail->addStringAttachment($pdfContent, "Receipt_$receiptString.pdf");
-        
             $mail->isHTML(true);
             $mail->Subject = 'Donation Receipt - Gatla Foundation';
             $mail->Body    = "Dear $name,<br><br>Thank you for your generous donation of <b>Rs. $amount</b>.<br>Your PAN ($pan) has been recorded.<br>Please find your official receipt attached.<br><br>Regards,<br>Gatla Foundation";
-        
-            $mail->send();
-            logDebug("Email Sent Successfully.");
+
+            try {
+                logDebug("Attempting SMTP (Port 465)...");
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com'; 
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'gatlafoundation@gmail.com';
+                $mail->Password   = 'qzzxfxfgnsdvfbgu';
+                $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;
+                $mail->Port       = 465;
+                $mail->SMTPOptions = array(
+                    'ssl' => array(
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                        'allow_self_signed' => true
+                    )
+                );
+                $mail->send();
+                logDebug("Email Sent Successfully via SMTP.");
+            } catch (Exception $e) {
+                logDebug("SMTP failed: " . $e->getMessage() . ". Attempting local mail() fallback...");
+                $mail->isMail(); // Fallback to local mail function
+                $mail->send();
+                logDebug("Email Sent via Local mail() Fallback.");
+            }
             
             echo json_encode(["status" => "success", "message" => "Donation saved and Receipt sent!"]);
             
         } catch (Exception $e) {
-            logDebug("Email/PDF Error: " . $e->getMessage());
+            logDebug("Final Email/PDF Error: " . $e->getMessage());
             echo json_encode(["status" => "success", "message" => "Saved, but Email Error: " . $e->getMessage()]);
         }
 
@@ -184,7 +187,7 @@ try {
     $conn->close();
 
 } catch (Throwable $e) {
-    logDebug("Fatal Error: " . $e->getMessage());
+    logDebug("Top-Level Fatal Error: " . $e->getMessage());
     echo json_encode(["status" => "error", "message" => $e->getMessage()]);
 }
 ?>
