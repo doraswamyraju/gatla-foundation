@@ -45,9 +45,9 @@ if (isset($data->email)) {
                 $mail->Host       = 'smtp.gmail.com';
                 $mail->SMTPAuth   = true;
                 $mail->Username   = 'rajugariventures@gmail.com'; 
-                $mail->Password   = 'znejpufbvcwqcast'; 
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-                $mail->Port       = 465;
+                $mail->Password   = 'orbtmslxrzjmibxw'; 
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port = 587;
 
                 $mail->setFrom('rajugariventures@gmail.com', 'Gatla Foundation System');
                 $mail->addAddress($email);
