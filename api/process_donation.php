@@ -142,7 +142,7 @@ try {
             };
 
             // Recipients
-            $mail->setFrom('rajugariventures@gmail.com', 'Gatla Foundation');
+            $mail->setFrom('gatlafoundation@gmail.com', 'Gatla Foundation');
             $mail->addAddress($email, $name);
             $mail->addStringAttachment($pdfContent, "Receipt_$receiptString.pdf");
             $mail->isHTML(true);
@@ -154,8 +154,8 @@ try {
                 $mail->isSMTP();
                 $mail->Host       = 'smtp.gmail.com'; 
                 $mail->SMTPAuth   = true;
-                $mail->Username   = 'rajugariventures@gmail.com';
-                $mail->Password   = 'orbtmslxrzjmibxw';
+                $mail->Username   = 'gatlafoundation@gmail.com';
+                $mail->Password   = 'rniaitjamcygdjbk';
                 $mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port       = 587;
                 $mail->SMTPOptions = array(
