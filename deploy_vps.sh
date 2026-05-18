@@ -57,6 +57,10 @@ echo "[OK] db_credentials.php created."
 echo "Running database table migrations..."
 php "$REPO_DIR/api/migrate_all.php"
 
+# Symlink api directory into build/api so Nginx serves it seamlessly
+echo "Symlinking api directory to build/api..."
+ln -sf "$REPO_DIR/api" "$REPO_DIR/build/api"
+
 # 6. Detect installed PHP-FPM socket
 echo "Detecting PHP-FPM socket..."
 PHP_FPM_SOCK=$(ls /var/run/php/php*-fpm.sock 2>/dev/null | head -n 1)
@@ -97,8 +101,6 @@ server {
     location ~ \.php\$ {
         include snippets/fastcgi-php.conf;
         fastcgi_pass unix:$PHP_FPM_SOCK;
-        fastcgi_param SCRIPT_FILENAME $REPO_DIR\$fastcgi_script_name;
-        include fastcgi_params;
     }
 
     # Deny access to .git
