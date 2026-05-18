@@ -376,30 +376,34 @@ foreach ($queries as $name => $sql) {
     }
 }
 
-// Seed default admin user
-$defaultEmail = 'doraswamyraju.ca@gmail.com';
-$defaultPassword = 'password';
-$hashedPassword = password_hash($defaultPassword, PASSWORD_DEFAULT);
+// Seed default admin users
+$admins = [
+    'doraswamyraju.ca@gmail.com' => 'password',
+    'drgatlasrinivasareddy@gmail.com' => 'Gatla@2026'
+];
 
-$stmt = $conn->prepare("SELECT id FROM admin WHERE email = ?");
-$stmt->bind_param("s", $defaultEmail);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows === 0) {
-    $insertStmt = $conn->prepare("INSERT INTO admin (email, password) VALUES (?, ?)");
-    $insertStmt->bind_param("ss", $defaultEmail, $hashedPassword);
-    if ($insertStmt->execute()) {
-        echo "\n[OK] Default admin user ($defaultEmail) created successfully with password: password\n";
+foreach ($admins as $email => $pass) {
+    $hashed = password_hash($pass, PASSWORD_DEFAULT);
+    $stmt = $conn->prepare("SELECT id FROM admin WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows === 0) {
+        $insertStmt = $conn->prepare("INSERT INTO admin (email, password) VALUES (?, ?)");
+        $insertStmt->bind_param("ss", $email, $hashed);
+        if ($insertStmt->execute()) {
+            echo "\n[OK] Admin user ($email) created successfully.\n";
+        } else {
+            echo "\n[ERROR] Error creating admin ($email): " . $insertStmt->error . "\n";
+        }
+        $insertStmt->close();
     } else {
-        echo "\n[ERROR] Error creating default admin: " . $insertStmt->error . "\n";
+        echo "\n[INFO] Admin user ($email) already exists.\n";
     }
-    $insertStmt->close();
-} else {
-    echo "\n[INFO] Default admin user ($defaultEmail) already exists.\n";
+    $stmt->close();
 }
 
-$stmt->close();
 $conn->close();
 echo "\nAll migrations completed successfully!\n";
 ?>
