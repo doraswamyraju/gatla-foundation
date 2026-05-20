@@ -8,5 +8,6 @@ deployment:
     - /bin/cp -R api /home/skillsak/gatlafoundation.org/
     
     # 3. Set Permissions
+    - /bin/mkdir -p /home/skillsak/gatlafoundation.org/uploads
     - /bin/chmod -R 755 /home/skillsak/gatlafoundation.org/api
     - /bin/chmod -R 755 /home/skillsak/gatlafoundation.org/uploads

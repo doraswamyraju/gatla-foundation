@@ -61,6 +61,16 @@ php "$REPO_DIR/api/migrate_all.php"
 echo "Symlinking api directory to build/api..."
 ln -sf "$REPO_DIR/api" "$REPO_DIR/build/api"
 
+# Create uploads directory and set permissions
+echo "Setting up uploads directory..."
+mkdir -p "$REPO_DIR/uploads"
+chown -R www-data:www-data "$REPO_DIR/uploads"
+chmod -R 775 "$REPO_DIR/uploads"
+
+# Symlink uploads directory into build/uploads so Nginx serves it seamlessly
+echo "Symlinking uploads directory to build/uploads..."
+ln -sf "$REPO_DIR/uploads" "$REPO_DIR/build/uploads"
+
 # 6. Detect installed PHP-FPM socket
 echo "Detecting PHP-FPM socket..."
 PHP_FPM_SOCK=$(ls /var/run/php/php*-fpm.sock 2>/dev/null | head -n 1)
